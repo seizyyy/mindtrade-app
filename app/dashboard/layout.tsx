@@ -78,12 +78,33 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.replace("/login"); return; }
 
-      const { data: profile } = await supabase
+      let { data: profile } = await supabase
         .from("profiles")
         .select("plan_active")
         .eq("id", user.id)
         .single();
-      if (!profile?.plan_active) { router.replace("/#acces"); return; }
+
+      if (!profile?.plan_active) {
+        // Try to verify a pending Stripe session
+        const pendingSession = localStorage.getItem("mt-pending-session");
+        if (pendingSession) {
+          const res = await fetch("/api/stripe/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sessionId: pendingSession }),
+          });
+          if (res.ok) {
+            localStorage.removeItem("mt-pending-session");
+            const { data: updated } = await supabase
+              .from("profiles")
+              .select("plan_active")
+              .eq("id", user.id)
+              .single();
+            profile = updated;
+          }
+        }
+        if (!profile?.plan_active) { router.replace("/#acces"); return; }
+      }
 
       const today = new Date().toISOString().split("T")[0];
       const { data: ci } = await supabase

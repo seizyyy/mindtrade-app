@@ -38,18 +38,12 @@ function LoginForm() {
 
   useEffect(() => {
     if (!sessionId) return;
+    localStorage.setItem("mt-pending-session", sessionId);
+    // If already logged in, go directly to dashboard (layout will verify)
     (async () => {
-      await fetch("/api/stripe/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId }),
-      });
-      // If already logged in, go directly to dashboard
       const supabaseClient = createClient();
       const { data: { user } } = await supabaseClient.auth.getUser();
-      if (user) {
-        router.replace("/dashboard");
-      }
+      if (user) router.replace("/dashboard");
     })();
   }, [sessionId]);
 
