@@ -17,7 +17,32 @@ type Trade = {
 };
 
 const emotions = ["Calme", "Confiant", "Anxieux", "FOMO", "Revenge", "Euphorique", "Frustré", "Impatient"];
-const pairs = ["EUR/USD", "GBP/USD", "USD/JPY", "USD/CHF", "AUD/USD", "NZD/USD", "USD/CAD", "EUR/GBP", "EUR/JPY", "GBP/JPY", "BTC/USD", "ETH/USD", "Or (XAU)", "Nasdaq", "SP500", "Autre"];
+const pairs = [
+  // Forex majeurs
+  "EUR/USD","GBP/USD","USD/JPY","USD/CHF","AUD/USD","NZD/USD","USD/CAD",
+  // Forex croisés
+  "EUR/GBP","EUR/JPY","EUR/CHF","EUR/AUD","EUR/CAD","EUR/NZD",
+  "GBP/JPY","GBP/CHF","GBP/AUD","GBP/CAD","GBP/NZD",
+  "AUD/JPY","AUD/CHF","AUD/CAD","AUD/NZD",
+  "CAD/JPY","CAD/CHF","NZD/JPY","NZD/CHF","CHF/JPY",
+  // Forex exotiques
+  "USD/MXN","USD/ZAR","USD/TRY","USD/SEK","USD/NOK","USD/DKK","USD/SGD","USD/HKD","USD/CNH","USD/PLN","USD/CZK","USD/HUF",
+  "EUR/PLN","EUR/CZK","EUR/HUF","EUR/SEK","EUR/NOK","EUR/DKK","EUR/TRY",
+  // Matières premières
+  "Or (XAU/USD)","Argent (XAG/USD)","Pétrole WTI (CL)","Pétrole Brent (BRN)","Gaz Naturel (NG)","Cuivre (HG)","Platine (XPT)","Palladium (XPD)",
+  // Indices
+  "Nasdaq 100 (NQ)","S&P 500 (ES)","Dow Jones (YM)","Russell 2000 (RTY)",
+  "DAX (GER40)","CAC 40 (FRA40)","FTSE 100 (UK100)","Nikkei 225 (JP225)",
+  "Hang Seng (HK50)","ASX 200 (AUS200)","Euro Stoxx 50 (EU50)",
+  // Crypto
+  "BTC/USD","ETH/USD","BTC/USDT","ETH/USDT","SOL/USD","BNB/USD","XRP/USD",
+  "ADA/USD","DOGE/USD","AVAX/USD","MATIC/USD","DOT/USD","LINK/USD","UNI/USD",
+  "LTC/USD","BCH/USD","ATOM/USD","FIL/USD","NEAR/USD","APT/USD",
+  // Actions US populaires
+  "AAPL","TSLA","NVDA","MSFT","AMZN","GOOGL","META","AMD","NFLX","COIN",
+  // Futures
+  "ES (S&P Futures)","NQ (Nasdaq Futures)","CL (Crude Oil Futures)","GC (Gold Futures)","ZB (Bond Futures)",
+];
 
 const FILTERS = [
   { id: "all", label: "Tous" },
@@ -185,10 +210,16 @@ export default function TradesPage() {
             </div>
             <div>
               <label style={{ fontSize: 11, fontWeight: 600, color: "var(--ink3)", display: "block", marginBottom: 5 }}>Paire / Actif</label>
-              <select value={form.pair} onChange={e => setForm({ ...form, pair: e.target.value })}
-                style={{ width: "100%", background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 7, padding: "9px 12px", fontSize: 13, color: "var(--ink)", fontFamily: "var(--font-outfit)", boxSizing: "border-box" }}>
-                {pairs.map(p => <option key={p}>{p}</option>)}
-              </select>
+              <input
+                list="pairs-list"
+                value={form.pair}
+                onChange={e => setForm({ ...form, pair: e.target.value })}
+                placeholder="Rechercher ou taper..."
+                style={{ width: "100%", background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 7, padding: "9px 12px", fontSize: 13, color: "var(--ink)", fontFamily: "var(--font-outfit)", boxSizing: "border-box", outline: "none" }}
+              />
+              <datalist id="pairs-list">
+                {pairs.map(p => <option key={p} value={p} />)}
+              </datalist>
             </div>
             <div>
               <label style={{ fontSize: 11, fontWeight: 600, color: "var(--ink3)", display: "block", marginBottom: 5 }}>Direction</label>
