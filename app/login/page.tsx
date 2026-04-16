@@ -1,0 +1,140 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
+
+const darkVars = {
+  "--bg":     "#0f172a",
+  "--bg2":    "#1e293b",
+  "--bg3":    "#334155",
+  "--card":   "#1e293b",
+  "--ink":    "#f1f5f9",
+  "--ink2":   "#cbd5e1",
+  "--ink3":   "#94a3b8",
+  "--border": "rgba(241,245,249,0.09)",
+  "--navy":   "#3b82f6",
+  "--navy2":  "#2563eb",
+  "--gold":   "#fbbf24",
+  "--g":      "#22c55e",
+  "--r":      "#ef4444",
+  "--a":      "#f59e0b",
+  "--tint-r-bg":     "rgba(239,68,68,.12)",
+  "--tint-r-border": "rgba(239,68,68,.25)",
+  "--tint-g-bg":     "rgba(34,197,94,.10)",
+  "--tint-g-border": "rgba(34,197,94,.25)",
+  "--tint-n-bg":     "rgba(59,130,246,.12)",
+  "--tint-n-border": "rgba(59,130,246,.28)",
+  "--tint-a-bg":     "rgba(245,158,11,.12)",
+  "--tint-a-border": "rgba(245,158,11,.28)",
+} as React.CSSProperties;
+
+export default function LoginPage() {
+  const router = useRouter();
+  const supabase = createClient();
+
+  const [dark, setDark] = useState(false);
+  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    if (localStorage.getItem("mt-dark") === "1") setDark(true);
+  }, []);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    if (mode === "login") {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) { setError("Email ou mot de passe incorrect."); setLoading(false); return; }
+      router.replace("/dashboard");
+    } else {
+      const { error } = await supabase.auth.signUp({ email, password });
+      if (error) { setError(error.message); setLoading(false); return; }
+      setSuccess("Compte créé ! Vérifie ton email pour confirmer ton inscription.");
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div style={{ ...(dark ? darkVars : {}), minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-outfit)", padding: "20px" }}>
+      <div style={{ width: "100%", maxWidth: 400 }}>
+        {/* Brand */}
+        <div style={{ textAlign: "center", marginBottom: 32 }}>
+          <a href="/" style={{ textDecoration: "none" }}>
+            <span style={{ fontFamily: "var(--font-montserrat)", fontSize: 20, fontWeight: 900, color: "var(--ink)", letterSpacing: "-.4px" }}>MindTrade</span>
+          </a>
+          <div style={{ fontSize: 13, color: "var(--ink3)", marginTop: 6 }}>
+            {mode === "login" ? "Accède à ton espace trader" : "Crée ton compte gratuitement"}
+          </div>
+        </div>
+
+        {/* Card */}
+        <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16, padding: "32px 28px" }}>
+          {/* Mode toggle */}
+          <div style={{ display: "flex", gap: 0, background: "var(--bg2)", borderRadius: 8, padding: 3, marginBottom: 24 }}>
+            {(["login", "signup"] as const).map(m => (
+              <button key={m} onClick={() => { setMode(m); setError(""); setSuccess(""); }}
+                style={{ flex: 1, padding: "8px 0", borderRadius: 6, border: "none", background: mode === m ? "var(--card)" : "transparent", color: mode === m ? "var(--ink)" : "var(--ink3)", fontSize: 13, fontWeight: mode === m ? 700 : 500, cursor: "pointer", fontFamily: "var(--font-outfit)", boxShadow: mode === m ? "0 1px 3px rgba(0,0,0,.08)" : "none", transition: "all .15s" }}>
+                {m === "login" ? "Connexion" : "Inscription"}
+              </button>
+            ))}
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ fontSize: 12, fontWeight: 600, color: "var(--ink2)", display: "block", marginBottom: 6 }}>Adresse email</label>
+              <input
+                type="email" required autoComplete="email" value={email} onChange={e => setEmail(e.target.value)}
+                placeholder="ton@email.com"
+                style={{ width: "100%", background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 8, padding: "11px 14px", fontSize: 14, color: "var(--ink)", fontFamily: "var(--font-outfit)", boxSizing: "border-box", outline: "none" }}
+                onFocus={e => (e.currentTarget as HTMLElement).style.borderColor = "var(--navy)"}
+                onBlur={e => (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"}
+              />
+            </div>
+            <div style={{ marginBottom: 20 }}>
+              <label style={{ fontSize: 12, fontWeight: 600, color: "var(--ink2)", display: "block", marginBottom: 6 }}>Mot de passe</label>
+              <input
+                type="password" required autoComplete={mode === "login" ? "current-password" : "new-password"} value={password} onChange={e => setPassword(e.target.value)}
+                placeholder="••••••••"
+                style={{ width: "100%", background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 8, padding: "11px 14px", fontSize: 14, color: "var(--ink)", fontFamily: "var(--font-outfit)", boxSizing: "border-box", outline: "none" }}
+                onFocus={e => (e.currentTarget as HTMLElement).style.borderColor = "var(--navy)"}
+                onBlur={e => (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"}
+              />
+              {mode === "signup" && (
+                <div style={{ fontSize: 11, color: "var(--ink3)", marginTop: 5 }}>Minimum 6 caractères</div>
+              )}
+            </div>
+
+            {error && (
+              <div style={{ background: "var(--tint-r-bg)", border: "1px solid var(--tint-r-border)", borderRadius: 8, padding: "10px 14px", marginBottom: 16, fontSize: 13, color: "var(--r)" }}>
+                {error}
+              </div>
+            )}
+            {success && (
+              <div style={{ background: "var(--tint-g-bg)", border: "1px solid var(--tint-g-border)", borderRadius: 8, padding: "10px 14px", marginBottom: 16, fontSize: 13, color: "var(--g)" }}>
+                {success}
+              </div>
+            )}
+
+            <button type="submit" disabled={loading}
+              style={{ width: "100%", padding: "13px", borderRadius: 8, border: "none", background: "var(--navy)", color: "#fff", fontSize: 14, fontWeight: 700, cursor: loading ? "not-allowed" : "pointer", fontFamily: "var(--font-outfit)", opacity: loading ? 0.7 : 1, transition: "opacity .15s" }}>
+              {loading ? "..." : mode === "login" ? "Se connecter →" : "Créer mon compte →"}
+            </button>
+          </form>
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: 20, fontSize: 12, color: "var(--ink3)" }}>
+          <a href="/" style={{ color: "var(--ink3)", textDecoration: "none" }}>← Retour au site</a>
+        </div>
+      </div>
+    </div>
+  );
+}

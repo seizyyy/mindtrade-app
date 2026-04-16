@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MindTrade — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=Outfit:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#fafaf8;--bg2:#f3f2ef;--bg3:#e8e7e3;--bg4:#dddcd8;
+  --card:#ffffff;--ink:#0c0c0a;--ink2:#5c5b58;--ink3:#9c9b97;
+  --border:rgba(12,12,10,.07);--border2:rgba(12,12,10,.13);
+  --navy:#0f2744;--navy2:#1a3a5c;--navyL:rgba(15,39,68,.07);
+  --gold:#b8860b;--goldL:rgba(184,134,11,.09);
+  --g:#15803d;--gL:rgba(21,128,61,.08);
+  --r:#991b1b;--rL:rgba(153,27,27,.07);
+  --a:#92400e;--aL:rgba(146,64,14,.08);
+  --sh:0 1px 3px rgba(12,12,10,.04),0 4px 14px rgba(12,12,10,.06);
+  --sh2:0 2px 8px rgba(12,12,10,.05),0 16px 40px rgba(12,12,10,.08);
+  --r1:14px;--r2:10px;--r3:7px;
+}
+body.dark{
+  --bg:#080808;--bg2:#111;--bg3:#1a1a1a;--bg4:#222;
+  --card:#111;--ink:#f5f5f3;--ink2:#888;--ink3:#444;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --navy:#1e3a5c;--navyL:rgba(96,165,250,.08);
+  --g:#34d399;--gL:rgba(52,211,153,.08);
+  --r:#f87171;--rL:rgba(248,113,113,.08);
+  --a:#fbbf24;--aL:rgba(251,191,36,.08);
+  --sh:0 1px 3px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+  --sh2:0 2px 8px rgba(0,0,0,.4),0 16px 40px rgba(0,0,0,.3);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Outfit',sans-serif;font-size:14px;color:var(--ink);background:var(--bg);}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:2px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── TOPBAR ── */
+.topbar{height:56px;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;position:relative;z-index:10;}
+.tb-brand{font-family:'Montserrat',sans-serif;font-size:14px;font-weight:900;letter-spacing:-.4px;color:var(--ink);}
+.tb-center{position:absolute;left:50%;transform:translateX(-50%);}
+.tb-date{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:12px;color:var(--ink2);font-weight:500;}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.tb-icon{width:32px;height:32px;border-radius:var(--r3);background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:background .1s;}
+.tb-icon:hover{background:var(--bg3);}
+.tb-icon svg{width:14px;height:14px;stroke:var(--ink2);fill:none;stroke-width:1.5;}
+.notif-dot{position:absolute;top:6px;right:6px;width:5px;height:5px;background:var(--r);border-radius:50%;border:1.5px solid var(--card);}
+.user-pill{display:flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:3px 12px 3px 3px;cursor:pointer;transition:background .1s;}
+.user-pill:hover{background:var(--bg3);}
+.uav{width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;}
+.uname{font-size:12px;font-weight:600;color:var(--ink);}
+
+/* ── LAYOUT ── */
+.layout{display:flex;flex:1;overflow:hidden;height:calc(100vh - 56px);}
+
+/* ── SIDEBAR ── */
+.sidebar{width:204px;background:var(--card);border-right:1px solid var(--border);padding:10px 8px;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
+.nav-btn{display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:var(--r3);cursor:pointer;color:var(--ink2);font-size:13px;font-weight:500;border:none;background:none;width:100%;text-align:left;font-family:'Outfit',sans-serif;transition:all .12s;position:relative;}
+.nav-btn:hover{background:var(--bg2);color:var(--ink);}
+.nav-btn.on{background:var(--ink);color:#fff;}
+.nav-btn.on svg{stroke:#fff;}
+body.dark .nav-btn.on{background:var(--navyL);color:#60a5fa;}
+body.dark .nav-btn.on svg{stroke:#60a5fa;}
+.nav-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;flex-shrink:0;}
+.sb-sep{height:1px;background:var(--border);margin:6px 0;}
+.sb-lbl{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;padding:4px 11px 2px;}
+.sb-bottom{margin-top:auto;display:flex;flex-direction:column;gap:5px;}
+.theme-btn{display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:var(--r3);cursor:pointer;color:var(--ink2);font-size:13px;font-weight:500;border:none;background:none;width:100%;font-family:'Outfit',sans-serif;transition:all .12s;}
+.theme-btn:hover{background:var(--bg2);color:var(--ink);}
+.theme-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;flex-shrink:0;}
+.score-widget{background:var(--ink);border-radius:var(--r2);padding:14px 16px;}
+body.dark .score-widget{background:linear-gradient(135deg,#1e3a5c,#0f2744);}
+.sw-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:4px;}
+.sw-num{font-family:'Fraunces',serif;font-size:38px;color:#fff;line-height:1;margin-bottom:2px;}
+.sw-sub{font-size:11px;color:rgba(255,255,255,.38);margin-bottom:9px;}
+.sw-bar{height:2px;background:rgba(255,255,255,.1);border-radius:1px;}
+.sw-fill{height:2px;border-radius:1px;background:rgba(255,255,255,.45);}
+
+/* ── MAIN ── */
+.main{flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:10px;background:var(--bg);}
+.view{display:none;flex-direction:column;gap:10px;animation:fadeUp .35s ease both;}
+.view.on{display:flex;}
+
+/* ── CARD ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r1);padding:16px 18px;box-shadow:var(--sh);}
+.ct{font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.ct-action{font-size:11px;font-weight:600;color:var(--navy);text-transform:none;letter-spacing:0;cursor:pointer;border:none;background:none;font-family:'Outfit',sans-serif;}
+
+/* ── BANNER ── */
+.banner{display:flex;align-items:center;gap:10px;background:var(--aL);border:1px solid rgba(146,64,14,.18);border-radius:var(--r2);padding:11px 16px;}
+.banner-dot{width:7px;height:7px;border-radius:50%;background:var(--a);flex-shrink:0;animation:pulse 2s infinite;}
+.banner-txt{flex:1;font-size:13px;color:var(--a);font-weight:500;}
+.banner-cta{background:var(--a);color:#fff;border:none;border-radius:var(--r3);padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;white-space:nowrap;}
+.banner-x{background:none;border:none;color:var(--a);cursor:pointer;font-size:18px;opacity:.5;line-height:1;}
+
+/* ── GRID LAYOUTS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.dash-grid{display:grid;grid-template-columns:1fr 296px;gap:10px;align-items:start;}
+.left-col{display:flex;flex-direction:column;gap:10px;}
+.right-col{display:flex;flex-direction:column;gap:10px;}
+
+/* ── HERO SCORE ── */
+.hero-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r1);padding:22px 26px;box-shadow:var(--sh2);position:relative;overflow:hidden;}
+.hero-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(15,39,68,.05) 0%,transparent 70%);}
+.hero-inner{display:grid;grid-template-columns:auto 1px 1fr;gap:24px;align-items:center;}
+.hero-score-wrap{}
+.hero-kicker{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;}
+.hero-num{font-family:'Fraunces',serif;font-size:72px;line-height:.9;margin-bottom:9px;}
+.hero-verdict{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:5px 13px;margin-bottom:5px;}
+.vdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.vtxt{font-size:12px;font-weight:600;}
+.hero-hint{font-size:12px;color:var(--ink2);line-height:1.55;font-weight:400;max-width:180px;}
+.hero-div{background:var(--border);width:1px;}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.metric{background:var(--bg2);border-radius:var(--r2);padding:12px 14px;border:1px solid var(--border);}
+.m-lbl{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px;}
+.m-val{font-family:'Fraunces',serif;font-size:26px;line-height:1;margin-bottom:2px;}
+.m-sub{font-size:11px;font-weight:500;}
+
+/* ── BIAIS ── */
+.biais-card{border-radius:var(--r2);padding:14px 16px;border:1.5px solid transparent;display:flex;align-items:flex-start;gap:12px;}
+.bc-r{background:var(--rL);border-color:rgba(153,27,27,.18);}
+.bc-a{background:var(--aL);border-color:rgba(146,64,14,.18);}
+.bc-g{background:var(--gL);border-color:rgba(21,128,61,.15);}
+.bc-icon{width:34px;height:34px;border-radius:var(--r3);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.bc-r .bc-icon{background:rgba(153,27,27,.1);}
+.bc-a .bc-icon{background:rgba(146,64,14,.1);}
+.bc-g .bc-icon{background:rgba(21,128,61,.09);}
+.bc-icon svg{width:15px;height:15px;fill:none;stroke-width:2;}
+.bc-r .bc-icon svg{stroke:var(--r);}
+.bc-a .bc-icon svg{stroke:var(--a);}
+.bc-g .bc-icon svg{stroke:var(--g);}
+.bc-title{font-size:13px;font-weight:700;margin-bottom:3px;}
+.bc-r .bc-title{color:var(--r);}
+.bc-a .bc-title{color:var(--a);}
+.bc-g .bc-title{color:var(--g);}
+.bc-desc{font-size:12px;color:var(--ink2);line-height:1.6;font-weight:400;}
+.bc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
+.bc-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:12px;}
+
+/* ── CHART ── */
+.chart-wrap{position:relative;height:160px;}
+.chart-sm{position:relative;height:140px;}
+
+/* ── BIAS BARS ── */
+.bias-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.bias-row:last-child{margin-bottom:0;}
+.bias-name{font-size:12px;color:var(--ink2);width:100px;flex-shrink:0;font-weight:500;}
+.bias-track{flex:1;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.bias-fill{height:4px;border-radius:2px;}
+.bias-pct{font-size:11px;font-weight:700;width:30px;text-align:right;}
+.bias-delta{font-size:10px;width:28px;text-align:right;font-weight:500;}
+.d-up{color:var(--r);}.d-dn{color:var(--g);}
+
+/* ── CHECK-IN GRID ── */
+.ci-lbls{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:2px;}
+.ci-lbl{font-size:9px;color:var(--ink3);text-align:center;font-weight:600;letter-spacing:.04em;}
+.ci-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.ci-cell{aspect-ratio:1;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;}
+.c-ok{background:rgba(21,128,61,.12);color:var(--g);}
+.c-now{background:var(--navy);color:#fff;}
+.c-miss{background:rgba(153,27,27,.1);color:var(--r);}
+.c-off{background:var(--bg3);color:var(--ink3);opacity:.4;}
+
+/* ── OBJECTIVES ── */
+.obj-item{margin-bottom:9px;}
+.obj-item:last-child{margin-bottom:0;}
+.obj-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;margin-bottom:4px;font-weight:500;}
+.obj-track{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.obj-fill{height:3px;border-radius:2px;transition:width .4s ease;}
+.obj-del{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:13px;padding:0 3px;opacity:0;transition:opacity .1s;}
+.obj-item:hover .obj-del{opacity:1;}
+.obj-del:hover{color:var(--r);}
+
+/* ── TRADES TABLE ── */
+.tt{width:100%;border-collapse:collapse;}
+.tt th{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.09em;padding:0 0 9px;text-align:left;border-bottom:2px solid var(--border);}
+.tt td{padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle;font-weight:500;}
+.tt tr:last-child td{border-bottom:none;}
+.tt tr:hover td{background:var(--bg2);}
+.dl{display:inline-flex;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.04em;background:var(--gL);color:var(--g);}
+.ds{display:inline-flex;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.04em;background:var(--rL);color:var(--r);}
+.pp{color:var(--g);font-weight:700;}.pn{color:var(--r);font-weight:700;}
+.sp{display:inline-flex;width:30px;height:18px;align-items:center;justify-content:center;border-radius:3px;font-size:10px;font-weight:700;}
+.sp-g{background:var(--gL);color:var(--g);}
+.sp-a{background:var(--aL);color:var(--a);}
+.sp-r{background:var(--rL);color:var(--r);}
+.etag{font-size:11px;background:var(--bg2);color:var(--ink2);padding:2px 9px;border-radius:20px;border:1px solid var(--border);font-weight:500;}
+.del-btn{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:14px;padding:2px 5px;opacity:0;transition:opacity .1s;line-height:1;border-radius:4px;}
+.tt tr:hover .del-btn{opacity:1;}
+.del-btn:hover{color:var(--r);background:var(--rL);}
+
+/* ── INSIGHT CARD ── */
+.insight{background:var(--ink);border-radius:var(--r2);padding:16px 18px;}
+body.dark .insight{background:linear-gradient(135deg,#1e3a5c,#0f2744);}
+.ins-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:7px;}
+.ins-txt{font-size:13px;color:rgba(255,255,255,.72);line-height:1.68;font-weight:400;}
+.ins-txt strong{color:#fff;font-weight:700;}
+.ins-foot{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:rgba(255,255,255,.28);display:flex;align-items:center;gap:4px;}
+.ins-foot svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.5;}
+
+/* ── DISCIPLINE ── */
+.disc-val{font-family:'Fraunces',serif;font-size:46px;line-height:1;}
+.disc-track{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin:9px 0 3px;}
+.disc-fill{height:4px;border-radius:2px;transition:width .5s ease;}
+.disc-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;font-weight:500;}
+.disc-row:last-child{border-bottom:none;}
+
+/* ── CONFLUENCES ── */
+.conf-item{display:flex;align-items:flex-start;gap:9px;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--r3);cursor:pointer;transition:all .1s;position:relative;margin-bottom:7px;}
+.conf-item:last-child{margin-bottom:0;}
+.conf-item:hover,.conf-item.ck{border-color:var(--ink);background:var(--bg2);}
+.conf-cb{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .1s;margin-top:1px;}
+.conf-item.ck .conf-cb{background:var(--ink);border-color:var(--ink);}
+.conf-item.ck .conf-cb::after{content:'';width:4px;height:7px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);display:block;margin-bottom:1px;}
+.conf-tl{font-size:13px;color:var(--ink);font-weight:600;}
+.conf-ds{font-size:12px;color:var(--ink2);margin-top:1px;}
+.conf-del{display:none;position:absolute;right:9px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--ink3);font-size:13px;cursor:pointer;padding:2px 4px;line-height:1;}
+.conf-del:hover{color:var(--r);}
+.conf-item:hover .conf-del{display:block;}
+.add-btn{display:flex;align-items:center;gap:6px;background:none;border:1.5px dashed var(--border2);border-radius:var(--r3);padding:9px 12px;font-size:12px;color:var(--ink2);cursor:pointer;font-family:'Outfit',sans-serif;width:100%;margin-top:7px;transition:all .1s;font-weight:500;}
+.add-btn:hover{border-color:var(--ink);color:var(--ink);}
+
+/* ── CHECK-IN SCREEN ── */
+.ci-prog{display:flex;gap:4px;margin-bottom:22px;}
+.ci-ps{flex:1;height:3px;border-radius:2px;background:var(--bg3);transition:all .2s;}
+.ci-ps.d{background:var(--ink);}
+.ci-ps.a{background:var(--ink);opacity:.3;}
+.ci-q{font-family:'Fraunces',serif;font-size:22px;color:var(--ink);margin-bottom:5px;line-height:1.3;}
+.ci-sub{font-size:13px;color:var(--ink2);margin-bottom:20px;font-weight:400;}
+.sc-btns{display:flex;gap:6px;flex-wrap:wrap;}
+.sc-btn{width:42px;height:42px;border-radius:var(--r3);border:1.5px solid var(--border2);background:var(--bg2);font-size:14px;font-weight:700;color:var(--ink2);cursor:pointer;transition:all .1s;font-family:'Outfit',sans-serif;}
+.sc-btn:hover{border-color:var(--ink);color:var(--ink);}
+.sc-btn.on{background:var(--ink);border-color:var(--ink);color:#fff;}
+.ci-back{background:transparent;border:1.5px solid var(--border2);border-radius:var(--r3);padding:10px 20px;font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;color:var(--ink2);font-weight:500;}
+.ci-next{background:var(--ink);border:none;border-radius:var(--r3);padding:10px 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;color:#fff;margin-left:auto;transition:opacity .1s;}
+.ci-next:hover{opacity:.82;}
+.ci-next:disabled{opacity:.22;cursor:not-allowed;}
+.ci-verdict{display:inline-flex;align-items:center;gap:6px;padding:6px 15px;border-radius:20px;font-size:13px;font-weight:600;margin:9px 0;}
+.cv-g{background:var(--gL);color:var(--g);}
+.cv-a{background:var(--aL);color:var(--a);}
+.cv-r{background:var(--rL);color:var(--r);}
+
+/* ── LOG FORM ── */
+.log-form{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:16px 18px;margin-bottom:10px;}
+.lf-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:8px;margin-bottom:10px;}
+.lf-label{font-size:10px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:4px;}
+.lf-inp{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r3);padding:8px 10px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--ink);outline:none;width:100%;transition:border-color .12s;font-weight:500;}
+.lf-inp:focus{border-color:var(--navy);}
+.lf-select{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r3);padding:8px 10px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--ink);outline:none;width:100%;cursor:pointer;}
+.lf-btn{background:var(--ink);color:#fff;border:none;border-radius:var(--r3);padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:opacity .12s;}
+.lf-btn:hover{opacity:.82;}
+.ls-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;}
+.ls{background:var(--card);border-radius:var(--r2);padding:11px 13px;border:1px solid var(--border);}
+.ls-lbl{font-size:10px;color:var(--ink3);font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin-bottom:3px;}
+.ls-val{font-family:'Fraunces',serif;font-size:20px;line-height:1;}
+.lf-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.lf-filter{padding:5px 13px;border-radius:20px;border:1.5px solid var(--border);background:var(--card);font-size:12px;font-weight:600;color:var(--ink2);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .1s;}
+.lf-filter.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+
+/* ── RAPPORT ── */
+.rap-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:start;}
+.sec-h{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:9px;display:flex;align-items:center;gap:6px;}
+.sec-h::before{content:'';width:3px;height:13px;background:var(--navy);border-radius:2px;flex-shrink:0;}
+.ins-item{display:flex;gap:8px;background:var(--bg2);border-radius:var(--r3);padding:9px 12px;font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:5px;border:1px solid var(--border);font-weight:400;}
+.ins-item:last-child{margin-bottom:0;}
+.i-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.act-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r3);font-size:13px;margin-bottom:5px;color:var(--ink);font-weight:500;}
+.act-item:last-child{margin-bottom:0;}
+.act-n{width:19px;height:19px;border-radius:50%;background:var(--ink);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ── RULES ── */
+.rule-item{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--border);}
+.rule-item:last-child{border-bottom:none;padding-bottom:0;}
+.rule-cb{width:17px;height:17px;border-radius:4px;border:1.5px solid var(--border2);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .1s;margin-top:1px;}
+.rule-cb.on{background:var(--g);border-color:var(--g);}
+.rule-cb.on::after{content:'';width:4px;height:7px;border:1.5px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);display:block;margin-bottom:1px;}
+.rule-txt{flex:1;font-size:13px;color:var(--ink);line-height:1.5;font-weight:500;}
+.rule-txt.done{text-decoration:line-through;color:var(--ink3);}
+.rule-del{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:13px;padding:0 2px;opacity:0;transition:opacity .1s;line-height:1;}
+.rule-item:hover .rule-del{opacity:1;}
+.rule-del:hover{color:var(--r);}
+
+/* ── JOURNAL ── */
+.j-section{padding:14px 0;border-bottom:1px solid var(--border);}
+.j-section:last-of-type{border-bottom:none;}
+.j-sec-hd{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+.j-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.j-sec-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;}
+.j-ta{width:100%;background:none;border:none;outline:none;font-size:13px;font-family:'Outfit',sans-serif;color:var(--ink);line-height:1.72;resize:none;min-height:64px;padding:0;}
+.j-ta::placeholder{color:var(--ink3);font-weight:300;}
+.j-mood{display:flex;gap:5px;}
+.j-mood span{font-size:20px;cursor:pointer;opacity:.25;transition:all .12s;}
+.j-mood span.on{opacity:1;transform:scale(1.18);}
+.j-stars{display:flex;gap:2px;}
+.j-star{font-size:17px;cursor:pointer;color:var(--ink3);transition:color .1s;}
+.j-star.on{color:var(--gold);}
+.j-save{background:var(--ink);color:#fff;border:none;border-radius:var(--r3);padding:8px 20px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:opacity .12s;}
+.j-save:hover{opacity:.82;}
+.j-saved{font-size:11px;color:var(--g);opacity:0;transition:opacity .3s;font-weight:600;}
+.j-entry{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.j-entry:last-child{border-bottom:none;}
+.j-entry-bar{width:3px;border-radius:2px;flex-shrink:0;align-self:stretch;}
+.j-entry-date{font-size:11px;font-weight:600;color:var(--ink);margin-bottom:2px;}
+.j-entry-preview{font-size:12px;color:var(--ink2);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+
+/* ── GUIDE ── */
+.guide-section{margin-bottom:16px;}
+.guide-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:7px;}
+.guide-title::before{content:'';width:3px;height:14px;background:var(--navy);border-radius:2px;flex-shrink:0;}
+.guide-body{font-size:13px;color:var(--ink2);line-height:1.72;}
+
+/* ── ONBOARDING ── */
+.ob-ov{position:fixed;inset:0;background:rgba(12,12,10,.65);z-index:200;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);}
+.ob-box{background:var(--card);border:1px solid var(--border);border-radius:var(--r1);width:100%;max-width:440px;padding:34px;box-shadow:var(--sh2);margin:16px;}
+.ob-ps{flex:1;height:3px;border-radius:2px;background:var(--bg3);}
+.ob-ps.d{background:var(--ink);}
+.ob-ps.a{background:var(--ink);opacity:.3;}
+.ob-icon{width:42px;height:42px;border-radius:var(--r3);background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.ob-icon svg{width:19px;height:19px;stroke:var(--ink);fill:none;stroke-width:1.5;}
+.ob-title{font-family:'Fraunces',serif;font-size:22px;color:var(--ink);margin-bottom:6px;}
+.ob-desc{font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:16px;font-weight:400;}
+.ob-sel{background:var(--bg2);border:1.5px solid var(--border2);border-radius:var(--r3);padding:9px 12px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--ink);outline:none;width:100%;margin-bottom:9px;}
+.ob-chip{padding:6px 15px;border-radius:20px;border:1.5px solid var(--border);font-size:13px;color:var(--ink2);cursor:pointer;transition:all .1s;font-weight:500;}
+.ob-chip.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+.ob-btn{background:var(--ink);color:#fff;border:none;border-radius:var(--r3);padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;width:100%;margin-top:14px;transition:opacity .1s;}
+.ob-btn:hover{opacity:.82;}
+.ob-skip{background:none;border:none;font-size:12px;color:var(--ink3);cursor:pointer;margin-top:9px;display:block;width:100%;text-align:center;font-family:'Outfit',sans-serif;}
+.inp{background:var(--bg2);border:1.5px solid var(--border2);border-radius:var(--r3);padding:8px 11px;font-size:13px;font-family:'Outfit',sans-serif;color:var(--ink);outline:none;width:100%;transition:border-color .12s;font-weight:500;}
+.inp:focus{border-color:var(--ink);}
+
+/* ── CF SCORE ── */
+.cf-stat{display:flex;align-items:center;gap:12px;margin-bottom:11px;padding-bottom:11px;border-bottom:1px solid var(--border);}
+.cf-stat:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+.cf-name{font-size:12px;color:var(--ink2);flex:1;font-weight:500;}
+.cf-track{width:52px;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.cf-fill{height:4px;border-radius:2px;}
+.cf-pct{font-size:12px;font-weight:700;width:28px;text-align:right;}
+
+/* ── WEEKEND BANNER ── */
+.weekend-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r1);padding:32px;text-align:center;box-shadow:var(--sh);}
+.weekend-icon{font-size:36px;margin-bottom:12px;}
+.weekend-title{font-family:'Fraunces',serif;font-size:22px;color:var(--ink);margin-bottom:8px;}
+.weekend-sub{font-size:14px;color:var(--ink2);line-height:1.6;max-width:320px;margin:0 auto 18px;}
+.weekend-btn{background:var(--ink);color:#fff;border:none;border-radius:var(--r3);padding:11px 24px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:opacity .12s;}
+.weekend-btn:hover{opacity:.82;}
+</style>
+</head>
+<body>
+
+<!-- ONBOARDING -->
+<div class="ob-ov" id="obOv"><div class="ob-box"><div id="obC"></div></div></div>
+
+<!-- TOPBAR -->
+<div style="display:flex;flex-direction:column;height:100vh;">
+<div class="topbar">
+  <span class="tb-brand">MindTrade</span>
+  <div class="tb-center"><div class="tb-date">Mercredi 2 avril 2026</div></div>
+  <div class="tb-right">
+    <div class="tb-icon" title="Notifications"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><div class="notif-dot"></div></div>
+    <div class="user-pill"><div class="uav">TM</div><span class="uname">Thomas M.</span></div>
+  </div>
+</div>
+
+<div class="layout">
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <button class="nav-btn on" onclick="nav('dashboard',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Vue d'ensemble</button>
+  <button class="nav-btn" onclick="nav('checkin',this)"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>Check-in</button>
+  <button class="nav-btn" onclick="nav('log',this)"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Log de trades</button>
+  <button class="nav-btn" onclick="nav('rapport',this)"><svg viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Rapport hebdo</button>
+  <button class="nav-btn" onclick="nav('confluences',this)"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Confluences</button>
+  <button class="nav-btn" onclick="nav('journal',this)"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Journal</button>
+  <div class="sb-sep"></div>
+  <div class="sb-lbl">Compte</div>
+  <button class="nav-btn" onclick="nav('guide',this)"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Guide</button>
+  <button class="nav-btn"><svg viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>Paramètres</button>
+  <div class="sb-bottom">
+    <button class="theme-btn" onclick="toggleTheme()">
+      <svg id="themeIco" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z"/></svg>
+      <span id="themeLbl">Dark mode</span>
+    </button>
+    <div class="score-widget">
+      <div class="sw-lbl">Score mental</div>
+      <div class="sw-num" id="swNum">74</div>
+      <div class="sw-sub" id="swSub">Attention requise</div>
+      <div class="sw-bar"><div class="sw-fill" id="swFill" style="width:74%;"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="mainArea">
+
+<!-- ═══ DASHBOARD ═══ -->
+<div class="view on" id="v-dashboard">
+
+  <div class="banner" id="banner">
+    <div class="banner-dot"></div>
+    <div class="banner-txt" id="bannerTxt"><strong>Check-in non effectué</strong> — Prends 2 minutes avant d'ouvrir tes charts.</div>
+    <button class="banner-cta" onclick="nav('checkin',null)">Faire mon check-in</button>
+    <button class="banner-x" onclick="document.getElementById('banner').style.display='none'">×</button>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero-card">
+    <div class="hero-inner">
+      <div class="hero-score-wrap">
+        <div class="hero-kicker">Score mental · aujourd'hui</div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:8px;">
+          <div class="hero-num" style="color:var(--gold);">74</div>
+          <span style="font-size:16px;color:var(--ink3);font-weight:400;">/100</span>
+        </div>
+        <div class="hero-verdict" style="background:var(--aL);border:1.5px solid rgba(146,64,14,.2);">
+          <div class="vdot" style="background:var(--a);"></div>
+          <span class="vtxt" style="color:var(--a);">Attention requise</span>
+        </div>
+        <div class="hero-hint">Tu peux trader — reste attentif,<br>analyse avant chaque entrée.</div>
+      </div>
+      <div class="hero-div" style="height:80px;"></div>
+      <div class="metrics">
+        <div class="metric"><div class="m-lbl">Win rate</div><div class="m-val" style="color:var(--g);">63%</div><div class="m-sub" style="color:var(--g);">↑ +5% sem.</div></div>
+        <div class="metric"><div class="m-lbl">P&L net</div><div class="m-val" style="color:var(--g);">+420€</div><div class="m-sub" style="color:var(--g);">↑ +18%</div></div>
+        <div class="metric"><div class="m-lbl">Trades</div><div class="m-val">11</div><div class="m-sub" style="color:var(--r);">↓ -3 sem.</div></div>
+        <div class="metric"><div class="m-lbl">Streak</div><div class="m-val" style="color:var(--navy);">12j</div><div class="m-sub" style="color:var(--ink3);">check-ins</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-grid">
+    <div class="left-col">
+
+      <!-- Biais + Conseil -->
+      <div class="g2">
+        <div class="biais-card bc-r" id="biaisCard">
+          <div class="bc-icon"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div>
+            <div class="bc-title" id="biaisTitle">Risque de revenge trading</div>
+            <div class="bc-desc" id="biaisDesc">Score bas + pertes récentes. Méfie-toi des trades impulsifs.</div>
+            <div class="bc-tags" id="biasTags">
+              <span class="bc-tag" style="background:var(--rL);color:var(--r);">Score bas</span>
+              <span class="bc-tag" style="background:var(--rL);color:var(--r);">2 pertes consec.</span>
+            </div>
+          </div>
+        </div>
+        <div class="insight">
+          <div class="ins-lbl">Conseil du jour</div>
+          <div class="ins-txt">Score <strong>74/100</strong> — état modéré. Tu peux trader mais <strong>reste attentif</strong> — analyse avant chaque entrée, ne force rien.</div>
+          <div class="ins-foot"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/></svg>14 derniers check-ins analysés</div>
+        </div>
+      </div>
+
+      <!-- Score 30j + Check-ins -->
+      <div class="g2">
+        <div class="card">
+          <div class="ct">Score mental — 30 jours
+            <div style="display:flex;gap:8px;font-size:11px;font-weight:500;text-transform:none;letter-spacing:0;">
+              <span style="color:var(--g);">● ≥75</span><span style="color:var(--a);">● 60–74</span><span style="color:var(--r);">● &lt;60</span>
+            </div>
+          </div>
+          <div class="chart-wrap"><canvas id="chartScore"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="ct">Check-ins <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink3);">4 semaines</span></div>
+          <div class="ci-lbls"><div class="ci-lbl">L</div><div class="ci-lbl">M</div><div class="ci-lbl">M</div><div class="ci-lbl">J</div><div class="ci-lbl">V</div><div class="ci-lbl">S</div><div class="ci-lbl">D</div></div>
+          <div class="ci-grid" id="daysGrid"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:9px;padding-top:9px;border-top:1px solid var(--border);">
+            <div style="display:flex;gap:9px;">
+              <span style="font-size:11px;color:var(--g);font-weight:600;display:flex;align-items:center;gap:4px;"><span style="width:7px;height:7px;border-radius:2px;background:rgba(21,128,61,.12);display:inline-block;"></span>Fait</span>
+              <span style="font-size:11px;color:var(--r);font-weight:600;display:flex;align-items:center;gap:4px;"><span style="width:7px;height:7px;border-radius:2px;background:rgba(153,27,27,.1);display:inline-block;"></span>Manqué</span>
+            </div>
+            <span style="font-size:12px;color:var(--g);font-weight:700;">86%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Biais ce mois + Objectifs -->
+      <div class="g2">
+        <div class="card">
+          <div class="ct">Biais ce mois <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink3);">vs mois dernier</span></div>
+          <div class="bias-row"><div class="bias-name">FOMO</div><div class="bias-track"><div class="bias-fill" style="width:72%;background:var(--r);"></div></div><div class="bias-pct" style="color:var(--r);">72%</div><div class="bias-delta d-up">+8%</div></div>
+          <div class="bias-row"><div class="bias-name">Profits tôt</div><div class="bias-track"><div class="bias-fill" style="width:60%;background:var(--r);"></div></div><div class="bias-pct" style="color:var(--r);">60%</div><div class="bias-delta d-dn">-5%</div></div>
+          <div class="bias-row"><div class="bias-name">Revenge</div><div class="bias-track"><div class="bias-fill" style="width:42%;background:var(--a);"></div></div><div class="bias-pct" style="color:var(--a);">42%</div><div class="bias-delta d-dn">-12%</div></div>
+          <div class="bias-row"><div class="bias-name">Overtrading</div><div class="bias-track"><div class="bias-fill" style="width:30%;background:var(--a);"></div></div><div class="bias-pct" style="color:var(--a);">30%</div><div class="bias-delta d-dn">-8%</div></div>
+          <div class="bias-row"><div class="bias-name">Discipline</div><div class="bias-track"><div class="bias-fill" style="width:85%;background:var(--g);"></div></div><div class="bias-pct" style="color:var(--g);">85%</div><div class="bias-delta d-dn" style="color:var(--g);">+9%</div></div>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;">
+          <div class="ct">Objectifs <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink3);">ce mois</span></div>
+          <div id="objList" style="flex:1;"></div>
+          <button class="add-btn" onclick="addObj()" style="margin-top:8px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Ajouter un objectif
+          </button>
+        </div>
+      </div>
+
+      <!-- Win rate émotion + Score vs PnL -->
+      <div class="g2">
+        <div class="card"><div class="ct">Win rate par émotion</div><div class="chart-sm"><canvas id="chartEmotion"></canvas></div></div>
+        <div class="card"><div class="ct">Score mental vs P&L <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink3);">corrélation</span></div><div class="chart-sm"><canvas id="chartCorrel"></canvas></div></div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COL -->
+    <div class="right-col">
+      <div class="card">
+        <div class="ct">Derniers trades <button class="ct-action" onclick="nav('log',null)">Voir tout →</button></div>
+        <table class="tt">
+          <thead><tr><th>Actif</th><th>Dir.</th><th>P&L</th><th>État</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600;">EUR/USD</td><td><span class="dl">L</span></td><td class="pp">+185€</td><td><span class="etag">Calme</span></td></tr>
+            <tr><td style="font-weight:600;">SP500</td><td><span class="ds">S</span></td><td class="pn">-95€</td><td><span class="etag">FOMO</span></td></tr>
+            <tr><td style="font-weight:600;">GBP/JPY</td><td><span class="dl">L</span></td><td class="pp">+320€</td><td><span class="etag">Discipliné</span></td></tr>
+            <tr><td style="font-weight:600;">OR/USD</td><td><span class="dl">L</span></td><td class="pp">+140€</td><td><span class="etag">Confiant</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="ct">Score de discipline <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink3);">ce mois</span></div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:5px;">
+          <div><div class="disc-val" style="color:var(--a);">67</div><div style="font-size:11px;color:var(--ink3);margin-top:1px;">/100</div></div>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;">À améliorer</div><div style="font-size:12px;color:var(--ink2);line-height:1.5;">Applique tes règles.</div></div>
+        </div>
+        <div class="disc-track"><div class="disc-fill" style="width:67%;background:var(--a);"></div></div>
+        <div style="font-size:10px;color:var(--ink3);margin-bottom:9px;font-weight:500;">Distinct du score mental</div>
+        <div class="disc-row"><span style="color:var(--ink2);">Stops respectés</span><span style="font-weight:700;color:var(--g);">90%</span></div>
+        <div class="disc-row"><span style="color:var(--ink2);">Pas de FOMO</span><span style="font-weight:700;color:var(--a);">65%</span></div>
+        <div class="disc-row"><span style="color:var(--ink2);">R/R cible tenu</span><span style="font-weight:700;color:var(--r);">42%</span></div>
+        <div class="disc-row"><span style="color:var(--ink2);">Check-in avant</span><span style="font-weight:700;color:var(--g);">86%</span></div>
+      </div>
+
+      <div class="card">
+        <div class="ct">Confluences <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink3);">impact win rate</span></div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:11px;padding-bottom:11px;border-bottom:1px solid var(--border);">
+          <div style="text-align:center;"><div style="font-family:'Fraunces',serif;font-size:24px;color:var(--g);line-height:1;">73%</div><div style="font-size:10px;color:var(--g);font-weight:700;text-transform:uppercase;margin-top:2px;">Complet</div></div>
+          <div style="width:1px;height:28px;background:var(--border);"></div>
+          <div style="text-align:center;"><div style="font-family:'Fraunces',serif;font-size:24px;color:var(--r);line-height:1;">34%</div><div style="font-size:10px;color:var(--r);font-weight:700;text-transform:uppercase;margin-top:2px;">Partiel</div></div>
+          <div style="flex:1;font-size:12px;color:var(--ink2);line-height:1.6;padding-left:4px;"><strong style="color:var(--ink);">2.1x plus</strong> de gains avec toutes les confluences.</div>
+        </div>
+        <div class="cf-stat"><span class="cf-name">Tendance</span><div class="cf-track"><div class="cf-fill" style="width:80%;background:var(--g);"></div></div><span class="cf-pct" style="color:var(--g);">80%</span></div>
+        <div class="cf-stat"><span class="cf-name">Niveau clé</span><div class="cf-track"><div class="cf-fill" style="width:72%;background:var(--g);"></div></div><span class="cf-pct" style="color:var(--g);">72%</span></div>
+        <div class="cf-stat"><span class="cf-name">Stop défini</span><div class="cf-track"><div class="cf-fill" style="width:90%;background:var(--g);"></div></div><span class="cf-pct" style="color:var(--g);">90%</span></div>
+        <div class="cf-stat"><span class="cf-name">R/R ≥ 1.5</span><div class="cf-track"><div class="cf-fill" style="width:45%;background:var(--a);"></div></div><span class="cf-pct" style="color:var(--a);">45%</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CHECK-IN ═══ -->
+<div class="view" id="v-checkin">
+  <div style="max-width:560px;margin:0 auto;width:100%;">
+    <div style="margin-bottom:4px;font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;">Check-in mental</div>
+    <div style="font-size:13px;color:var(--ink2);margin-bottom:18px;font-weight:400;">Réponds honnêtement — tes réponses restent privées.</div>
+    <div class="card" style="padding:24px 28px;" id="ciContent"></div>
+  </div>
+</div>
+
+<!-- ═══ LOG ═══ -->
+<div class="view" id="v-log">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">
+    <div><div style="font-size:18px;font-weight:700;">Log de trades</div><div style="font-size:13px;color:var(--ink2);margin-top:2px;">Avril 2026</div></div>
+    <button class="lf-btn" onclick="document.getElementById('logFormWrap').style.display=document.getElementById('logFormWrap').style.display==='none'?'block':'none'">+ Ajouter</button>
+  </div>
+  <div id="logFormWrap" style="display:none;">
+    <div class="log-form">
+      <div class="lf-grid">
+        <div><div class="lf-label">Actif</div><input class="lf-inp" id="lPair" placeholder="EUR/USD"/></div>
+        <div><div class="lf-label">Direction</div><select class="lf-select" id="lDir"><option value="LONG">LONG</option><option value="SHORT">SHORT</option></select></div>
+        <div><div class="lf-label">P&L (€)</div><input class="lf-inp" id="lPnl" type="number" placeholder="+150"/></div>
+        <div><div class="lf-label">Score</div><input class="lf-inp" id="lScore" type="number" placeholder="74" min="0" max="100"/></div>
+        <div><div class="lf-label">État émotionnel</div><select class="lf-select" id="lEmotion"><option>Calme</option><option>Confiant</option><option>Discipliné</option><option>FOMO</option><option>Revenge</option><option>Stressé</option><option>Euphorique</option></select></div>
+      </div>
+      <button class="lf-btn" onclick="addTrade()">Enregistrer le trade</button>
+    </div>
+  </div>
+  <div class="ls-grid" id="logStats"></div>
+  <div class="card">
+    <div class="lf-filters" id="logFilters">
+      <button class="lf-filter on" onclick="filterLog('all',this)">Tous</button>
+      <button class="lf-filter" onclick="filterLog('long',this)">Long</button>
+      <button class="lf-filter" onclick="filterLog('short',this)">Short</button>
+      <button class="lf-filter" onclick="filterLog('win',this)">Gagnants</button>
+      <button class="lf-filter" onclick="filterLog('lose',this)">Perdants</button>
+      <button class="lf-filter" onclick="filterLog('fomo',this)">FOMO / Revenge</button>
+    </div>
+    <div style="font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+      <span>P&L total filtré</span><span id="filteredPnl" style="font-family:'Fraunces',serif;font-size:18px;color:var(--g);">+435€</span>
+    </div>
+    <table class="tt">
+      <thead><tr><th>Actif</th><th>Direction</th><th>Résultat</th><th>R/R</th><th>Score</th><th>Émotion</th><th>Date</th><th></th></tr></thead>
+      <tbody id="tradesTbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ RAPPORT ═══ -->
+<div class="view" id="v-rapport">
+  <div style="font-size:18px;font-weight:700;margin-bottom:2px;">Rapport hebdomadaire</div>
+  <div style="font-size:13px;color:var(--ink2);margin-bottom:10px;">Semaine du 24 au 30 mars 2026</div>
+  <div class="rap-grid">
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="card">
+        <div class="sec-h">Résumé de la semaine</div>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--bg2);border-radius:var(--r3);font-size:13px;"><span style="color:var(--ink2);">Win rate</span><span style="font-weight:700;color:var(--g);">64%</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--bg2);border-radius:var(--r3);font-size:13px;"><span style="color:var(--ink2);">P&L net</span><span style="font-weight:700;color:var(--g);">+420€</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--bg2);border-radius:var(--r3);font-size:13px;"><span style="color:var(--ink2);">Score mental moy.</span><span style="font-weight:700;color:var(--a);">68</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--bg2);border-radius:var(--r3);font-size:13px;"><span style="color:var(--ink2);">Trades totaux</span><span style="font-weight:700;">8</span></div>
+        </div>
+        <div class="sec-h">Meilleur jour</div>
+        <div class="ins-item"><div class="i-dot" style="background:var(--g);"></div>Mercredi — 3 trades gagnants, score 82, toutes confluences cochées. Win rate 100%.</div>
+        <div style="margin-top:10px;"><div class="sec-h">Pire jour</div>
+        <div class="ins-item"><div class="i-dot" style="background:var(--r);"></div>Lundi — Revenge trading après 2 pertes. Score 52. -195€ sur la journée.</div></div>
+      </div>
+      <div class="card">
+        <div class="sec-h">Tendance score mental</div>
+        <div class="chart-wrap"><canvas id="chartRapScore"></canvas></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="card">
+        <div class="sec-h">3 insights de la semaine</div>
+        <div class="ins-item"><div class="i-dot" style="background:var(--r);"></div>FOMO toujours présent à 72% — concentré sur les sessions de vendredi après 15h.</div>
+        <div class="ins-item"><div class="i-dot" style="background:var(--g);"></div>Stops respectés à 90% — meilleure semaine sur cet indicateur. Continue.</div>
+        <div class="ins-item"><div class="i-dot" style="background:var(--a);"></div>R/R réel de 1.4 vs 1.8 prévu — tu coupes tes gagnants trop tôt encore.</div>
+      </div>
+      <div class="card">
+        <div class="sec-h">3 actions pour cette semaine</div>
+        <div class="act-item"><div class="act-n">1</div>Bloquer le terminal le vendredi après 15h. Sans exception.</div>
+        <div class="act-item"><div class="act-n">2</div>Ne pas modifier la target une fois en position. Note-la avant d'entrer.</div>
+        <div class="act-item"><div class="act-n">3</div>Score &lt; 60 = fermer le terminal immédiatement.</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="card">
+        <div class="sec-h">Win rate par score</div>
+        <div class="chart-sm"><canvas id="chartRapWR"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="sec-h">P&L par jour</div>
+        <div class="chart-sm"><canvas id="chartRapPnl"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONFLUENCES ═══ -->
+<div class="view" id="v-confluences">
+  <div style="display:flex;align-items:flex-start;gap:10px;">
+    <div style="flex:1;">
+      <div style="font-size:18px;font-weight:700;margin-bottom:2px;">Confluences</div>
+      <div style="font-size:13px;color:var(--ink2);margin-bottom:12px;">Obligatoires avant chaque entrée.</div>
+      <div class="card" style="margin-bottom:10px;">
+        <div class="ct">Obligatoires</div>
+        <div id="confRequired"></div>
+        <button class="add-btn" onclick="addConf('req')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Ajouter une confluence obligatoire
+        </button>
+      </div>
+      <div class="card">
+        <div class="ct">Bonus <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink3);">améliorent le score</span></div>
+        <div id="confBonus"></div>
+        <button class="add-btn" onclick="addConf('bon')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Ajouter une confluence bonus
+        </button>
+      </div>
+    </div>
+    <div style="width:256px;flex-shrink:0;">
+      <div class="card" style="margin-bottom:10px;">
+        <div class="ct">Score validité</div>
+        <div style="text-align:center;padding:8px 0;">
+          <div style="font-family:'Fraunces',serif;font-size:44px;color:var(--g);line-height:1;" id="confScore">73%</div>
+          <div style="font-size:12px;color:var(--ink2);margin-top:4px;">de tes trades avaient toutes les confluences</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:var(--r3);background:var(--gL);border:1px solid rgba(21,128,61,.15);">
+          <span style="font-size:18px;">✓</span>
+          <span style="font-size:12px;color:var(--g);font-weight:500;" id="confVerdict">Bon respect des confluences cette semaine.</span>
+        </div>
+      </div>
+      <div class="insight">
+        <div class="ins-lbl">Impact calculé</div>
+        <div class="ins-txt">Avec toutes tes confluences : <strong>73% win rate</strong><br>Sans certaines : <strong>34% win rate</strong><br><br>Soit <strong>2.1x plus de gains</strong> quand tu respectes ton setup complet.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ JOURNAL ═══ -->
+<div class="view" id="v-journal">
+  <div style="max-width:640px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:18px;font-weight:700;" id="jDateLbl">Mercredi 2 avril 2026</div>
+        <div style="font-size:13px;color:var(--ink2);margin-top:2px;font-weight:300;">Prends 5 minutes pour écrire.</div>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button class="tb-icon" onclick="jNav(-1)" style="width:30px;height:30px;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="var(--ink2)" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="tb-icon" onclick="jNav(0)" style="width:30px;height:30px;font-size:10px;font-family:'Outfit',sans-serif;font-weight:600;color:var(--ink2);">Auj.</button>
+        <button class="tb-icon" onclick="jNav(1)" style="width:30px;height:30px;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="var(--ink2)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+    </div>
+    <!-- Mood + stars -->
+    <div class="card" style="display:flex;align-items:center;gap:14px;padding:12px 16px;">
+      <div style="display:flex;align-items:center;gap:7px;">
+        <span style="font-size:11px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;">Humeur</span>
+        <div class="j-mood" id="jMood">
+          <span onclick="pickMood(this,'😤')">😤</span>
+          <span onclick="pickMood(this,'😟')">😟</span>
+          <span onclick="pickMood(this,'😐')">😐</span>
+          <span onclick="pickMood(this,'🙂')">🙂</span>
+          <span onclick="pickMood(this,'😄')">😄</span>
+        </div>
+      </div>
+      <div style="width:1px;height:20px;background:var(--border);"></div>
+      <div style="display:flex;align-items:center;gap:7px;">
+        <span style="font-size:11px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;">Session</span>
+        <div class="j-stars" id="jStars">
+          <span class="j-star" onclick="pickStar(1)">★</span>
+          <span class="j-star" onclick="pickStar(2)">★</span>
+          <span class="j-star" onclick="pickStar(3)">★</span>
+          <span class="j-star" onclick="pickStar(4)">★</span>
+          <span class="j-star" onclick="pickStar(5)">★</span>
+        </div>
+      </div>
+      <div style="margin-left:auto;font-size:11px;color:var(--ink3);" id="jWordCount">0 mot</div>
+    </div>
+    <!-- 3 sections -->
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div class="j-section" style="padding:14px 18px;">
+        <div class="j-sec-hd"><div class="j-dot" style="background:var(--g);"></div><span class="j-sec-lbl" style="color:var(--g);">Ce qui s'est bien passé</span></div>
+        <textarea class="j-ta" id="jGood" placeholder="Les trades réussis, les bonnes décisions..." oninput="jResize(this);jWordCount()"></textarea>
+      </div>
+      <div class="j-section" style="padding:14px 18px;">
+        <div class="j-sec-hd"><div class="j-dot" style="background:var(--r);"></div><span class="j-sec-lbl" style="color:var(--r);">Ce qui s'est mal passé</span></div>
+        <textarea class="j-ta" id="jBad" placeholder="Les erreurs, les moments hors plan..." oninput="jResize(this);jWordCount()"></textarea>
+      </div>
+      <div class="j-section" style="padding:14px 18px;">
+        <div class="j-sec-hd"><div class="j-dot" style="background:var(--navy);"></div><span class="j-sec-lbl" style="color:var(--navy);">Ce que je change demain</span></div>
+        <textarea class="j-ta" id="jNext" placeholder="1 à 3 actions concrètes pour demain..." oninput="jResize(this);jWordCount()"></textarea>
+      </div>
+    </div>
+    <!-- Footer -->
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="j-save" onclick="jSave()">Enregistrer</button>
+        <span class="j-saved" id="jSaved">✓ Sauvegardé</span>
+      </div>
+      <button onclick="jClear()" style="background:none;border:none;font-size:12px;color:var(--ink3);cursor:pointer;font-family:'Outfit',sans-serif;transition:color .1s;" onmouseover="this.style.color='var(--r)'" onmouseout="this.style.color='var(--ink3)'">Effacer</button>
+    </div>
+    <!-- Historique -->
+    <div style="padding-top:12px;border-top:1px solid var(--border);">
+      <div style="font-size:11px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:9px;">Entrées récentes</div>
+      <div id="jHistory"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ GUIDE ═══ -->
+<div class="view" id="v-guide">
+  <div style="max-width:720px;">
+    <div style="font-size:18px;font-weight:700;margin-bottom:2px;">Guide d'interprétation</div>
+    <div style="font-size:13px;color:var(--ink2);margin-bottom:16px;">Comment lire et utiliser tes indicateurs MindTrade.</div>
+    <div class="card">
+      <div class="guide-section"><div class="guide-title">Score mental (sur 100)</div><div class="guide-body">Calculé depuis ton check-in quotidien. <strong>≥75 : Optimal</strong> — trade normalement. <strong>60–74 : Attention requise</strong> — analyse avant chaque entrée, réduis la taille de position. <strong>&lt;60 : Évite de trader</strong> — le risque émotionnel est trop élevé. Ferme le terminal.<br><br>Ce score est corrélé à ton win rate réel : quand ton score est ≥75, tu gagnes en moyenne 2.3x plus que quand il est &lt;60.</div></div>
+      <div class="guide-section" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);"><div class="guide-title">Biais du moment</div><div class="guide-body">Calculé en temps réel depuis ton score + tes 3 derniers trades. 🔴 Rouge : risque élevé (revenge trading, overtrading). 🟠 Orange : vigilance (FOMO, impatience). 🟢 Vert : état équilibré.<br><br>Si le biais est rouge : attends 30 minutes avant toute décision. Refais un mini check-in mental.</div></div>
+      <div class="guide-section" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);"><div class="guide-title">Score de discipline</div><div class="guide-body">Distinct du score mental — tu peux te sentir bien et être indiscipliné. Ce score mesure si tu appliques tes règles : stops respectés, pas de FOMO, R/R cible tenu, check-in fait avant.<br><br>Si ton score de discipline est &lt;50 mais ton score mental est bon, tu as un problème de règles, pas d'état. Revois tes confluences et tes règles personnelles.</div></div>
+      <div class="guide-section" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);"><div class="guide-title">Confluences</div><div class="guide-body">Coche tes confluences avant d'entrer en position — pas après. MindTrade calcule automatiquement la différence de win rate entre tes trades complets et partiels.<br><br>Règle d'or : si tu n'as pas toutes tes confluences obligatoires, ne prends pas le trade. Le FOMO te dit que tu rates quelque chose. Les chiffres disent le contraire.</div></div>
+      <div class="guide-section" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);"><div class="guide-title">Journal quotidien</div><div class="guide-body">5 minutes en fin de session. Les traders qui journalisent régulièrement ont +27% de win rate en moyenne. L'acte d'écrire force la réflexion et consolide les apprentissages.<br><br>3 règles : sois honnête (personne ne lit sauf toi), sois spécifique (pas "mauvaise session" mais "j'ai modifié mon stop sur GBP/JPY parce que j'avais peur"), et propose une action concrète pour demain.</div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /layout -->
+</div><!-- /flex col -->
+
+<script>
+// ════════════════════════════════════════
+// NAV
+// ════════════════════════════════════════
+function nav(id, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('on'));
+  var v = document.getElementById('v-' + id);
+  if (v) v.classList.add('on');
+  if (btn) btn.classList.add('on');
+  else {
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) b.classList.add('on');
+    });
+  }
+  if (id === 'checkin') initCI();
+  if (id === 'rapport') initRapportCharts();
+  document.getElementById('mainArea').scrollTop = 0;
+}
+
+// ════════════════════════════════════════
+// THEME
+// ════════════════════════════════════════
+function toggleTheme() {
+  document.body.classList.toggle('dark');
+  var isDark = document.body.classList.contains('dark');
+  document.getElementById('themeLbl').textContent = isDark ? 'Light mode' : 'Dark mode';
+  localStorage.setItem('mt_theme', isDark ? 'dark' : 'light');
+}
+if (localStorage.getItem('mt_theme') === 'dark') {
+  document.body.classList.add('dark');
+  document.getElementById('themeLbl').textContent = 'Light mode';
+}
+
+// ════════════════════════════════════════
+// ONBOARDING
+// ════════════════════════════════════════
+var obStep = 0;
+var obS = [
+  { ic: '<path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/>', title: 'Ton style de trading', desc: 'Pour personnaliser MindTrade à ta façon de trader.', tp: 'style' },
+  { ic: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>', title: 'Tes marchés', desc: 'Sur quels marchés tu opères ?', tp: 'markets' },
+  { ic: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>', title: 'Ton heure de début', desc: 'À quelle heure tu ouvres généralement tes charts ?', tp: 'time' }
+];
+
+function renderOB() {
+  var s = obS[obStep];
+  var prog = obS.map((_, i) => `<div class="ob-ps ${i < obStep ? 'd' : i === obStep ? 'a' : ''}"></div>`).join('');
+  let body = '';
+  if (s.tp === 'style') body = `<select class="ob-sel"><option>Scalping</option><option selected>Day trading</option><option>Swing trading</option><option>Position trading</option></select>`;
+  else if (s.tp === 'markets') body = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;"><div class="ob-chip on">Forex</div><div class="ob-chip">Indices</div><div class="ob-chip">Actions</div><div class="ob-chip">Crypto</div><div class="ob-chip">Futures</div><div class="ob-chip">Matières premières</div><div class="ob-chip">Actions</div></div>`;
+  else body = `<input class="ob-sel" type="time" value="08:00"/>`;
+  document.getElementById('obC').innerHTML = `<div style="display:flex;gap:4px;margin-bottom:22px;">${prog}</div>
+    <div class="ob-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">${s.ic}</svg></div>
+    <div class="ob-title">${s.title}</div>
+    <div class="ob-desc">${s.desc}</div>
+    ${body}
+    <button class="ob-btn" onclick="obNext()">${obStep === 2 ? 'Commencer →' : 'Suivant →'}</button>
+    ${obStep > 0 ? `<button class="ob-skip" onclick="obStep--;renderOB()">← Retour</button>` : `<button class="ob-skip" onclick="closeOB()">Passer</button>`}`;
+  document.querySelectorAll('.ob-chip').forEach(c => c.addEventListener('click', function() { this.classList.toggle('on'); }));
+}
+
+function obNext() {
+  if (obStep < 2) { obStep++; renderOB(); }
+  else closeOB();
+}
+function closeOB() {
+  document.getElementById('obOv').style.display = 'none';
+  localStorage.setItem('mt_ob', '1');
+}
+if (!localStorage.getItem('mt_ob')) renderOB();
+else document.getElementById('obOv').style.display = 'none';
+
+// ════════════════════════════════════════
+// CHECK-IN GRID
+// ════════════════════════════════════════
+var dayStatus = ['ok','ok','miss','ok','ok','off','off','ok','ok','ok','ok','miss','off','off','ok','ok','ok','ok','miss','off','off','ok','ok','ok','ok','now'];
+var dayLabels = ['L','M','M','J','V','S','D'];
+var dg = document.getElementById('daysGrid');
+dayStatus.forEach((s, i) => {
+  var d = document.createElement('div');
+  d.className = 'ci-cell c-' + s;
+  dg.appendChild(d);
+});
+
+// ════════════════════════════════════════
+// SCORE CHART
+// ════════════════════════════════════════
+var scoreData = [68,72,65,80,74,58,62,75,82,70,68,74,77,80,72,65,68,75,82,78,72,68,74,80,76,72,69,75,80,74];
+var scoreLabels = scoreData.map((_,i) => i+1);
+var scoreColors = scoreData.map(v => v >= 75 ? 'rgba(21,128,61,.7)' : v >= 60 ? 'rgba(184,134,11,.7)' : 'rgba(153,27,27,.7)');
+new Chart(document.getElementById('chartScore'), {
+  type: 'bar',
+  data: { labels: scoreLabels, datasets: [{ data: scoreData, backgroundColor: scoreColors, borderRadius: 2, borderSkipped: false }] },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => 'Score ' + ctx.raw } } }, scales: { x: { display: false }, y: { min: 40, max: 100, grid: { color: 'rgba(12,12,10,.04)' }, ticks: { font: { size: 10, family: 'Outfit' }, color: '#9c9b97', stepSize: 20 } } } }
+});
+
+new Chart(document.getElementById('chartEmotion'), {
+  type: 'bar',
+  data: {
+    labels: ['Calme', 'Confiant', 'Discipliné', 'Impatient', 'FOMO', 'Revenge', 'Stressé'],
+    datasets: [{ data: [72, 68, 78, 45, 28, 22, 35], backgroundColor: ['rgba(21,128,61,.65)','rgba(21,128,61,.55)','rgba(21,128,61,.75)','rgba(184,134,11,.5)','rgba(153,27,27,.55)','rgba(153,27,27,.6)','rgba(153,27,27,.5)'], borderRadius: 3 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 9, family: 'Outfit' }, color: '#9c9b97' }, grid: { display: false } }, y: { min: 0, max: 100, ticks: { font: { size: 9 }, color: '#9c9b97', stepSize: 25 }, grid: { color: 'rgba(12,12,10,.04)' } } } }
+});
+
+new Chart(document.getElementById('chartCorrel'), {
+  type: 'scatter',
+  data: { datasets: [{ data: [{x:82,y:320},{x:75,y:185},{x:68,y:90},{x:74,y:140},{x:52,y:-95},{x:78,y:250},{x:65,y:60},{x:58,y:-120},{x:80,y:310},{x:72,y:75}], backgroundColor: 'rgba(15,39,68,.5)', pointRadius: 5 }] },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `Score ${ctx.raw.x} → ${ctx.raw.y > 0 ? '+' : ''}${ctx.raw.y}€` } } }, scales: { x: { title: { display: true, text: 'Score mental', font: { size: 9, family: 'Outfit' }, color: '#9c9b97' }, grid: { color: 'rgba(12,12,10,.04)' }, ticks: { font: { size: 9 }, color: '#9c9b97' } }, y: { grid: { color: 'rgba(12,12,10,.04)' }, ticks: { font: { size: 9 }, color: '#9c9b97' } } } }
+});
+
+// ════════════════════════════════════════
+// BIAIS DU MOMENT
+// ════════════════════════════════════════
+function updateBiais() {
+  var score = parseInt(document.getElementById('swNum').textContent);
+  var card = document.getElementById('biaisCard');
+  var title = document.getElementById('biaisTitle');
+  var desc = document.getElementById('biaisDesc');
+  var tags = document.getElementById('biasTags');
+  card.className = 'biais-card';
+  if (score < 60) {
+    card.classList.add('bc-r');
+    title.textContent = 'Risque de revenge trading élevé';
+    desc.textContent = 'Score critique + pertes récentes. Ne trade pas aujourd\'hui.';
+    tags.innerHTML = '<span class="bc-tag" style="background:var(--rL);color:var(--r);">Score critique</span><span class="bc-tag" style="background:var(--rL);color:var(--r);">Risque élevé</span>';
+  } else if (score < 75) {
+    card.classList.add('bc-a');
+    title.textContent = 'FOMO possible — reste vigilant';
+    desc.textContent = 'État modéré. Analyse chaque entrée avant d\'agir.';
+    tags.innerHTML = '<span class="bc-tag" style="background:var(--aL);color:var(--a);">Score modéré</span><span class="bc-tag" style="background:var(--aL);color:var(--a);">Vigilance</span>';
+  } else {
+    card.classList.add('bc-g');
+    title.textContent = 'État équilibré — tu peux trader';
+    desc.textContent = 'Score optimal. Suis ton plan et tes confluences.';
+    tags.innerHTML = '<span class="bc-tag" style="background:var(--gL);color:var(--g);">Score optimal</span><span class="bc-tag" style="background:var(--gL);color:var(--g);">Go trade</span>';
+  }
+}
+updateBiais();
+
+// ════════════════════════════════════════
+// OBJECTIFS
+// ════════════════════════════════════════
+var objData = [
+  { txt: 'Score mental ≥ 70 sur 80% des jours', val: 68 },
+  { txt: 'Win rate hebdo ≥ 60%', val: 80 },
+  { txt: 'Stops respectés à 95%', val: 90 },
+  { txt: 'Réduire FOMO sous 50%', val: 35 }
+];
+function renderObjs() {
+  var list = document.getElementById('objList');
+  list.innerHTML = objData.map((o, i) => {
+    var c = o.val >= 80 ? 'var(--g)' : o.val >= 60 ? 'var(--a)' : 'var(--r)';
+    return `<div class="obj-item">
+      <div class="obj-row"><span style="font-size:13px;">${o.txt}</span><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:12px;font-weight:700;color:${c};">${o.val}%</span><button class="obj-del" onclick="objData.splice(${i},1);renderObjs()">×</button></div></div>
+      <div class="obj-track"><div class="obj-fill" style="width:${o.val}%;background:${c};"></div></div>
+    </div>`;
+  }).join('');
+}
+renderObjs();
+function addObj() {
+  var txt = prompt('Nouvel objectif :');
+  if (txt) { objData.push({ txt: txt, val: 0 }); renderObjs(); }
+}
+
+// ════════════════════════════════════════
+// CHECK-IN
+// ════════════════════════════════════════
+var ciQs = [
+  { q: 'Comment as-tu dormi cette nuit ?', sub: 'La qualité du sommeil impacte directement ta prise de décision.' },
+  { q: 'Quel est ton niveau de stress aujourd\'hui ?', sub: 'Stress élevé = réactions impulsives plus fréquentes.' },
+  { q: 'Ta capacité de concentration est...', sub: 'Le focus détermine la qualité de ton analyse des setups.' },
+  { q: 'As-tu des distractions ou préoccupations majeures ?', sub: 'Les pensées parasites réduisent ta lucidité en session.' },
+  { q: 'Ton état émotionnel général ce matin est...', sub: 'L\'état émotionnel influence chaque décision de trading.' }
+];
+var ciA = new Array(5).fill(null);
+var ciS = 0;
+
+function initCI() {
+  var isWeekend = new Date().getDay() === 0 || new Date().getDay() === 6;
+  var c = document.getElementById('ciContent');
+  if (isWeekend) {
+    c.innerHTML = `<div style="text-align:center;padding:20px 0;"><div style="font-size:32px;margin-bottom:12px;">📊</div><div style="font-family:'Fraunces',serif;font-size:20px;margin-bottom:8px;">Les marchés sont fermés.</div><div style="font-size:14px;color:var(--ink2);line-height:1.6;margin-bottom:18px;">Profites-en pour analyser ta semaine.</div><button class="ci-next" onclick="nav('rapport',null)">Voir mon rapport →</button></div>`;
+    return;
+  }
+  ciA = new Array(5).fill(null); ciS = 0; renderCI();
+}
+
+function renderCI() {
+  var c = document.getElementById('ciContent');
+  if (ciS >= 5) {
+    var total = ciA.reduce((s, v) => s + (v || 5), 0);
+    var score = Math.round((total / 50) * 100);
+    var verdict = score >= 75 ? { cls: 'cv-g', txt: '✓ État optimal — Tu peux trader.' } : score >= 60 ? { cls: 'cv-a', txt: '⚡ Attention requise — Analyse avant chaque entrée.' } : { cls: 'cv-r', txt: '✗ Évite de trader aujourd\'hui.' };
+    document.getElementById('swNum').textContent = score;
+    document.getElementById('swFill').style.width = score + '%';
+    document.getElementById('swSub').textContent = score >= 75 ? 'État optimal' : score >= 60 ? 'Attention requise' : 'Évite de trader';
+    updateBiais();
+    c.innerHTML = `<div style="text-align:center;padding:12px 0;">
+      <div style="font-family:'Fraunces',serif;font-size:64px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:8px;">${score}</div>
+      <div style="font-size:16px;color:var(--ink2);margin-bottom:12px;">/100</div>
+      <div class="ci-verdict ${verdict.cls}">${verdict.txt}</div>
+      <div style="font-size:13px;color:var(--ink2);margin:12px 0;max-width:320px;margin-left:auto;margin-right:auto;line-height:1.6;">${score >= 75 ? 'Tes indicateurs sont au vert. Suis ton plan, respecte tes confluences.' : score >= 60 ? 'Tu peux trader mais reste attentif. Analyse avant chaque entrée, ne force rien.' : 'Le risque émotionnel est trop élevé. Ferme le terminal et reviens demain.'}</div>
+      <button class="ci-next" onclick="nav('dashboard',null)">Retour au dashboard →</button>
+    </div>`;
+    return;
+  }
+  var q = ciQs[ciS];
+  var prog = ciQs.map((_, i) => `<div class="ci-ps ${i < ciS ? 'd' : i === ciS ? 'a' : ''}"></div>`).join('');
+  var btns = [1,2,3,4,5,6,7,8,9,10].map(n => `<button class="sc-btn ${ciA[ciS] === n ? 'on' : ''}" onclick="pickCI(${n})">${n}</button>`).join('');
+  c.innerHTML = `<div class="ci-prog">${prog}</div>
+    <div class="ci-q">${q.q}</div>
+    <div class="ci-sub">${q.sub}</div>
+    <div class="sc-btns">${btns}</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;font-size:11px;color:var(--ink3);">
+      <span>1 = Très mauvais</span><span>10 = Excellent</span>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:18px;">
+      ${ciS > 0 ? `<button class="ci-back" onclick="ciS--;renderCI()">← Retour</button>` : ''}
+      <button class="ci-next" onclick="ciS++;renderCI()" ${ciA[ciS] === null ? 'disabled' : ''}>${ciS === 4 ? 'Voir mon score →' : 'Suivant →'}</button>
+    </div>`;
+}
+function pickCI(n) { ciA[ciS] = n; renderCI(); }
+initCI();
+
+// ════════════════════════════════════════
+// LOG DE TRADES
+// ════════════════════════════════════════
+var trades = [
+  { pair: 'EUR/USD', dir: 'LONG', pnl: 185, rr: 1.8, score: 78, emotion: 'Calme', date: '01/04' },
+  { pair: 'SP500', dir: 'SHORT', pnl: -95, rr: 0.7, score: 58, emotion: 'FOMO', date: '31/03' },
+  { pair: 'GBP/JPY', dir: 'LONG', pnl: 320, rr: 2.4, score: 82, emotion: 'Discipliné', date: '28/03' },
+  { pair: 'OR/USD', dir: 'LONG', pnl: 140, rr: 1.5, score: 74, emotion: 'Confiant', date: '27/03' },
+  { pair: 'NAS100', dir: 'LONG', pnl: -115, rr: 0.6, score: 52, emotion: 'Revenge', date: '25/03' }
+];
+var currFilter = 'all';
+
+function spill(s) { var c = s >= 75 ? 'sp-g' : s >= 60 ? 'sp-a' : 'sp-r'; return `<span class="sp ${c}">${s}</span>`; }
+
+function filterLog(f, btn) {
+  currFilter = f;
+  document.querySelectorAll('.lf-filter').forEach(b => b.classList.remove('on'));
+  if (btn) btn.classList.add('on');
+  renderTrades();
+}
+
+function renderTrades() {
+  var ft = trades.filter(t => {
+    if (currFilter === 'all') return true;
+    if (currFilter === 'long') return t.dir === 'LONG';
+    if (currFilter === 'short') return t.dir === 'SHORT';
+    if (currFilter === 'win') return t.pnl > 0;
+    if (currFilter === 'lose') return t.pnl < 0;
+    if (currFilter === 'fomo') return t.emotion === 'FOMO' || t.emotion === 'Revenge';
+    return true;
+  });
+  var tbody = document.getElementById('tradesTbody');
+  tbody.innerHTML = ft.map((t, i) => {
+    var ri = trades.indexOf(t);
+    return `<tr>
+      <td style="font-weight:600;">${t.pair}</td>
+      <td><span class="${t.dir === 'LONG' ? 'dl' : 'ds'}">${t.dir}</span></td>
+      <td class="${t.pnl > 0 ? 'pp' : 'pn'}">${t.pnl > 0 ? '+' : ''}${t.pnl}€</td>
+      <td style="color:var(--ink2);">${t.rr}R</td>
+      <td>${spill(t.score)}</td>
+      <td><span class="etag">${t.emotion}</span></td>
+      <td style="color:var(--ink3);">${t.date}</td>
+      <td><button class="del-btn" onclick="trades.splice(${ri},1);renderTrades()">×</button></td>
+    </tr>`;
+  }).join('');
+  var tot = ft.reduce((s, t) => s + t.pnl, 0);
+  var wr = ft.length ? Math.round(ft.filter(t => t.pnl > 0).length / ft.length * 100) : 0;
+  var avgRR = ft.length ? (ft.reduce((s, t) => s + t.rr, 0) / ft.length).toFixed(1) : 0;
+  var avgSc = ft.length ? Math.round(ft.reduce((s, t) => s + t.score, 0) / ft.length) : 0;
+  var pnlEl = document.getElementById('filteredPnl');
+  if (pnlEl) { pnlEl.textContent = (tot > 0 ? '+' : '') + tot + '€'; pnlEl.style.color = tot >= 0 ? 'var(--g)' : 'var(--r)'; }
+  document.getElementById('logStats').innerHTML = `
+    <div class="ls"><div class="ls-lbl">Win rate</div><div class="ls-val" style="color:${wr >= 60 ? 'var(--g)' : wr >= 40 ? 'var(--a)' : 'var(--r)'};">${wr}%</div></div>
+    <div class="ls"><div class="ls-lbl">Trades</div><div class="ls-val">${ft.length}</div></div>
+    <div class="ls"><div class="ls-lbl">R/R moyen</div><div class="ls-val" style="color:${avgRR >= 1.5 ? 'var(--g)' : 'var(--a)'};">${avgRR}R</div></div>
+    <div class="ls"><div class="ls-lbl">Score moy.</div><div class="ls-val" style="color:${avgSc >= 75 ? 'var(--g)' : avgSc >= 60 ? 'var(--a)' : 'var(--r)'};">${avgSc}</div></div>`;
+}
+
+function addTrade() {
+  var pair = document.getElementById('lPair').value.trim();
+  var pnl = parseFloat(document.getElementById('lPnl').value);
+  var score = parseInt(document.getElementById('lScore').value) || 70;
+  var dir = document.getElementById('lDir').value;
+  var emotion = document.getElementById('lEmotion').value;
+  if (!pair || isNaN(pnl)) { alert('Remplis au moins l\'actif et le P&L'); return; }
+  trades.unshift({ pair, dir, pnl, rr: parseFloat((Math.abs(pnl) / 80).toFixed(1)), score, emotion, date: new Date().toLocaleDateString('fr', { day: '2-digit', month: '2-digit' }) });
+  ['lPair','lPnl','lScore'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('logFormWrap').style.display = 'none';
+  renderTrades();
+}
+renderTrades();
+
+// ════════════════════════════════════════
+// RAPPORT CHARTS
+// ════════════════════════════════════════
+function initRapportCharts() {
+  setTimeout(function() {
+    var cs = document.getElementById('chartRapScore');
+    var cw = document.getElementById('chartRapWR');
+    var cp = document.getElementById('chartRapPnl');
+    if (cs && !cs._chart) {
+      cs._chart = new Chart(cs, { type: 'line', data: { labels: ['L','M','M','J','V'], datasets: [{ data: [52, 68, 82, 74, 65], borderColor: 'rgba(15,39,68,.7)', backgroundColor: 'rgba(15,39,68,.05)', tension: .4, pointRadius: 4, pointBackgroundColor: [52,68,82,74,65].map(v => v >= 75 ? 'var(--g)' : v >= 60 ? 'var(--a)' : 'var(--r)'), fill: true }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 10, family: 'Outfit' }, color: '#9c9b97' }, grid: { display: false } }, y: { min: 40, max: 100, ticks: { font: { size: 9 }, color: '#9c9b97' }, grid: { color: 'rgba(12,12,10,.04)' } } } } });
+    }
+    if (cw && !cw._chart) {
+      cw._chart = new Chart(cw, { type: 'bar', data: { labels: ['Score <60','60–75','Score >75'], datasets: [{ data: [28, 54, 73], backgroundColor: ['rgba(153,27,27,.6)','rgba(184,134,11,.6)','rgba(21,128,61,.65)'], borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 10, family: 'Outfit' }, color: '#9c9b97' }, grid: { display: false } }, y: { min: 0, max: 100, ticks: { font: { size: 9 }, color: '#9c9b97', callback: v => v + '%' }, grid: { color: 'rgba(12,12,10,.04)' } } } } });
+    }
+    if (cp && !cp._chart) {
+      cp._chart = new Chart(cp, { type: 'bar', data: { labels: ['L','M','M','J','V'], datasets: [{ data: [-195, 220, 320, 185, -110], backgroundColor: [-195, 220, 320, 185, -110].map(v => v >= 0 ? 'rgba(21,128,61,.65)' : 'rgba(153,27,27,.6)'), borderRadius: 3 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 10, family: 'Outfit' }, color: '#9c9b97' }, grid: { display: false } }, y: { ticks: { font: { size: 9 }, color: '#9c9b97', callback: v => v + '€' }, grid: { color: 'rgba(12,12,10,.04)' } } } } });
+    }
+  }, 50);
+}
+
+// ════════════════════════════════════════
+// CONFLUENCES
+// ════════════════════════════════════════
+var confsReq = [
+  { tl: 'Tendance claire identifiée', ds: 'H4 + H1 alignés dans la même direction', ck: true },
+  { tl: 'Niveau clé validé', ds: 'Support ou résistance majeur confirmé', ck: true },
+  { tl: 'Stop-loss défini', ds: 'Niveau précis calculé avant l\'entrée', ck: false },
+  { tl: 'R/R ≥ 1.5', ds: 'Ratio risque/récompense minimum respecté', ck: true }
+];
+var confsBon = [
+  { tl: 'Volume confirmé', ds: 'Volume au-dessus de la moyenne 20 périodes', ck: false },
+  { tl: 'Structure de marché', ds: 'HH/HL en tendance haussière confirmé', ck: true },
+  { tl: 'Session optimale', ds: 'Ouverture Londres ou New York', ck: true }
+];
+
+function renderConfs() {
+  var req = document.getElementById('confRequired');
+  var bon = document.getElementById('confBonus');
+  if (req) req.innerHTML = confsReq.map((c, i) => confHTML(c, i, 'req')).join('');
+  if (bon) bon.innerHTML = confsBon.map((c, i) => confHTML(c, i, 'bon')).join('');
+  updateConfScore();
+}
+function confHTML(c, i, type) {
+  return `<div class="conf-item ${c.ck ? 'ck' : ''}" onclick="toggleConf(this, '${type}', ${i})">
+    <div class="conf-cb"></div>
+    <div><div class="conf-tl">${c.tl}</div>${c.ds ? `<div class="conf-ds">${c.ds}</div>` : ''}</div>
+    <button class="conf-del" onclick="event.stopPropagation();delConf('${type}',${i})">×</button>
+  </div>`;
+}
+function toggleConf(el, type, i) {
+  var arr = type === 'req' ? confsReq : confsBon;
+  arr[i].ck = !arr[i].ck; renderConfs();
+}
+function delConf(type, i) {
+  var arr = type === 'req' ? confsReq : confsBon;
+  arr.splice(i, 1); renderConfs();
+}
+function addConf(type) {
+  var val = prompt('Nom de la confluence :');
+  if (val) {
+    var arr = type === 'req' ? confsReq : confsBon;
+    arr.push({ tl: val, ds: '', ck: false }); renderConfs();
+  }
+}
+function updateConfScore() {
+  var all = [...confsReq, ...confsBon];
+  var pct = all.length ? Math.round(all.filter(c => c.ck).length / all.length * 100) : 0;
+  var el = document.getElementById('confScore');
+  var verdict = document.getElementById('confVerdict');
+  if (el) { el.textContent = pct + '%'; el.style.color = pct >= 70 ? 'var(--g)' : pct >= 50 ? 'var(--a)' : 'var(--r)'; }
+  if (verdict) verdict.textContent = pct >= 70 ? 'Bon respect des confluences.' : pct >= 50 ? 'Quelques confluences manquantes.' : 'Trop de confluences non cochées.';
+}
+renderConfs();
+
+// ════════════════════════════════════════
+// JOURNAL
+// ════════════════════════════════════════
+var jOffset = 0;
+var jMood = null, jStar = 0;
+var jEntries = [
+  { key: '2026-04-01', date: 'Mardi 1 avril 2026', mood: '🙂', stars: 4, good: "EUR/USD long propre à l'ouverture Londres.", bad: "Hésitation sur GBP/JPY — j'ai manqué l'entrée.", next: 'Continuer à noter la target avant l\'entrée.' },
+  { key: '2026-03-31', date: 'Lundi 31 mars 2026', mood: '😟', stars: 2, good: '', bad: 'Revenge trading après deux pertes. Score 52.', next: 'Score < 60 = fermer le terminal.' }
+];
+
+function getJKey() { var d = new Date(2026, 3, 2); d.setDate(d.getDate() + jOffset); return d.toISOString().split('T')[0]; }
+function getJDate() {
+  var d = new Date(2026, 3, 2); d.setDate(d.getDate() + jOffset);
+  var days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  var months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+}
+
+function jNav(dir) { if (dir === 0) jOffset = 0; else jOffset += dir; loadJEntry(); }
+
+function loadJEntry() {
+  var key = getJKey();
+  var e = jEntries.find(x => x.key === key);
+  document.getElementById('jDateLbl').textContent = getJDate();
+  ['jGood','jBad','jNext'].forEach(id => {
+    var el = document.getElementById(id);
+    var map = { jGood: 'good', jBad: 'bad', jNext: 'next' };
+    if (el) { el.value = e ? (e[map[id]] || '') : ''; jResize(el); }
+  });
+  jMood = e ? e.mood : null; jStar = e ? e.stars : 0;
+  updateJMood(); updateJStars(); jWordCount(); renderJHistory();
+}
+
+function jResize(el) { el.style.height = 'auto'; el.style.height = Math.max(64, el.scrollHeight) + 'px'; }
+
+function jWordCount() {
+  var txt = ['jGood','jBad','jNext'].map(id => { var el = document.getElementById(id); return el ? el.value : ''; }).join(' ');
+  var w = txt.trim().split(/\s+/).filter(x => x.length).length;
+  var el = document.getElementById('jWordCount'); if (el) el.textContent = w + (w <= 1 ? ' mot' : ' mots');
+}
+
+function jSave() {
+  var key = getJKey();
+  var good = document.getElementById('jGood')?.value.trim() || '';
+  var bad = document.getElementById('jBad')?.value.trim() || '';
+  var next = document.getElementById('jNext')?.value.trim() || '';
+  if (!good && !bad && !next) return;
+  var idx = jEntries.findIndex(x => x.key === key);
+  var entry = { key, date: getJDate(), mood: jMood || '😐', stars: jStar || 3, good, bad, next };
+  if (idx >= 0) jEntries[idx] = entry; else jEntries.unshift(entry);
+  var s = document.getElementById('jSaved');
+  if (s) { s.style.opacity = '1'; setTimeout(() => s.style.opacity = '0', 2200); }
+  renderJHistory();
+}
+
+function jClear() {
+  ['jGood','jBad','jNext'].forEach(id => { var el = document.getElementById(id); if (el) { el.value = ''; jResize(el); } });
+  jMood = null; jStar = 0; updateJMood(); updateJStars(); jWordCount();
+}
+
+function pickMood(el, mood) { jMood = mood; updateJMood(); }
+function updateJMood() {
+  document.querySelectorAll('#jMood span').forEach(s => { s.classList.toggle('on', s.textContent === jMood); });
+}
+function pickStar(n) { jStar = n; updateJStars(); }
+function updateJStars() {
+  document.querySelectorAll('.j-star').forEach((s, i) => { s.classList.toggle('on', i < jStar); });
+}
+
+function renderJHistory() {
+  var el = document.getElementById('jHistory');
+  if (!el) return;
+  if (!jEntries.length) { el.innerHTML = '<div style="font-size:12px;color:var(--ink3);padding:8px 0;">Aucune entrée pour l\'instant.</div>'; return; }
+  el.innerHTML = jEntries.slice(0, 6).map((e, i) => {
+    var lc = e.stars >= 4 ? 'var(--g)' : e.stars >= 3 ? 'var(--a)' : 'var(--r)';
+    var preview = (e.good || e.bad || e.next || '').slice(0, 80);
+    var stars = Array.from({length: 5}, (_, si) => `<span style="font-size:11px;color:${si < e.stars ? 'var(--gold)' : 'var(--ink3)'};">&#9733;</span>`).join('');
+    return `<div class="j-entry" onclick="loadEntryByIdx(${i})">
+      <div class="j-entry-bar" style="background:${lc};"></div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">
+          <div class="j-entry-date">${e.date}</div>
+          <div style="display:flex;align-items:center;gap:5px;"><span style="font-size:13px;">${e.mood}</span><div>${stars}</div></div>
+        </div>
+        <div class="j-entry-preview">${preview}${preview.length >= 80 ? '...' : ''}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function loadEntryByIdx(i) {
+  var e = jEntries[i]; if (!e) return;
+  document.getElementById('jDateLbl').textContent = e.date;
+  var map = { jGood: 'good', jBad: 'bad', jNext: 'next' };
+  Object.entries(map).forEach(([id, prop]) => { var el = document.getElementById(id); if (el) { el.value = e[prop] || ''; jResize(el); } });
+  jMood = e.mood; jStar = e.stars; updateJMood(); updateJStars(); jWordCount();
+}
+
+loadJEntry();
+
+// ════════════════════════════════════════
+// WEEKEND CHECK
+// ════════════════════════════════════════
+(function() {
+  var bt = document.getElementById('bannerTxt'), bc = document.getElementById('bannerCta');
+  if (new Date().getDay() === 0 || new Date().getDay() === 6) {
+    if (bt) bt.innerHTML = '<strong>Marchés fermés ce weekend</strong> — Profites-en pour analyser ta semaine.';
+    if (bc) { bc.textContent = 'Voir mon rapport →'; bc.onclick = () => nav('rapport', null); }
+  }
+})();
+</script>
+</body>
+</html>

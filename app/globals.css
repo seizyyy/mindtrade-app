@@ -1,0 +1,167 @@
+@import "tailwindcss";
+
+/* ── MindTrade Design System ── */
+:root {
+  --bg:     #e2e8f0;
+  --bg2:    #edf1f7;
+  --bg3:    #d4dce8;
+  --card:   #f8fafc;
+  --ink:    #0f172a;
+  --ink2:   #4a5568;
+  --ink3:   #94a3b8;
+  --border: rgba(15, 23, 42, 0.09);
+  --navy:   #3b82f6;
+  --navy2:  #2563eb;
+  --gold:   #fbbf24;
+  --gold2:  #f59e0b;
+  --g:      #22c55e;
+  --r:      #ef4444;
+  --a:      #f59e0b;
+
+  /* Teintes sémantiques (light mode) */
+  --tint-r-bg:     rgba(239, 68,  68,  .07);
+  --tint-r-border: rgba(239, 68,  68,  .20);
+  --tint-g-bg:     rgba( 34,197,  94,  .07);
+  --tint-g-border: rgba( 34,197,  94,  .20);
+  --tint-n-bg:     rgba( 59,130, 246,  .07);
+  --tint-n-border: rgba( 59,130, 246,  .20);
+  --tint-a-bg:     rgba(245,158,  11,  .07);
+  --tint-a-border: rgba(245,158,  11,  .20);
+}
+
+/* ── Tailwind v4 Theme ── */
+@theme inline {
+  /* Colors */
+  --color-bg: var(--bg);
+  --color-bg2: var(--bg2);
+  --color-bg3: var(--bg3);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink2: var(--ink2);
+  --color-ink3: var(--ink3);
+  --color-border: var(--border);
+  --color-navy: var(--navy);
+  --color-navy2: var(--navy2);
+  --color-gold: var(--gold);
+  --color-gold2: var(--gold2);
+  --color-success: var(--g);
+  --color-danger: var(--r);
+  --color-warning: var(--a);
+
+  /* Fonts */
+  --font-sans: var(--font-outfit), "Outfit", sans-serif;
+  --font-display: var(--font-fraunces), "Fraunces", serif;
+  --font-brand: var(--font-montserrat), "Montserrat", sans-serif;
+
+  /* Border radius */
+  --radius-card: 14px;
+  --radius-btn: 7px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(12, 12, 10, 0.05),
+    0 4px 16px rgba(12, 12, 10, 0.07);
+  --shadow-card-hover: 0 4px 24px rgba(12, 12, 10, 0.08),
+    0 24px 64px rgba(12, 12, 10, 0.1);
+}
+
+/* ── Dark mode (dashboard only) ── */
+html[data-theme="dark"] {
+  --bg:     #0f172a;
+  --bg2:    #1e293b;
+  --bg3:    #334155;
+  --card:   #1e293b;
+  --ink:    #f1f5f9;
+  --ink2:   #cbd5e1;
+  --ink3:   #94a3b8;
+  --border: rgba(241, 245, 249, 0.09);
+  --navy:   #3b82f6;
+  --navy2:  #2563eb;
+  --gold:   #fbbf24;
+  --gold2:  #f59e0b;
+  --g:      #22c55e;
+  --r:      #ef4444;
+  --a:      #f59e0b;
+
+  /* Teintes sémantiques (dark mode) */
+  --tint-r-bg:     rgba(239, 68,  68,  .12);
+  --tint-r-border: rgba(239, 68,  68,  .25);
+  --tint-g-bg:     rgba( 34,197,  94,  .10);
+  --tint-g-border: rgba( 34,197,  94,  .25);
+  --tint-n-bg:     rgba( 59,130, 246,  .12);
+  --tint-n-border: rgba( 59,130, 246,  .28);
+  --tint-a-bg:     rgba(245,158,  11,  .12);
+  --tint-a-border: rgba(245,158,  11,  .28);
+}
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes pulse-dot {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.7s ease both;
+}
+.animate-fade-up-2 {
+  animation: fadeUp 0.7s 0.15s ease both;
+}
+.animate-fade-up-3 {
+  animation: fadeUp 0.7s 0.3s ease both;
+}
+.animate-fade-up-4 {
+  animation: fadeUp 0.7s 0.45s ease both;
+}
+.animate-fade-in {
+  animation: fadeIn 0.8s ease both;
+}
+.animate-float {
+  animation: float 7s ease-in-out infinite;
+}
+.animate-pulse-dot {
+  animation: pulse-dot 2s infinite;
+}
+
+/* ── Base ── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-outfit), "Outfit", sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
