@@ -27,8 +27,8 @@ export async function POST(req: NextRequest) {
       payment_method_types: ["card"],
       customer_email: email || undefined,
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${process.env.NEXT_PUBLIC_URL}/register?success=1&plan=${plan}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_URL}/register?plan=${plan}`,
+      success_url: `${process.env.NEXT_PUBLIC_URL}/login?paid=1`,
+      cancel_url: `${process.env.NEXT_PUBLIC_URL}/#acces`,
       metadata: { plan, userId: userId || "" },
     });
 

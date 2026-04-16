@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { createClient } from "@/lib/supabase";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const darkVars = {
   "--bg":     "#0f172a",
@@ -29,9 +29,11 @@ const darkVars = {
   "--tint-a-border": "rgba(245,158,11,.28)",
 } as React.CSSProperties;
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
+  const paid = searchParams.get("paid") === "1";
 
   const [dark, setDark] = useState(false);
   const [mode, setMode] = useState<"login" | "signup">("login");
@@ -75,6 +77,13 @@ export default function LoginPage() {
             {mode === "login" ? "Accède à ton espace trader" : "Crée ton compte gratuitement"}
           </div>
         </div>
+
+        {paid && (
+          <div style={{ background: "var(--tint-g-bg)", border: "1px solid var(--tint-g-border)", borderRadius: 10, padding: "12px 16px", marginBottom: 20, textAlign: "center" }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "var(--g)", marginBottom: 2 }}>Paiement confirmé !</div>
+            <div style={{ fontSize: 13, color: "var(--ink2)" }}>Connecte-toi pour accéder à ton dashboard.</div>
+          </div>
+        )}
 
         {/* Card */}
         <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16, padding: "32px 28px" }}>
@@ -136,5 +145,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }
