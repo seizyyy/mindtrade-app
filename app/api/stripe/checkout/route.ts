@@ -27,8 +27,8 @@ export async function POST(req: NextRequest) {
       payment_method_types: ["card"],
       customer_email: email || undefined,
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${process.env.NEXT_PUBLIC_URL}/login?paid=1`,
-      cancel_url: `${process.env.NEXT_PUBLIC_URL}/#acces`,
+      success_url: `https://www.mindtrade.co/login?paid=1`,
+      cancel_url: `https://www.mindtrade.co/#acces`,
       metadata: { plan, userId: userId || "" },
     });
 
