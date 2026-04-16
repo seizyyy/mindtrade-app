@@ -78,6 +78,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.replace("/login"); return; }
 
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("plan_active")
+        .eq("id", user.id)
+        .single();
+      if (!profile?.plan_active) { router.replace("/#acces"); return; }
+
       const today = new Date().toISOString().split("T")[0];
       const { data: ci } = await supabase
         .from("checkins")
