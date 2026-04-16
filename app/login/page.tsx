@@ -37,13 +37,20 @@ function LoginForm() {
   const sessionId = searchParams.get("session_id");
 
   useEffect(() => {
-    if (sessionId) {
-      fetch("/api/stripe/verify", {
+    if (!sessionId) return;
+    (async () => {
+      await fetch("/api/stripe/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId }),
       });
-    }
+      // If already logged in, go directly to dashboard
+      const supabaseClient = createClient();
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      if (user) {
+        router.replace("/dashboard");
+      }
+    })();
   }, [sessionId]);
 
   const [dark, setDark] = useState(false);
