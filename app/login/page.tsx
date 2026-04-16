@@ -34,6 +34,17 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const supabase = createClient();
   const paid = searchParams.get("paid") === "1";
+  const sessionId = searchParams.get("session_id");
+
+  useEffect(() => {
+    if (sessionId) {
+      fetch("/api/stripe/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId }),
+      });
+    }
+  }, [sessionId]);
 
   const [dark, setDark] = useState(false);
   const [mode, setMode] = useState<"login" | "signup">("login");
