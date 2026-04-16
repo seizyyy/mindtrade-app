@@ -57,11 +57,18 @@ function RegisterForm() {
     setError("");
     setLoading(true);
 
-    const { error: signUpError } = await supabase.auth.signUp({ email, password });
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
     if (signUpError && signUpError.message !== "User already registered") {
       setError("Une erreur est survenue. Réessaie.");
       setLoading(false);
       return;
+    }
+
+    // Get user ID (either from signup or existing session)
+    let userId = signUpData?.user?.id;
+    if (!userId) {
+      const { data: { user } } = await supabase.auth.getUser();
+      userId = user?.id;
     }
 
     if (!plan) {
@@ -73,7 +80,7 @@ function RegisterForm() {
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan, email }),
+        body: JSON.stringify({ plan, email, userId }),
       });
       const data = await res.json();
       if (data.url) {

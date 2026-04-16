@@ -33,10 +33,10 @@ export async function POST(req: NextRequest) {
     event.type === "invoice.payment_succeeded"
   ) {
     const session = event.data.object as Stripe.Checkout.Session;
-    const email = session.customer_email || (session as any).customer_details?.email;
     const plan = session.metadata?.plan;
+    const userId = session.metadata?.userId;
 
-    if (email && plan) {
+    if (userId && plan) {
       await supabase
         .from("profiles")
         .update({
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
           plan_active: true,
           stripe_customer_id: session.customer as string,
         })
-        .eq("email", email);
+        .eq("id", userId);
     }
   }
 

@@ -13,7 +13,7 @@ const PRICE_IDS: Record<string, string> = {
 
 export async function POST(req: NextRequest) {
   try {
-    const { plan, email } = await req.json();
+    const { plan, email, userId } = await req.json();
 
     const priceId = PRICE_IDS[plan];
     if (!priceId) {
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${process.env.NEXT_PUBLIC_URL}/register?success=1&plan=${plan}`,
       cancel_url: `${process.env.NEXT_PUBLIC_URL}/register?plan=${plan}`,
-      metadata: { plan },
+      metadata: { plan, userId: userId || "" },
     });
 
     return NextResponse.json({ url: session.url });
