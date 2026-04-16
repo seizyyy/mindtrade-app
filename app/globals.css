@@ -16,17 +16,17 @@
   --gold2:  #f59e0b;
   --g:      #22c55e;
   --r:      #ef4444;
-  --a:      #f59e0b;
+  --a:      #b45309;
 
   /* Teintes sémantiques (light mode) */
-  --tint-r-bg:     rgba(239, 68,  68,  .07);
-  --tint-r-border: rgba(239, 68,  68,  .20);
-  --tint-g-bg:     rgba( 34,197,  94,  .07);
-  --tint-g-border: rgba( 34,197,  94,  .20);
-  --tint-n-bg:     rgba( 59,130, 246,  .07);
-  --tint-n-border: rgba( 59,130, 246,  .20);
-  --tint-a-bg:     rgba(245,158,  11,  .07);
-  --tint-a-border: rgba(245,158,  11,  .20);
+  --tint-r-bg:     rgba(239, 68,  68,  .10);
+  --tint-r-border: rgba(239, 68,  68,  .35);
+  --tint-g-bg:     rgba( 34,197,  94,  .10);
+  --tint-g-border: rgba( 34,197,  94,  .35);
+  --tint-n-bg:     rgba( 59,130, 246,  .10);
+  --tint-n-border: rgba( 59,130, 246,  .35);
+  --tint-a-bg:     #fffbeb;
+  --tint-a-border: #f59e0b;
 }
 
 /* ── Tailwind v4 Theme ── */
