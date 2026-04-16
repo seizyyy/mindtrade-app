@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     event.type === "checkout.session.completed" ||
     event.type === "invoice.payment_succeeded"
   ) {
-    const session = event.data.object as Stripe.CheckoutSession;
+    const session = event.data.object as Stripe.Checkout.Session;
     const email = session.customer_email || (session as any).customer_details?.email;
     const plan = session.metadata?.plan;
 
