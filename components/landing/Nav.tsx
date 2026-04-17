@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase";
 const links = [
   ["#pourquoi", "Pourquoi"],
   ["#fonctionnalites", "Comment ça marche"],
+  ["#produit", "Le produit"],
   ["#acces", "Tarifs"],
 ];
 
