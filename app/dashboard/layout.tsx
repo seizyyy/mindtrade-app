@@ -35,6 +35,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [todayScore, setTodayScore] = useState<number | null>(null);
   const [streak, setStreak] = useState(0);
   const [dark, setDark] = useState(false);
+  const [isDemo, setIsDemo] = useState(false);
   const supabase = createClient();
 
   // Charger la préférence dark mode depuis localStorage
@@ -78,6 +79,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.replace("/login"); return; }
+      if (user.email === "demo@mindtrade.co") { setIsDemo(true); }
 
       let { data: profile } = await supabase
         .from("profiles")
@@ -164,6 +166,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </button>
         </div>
       </div>
+
+      {isDemo && (
+        <div style={{ background: "linear-gradient(90deg, #1e3a5f, #1e40af)", borderBottom: "1px solid rgba(59,130,246,.3)", padding: "10px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0, gap: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#60a5fa", flexShrink: 0 }} />
+            <span style={{ fontSize: 13, color: "rgba(255,255,255,.85)", fontWeight: 500 }}>
+              Vous explorez le dashboard en <strong style={{ color: "#fff" }}>mode démo</strong> — les données sont fictives et non sauvegardées.
+            </span>
+          </div>
+          <a href="/#acces" style={{ flexShrink: 0, background: "#3b82f6", color: "#fff", padding: "7px 16px", borderRadius: 6, fontSize: 12, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>
+            Créer mon compte →
+          </a>
+        </div>
+      )}
 
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
         {/* Sidebar */}
