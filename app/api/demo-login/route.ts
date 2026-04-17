@@ -1,17 +1,29 @@
 import { NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase-server";
+import { createServerClient } from "@supabase/ssr";
 
 export async function GET() {
-  const supabase = await createServerSupabaseClient();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mindtrade.co";
+  const response = NextResponse.redirect(new URL("/dashboard", siteUrl));
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() { return []; },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          );
+        },
+      },
+    }
+  );
+
+  await supabase.auth.signInWithPassword({
     email: "demo@mindtrade.co",
     password: "Demo1234!",
   });
 
-  if (error) {
-    return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_SITE_URL || "https://mindtrade.co"));
-  }
-
-  return NextResponse.redirect(new URL("/dashboard", process.env.NEXT_PUBLIC_SITE_URL || "https://mindtrade.co"));
+  return response;
 }
