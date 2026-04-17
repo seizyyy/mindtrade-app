@@ -134,7 +134,7 @@ export default function Hero() {
         </div>
       </div>
     </section>
-
+    <>
     {videoOpen && (
       <div onClick={() => setVideoOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.85)', zIndex: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
         <div onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 900, aspectRatio: '16/9', borderRadius: 14, overflow: 'hidden', position: 'relative' }}>
@@ -150,5 +150,6 @@ export default function Hero() {
         </div>
       </div>
     )}
+    </>
   );
 }
