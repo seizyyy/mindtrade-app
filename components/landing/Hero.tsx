@@ -44,8 +44,8 @@ export default function Hero() {
             <a href="#acces" style={{ background: 'var(--ink)', color: '#fff', padding: '14px 28px', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none', fontFamily: 'var(--font-outfit)' }}>
               Démarrer maintenant →
             </a>
-            <a href="#fonctionnalites" style={{ color: 'var(--ink2)', padding: '14px 20px', fontSize: 14, fontWeight: 500, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
-              Voir comment ça marche ↓
+            <a href="/api/demo-login" style={{ color: 'var(--navy)', padding: '14px 20px', fontSize: 14, fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6, border: '1.5px solid rgba(59,130,246,.25)', borderRadius: 8, background: 'rgba(59,130,246,.05)' }}>
+              Essayer la démo →
             </a>
           </div>
 
