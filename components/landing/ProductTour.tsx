@@ -547,7 +547,7 @@ export default function ProductTour() {
         {/* Légende */}
         <div style={{ display:"flex", justifyContent:"center", gap:28, marginTop:32, flexWrap:"wrap" }}>
           {[{dot:DARK.g,label:"Score mental calculé automatiquement"},{dot:DARK.a,label:"Biais détectés en temps réel"},{dot:"#93c5fd",label:"Performance corrélée à l'état mental"}].map(a=>(
-            <div key={a.label} style={{ display:"flex", alignItems:"center", gap:7, fontSize:12, color:"rgba(255,255,255,.3)" }}>
+            <div key={a.label} style={{ display:"flex", alignItems:"center", gap:7, fontSize:12, color:"rgba(255,255,255,.65)" }}>
               <div style={{ width:6, height:6, borderRadius:"50%", background:a.dot, flexShrink:0 }}/>
               {a.label}
             </div>
