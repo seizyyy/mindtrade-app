@@ -1,3 +1,8 @@
+"use client";
+import { useState } from "react";
+
+const DEMO_VIDEO_URL = "https://www.youtube.com/embed/hPeLBRPwNYw?autoplay=1&rel=0&modestbranding=1";
+
 const CI_PATTERN = ['ok','ok','miss','ok','ok','off','off','ok','ok','ok','ok','miss','off','off','ok','ok','ok','ok','miss','off','off','ok','ok','ok','ok','now'];
 
 const ciColor: Record<string, string> = {
@@ -8,6 +13,7 @@ const ciColor: Record<string, string> = {
 };
 
 export default function Hero() {
+  const [videoOpen, setVideoOpen] = useState(false);
   return (
     <section style={{
       minHeight: '100vh', padding: '157px 5% 80px',
@@ -44,9 +50,12 @@ export default function Hero() {
             <a href="#acces" style={{ background: 'var(--ink)', color: '#fff', padding: '14px 28px', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none', fontFamily: 'var(--font-outfit)' }}>
               Démarrer maintenant →
             </a>
-            <a href="/api/demo-login" style={{ color: 'var(--navy)', padding: '14px 20px', fontSize: 14, fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6, border: '1.5px solid rgba(59,130,246,.25)', borderRadius: 8, background: 'rgba(59,130,246,.05)' }}>
-              Essayer la démo →
-            </a>
+            <button onClick={() => setVideoOpen(true)} style={{ color: 'var(--ink2)', padding: '14px 20px', fontSize: 14, fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, fontFamily: 'var(--font-outfit)' }}>
+              <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--bg2)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="var(--ink)"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+              </div>
+              Voir le dashboard
+            </button>
           </div>
 
           <div className="animate-fade-up-4" style={{ marginTop: 40, display: 'flex', alignItems: 'center', gap: 16 }}>
@@ -125,5 +134,21 @@ export default function Hero() {
         </div>
       </div>
     </section>
+
+    {videoOpen && (
+      <div onClick={() => setVideoOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.85)', zIndex: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+        <div onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 900, aspectRatio: '16/9', borderRadius: 14, overflow: 'hidden', position: 'relative' }}>
+          <button onClick={() => setVideoOpen(false)} style={{ position: 'absolute', top: -40, right: 0, background: 'none', border: 'none', color: 'rgba(255,255,255,.6)', fontSize: 14, cursor: 'pointer', fontFamily: 'var(--font-outfit)' }}>
+            ✕ Fermer
+          </button>
+          <iframe
+            src={DEMO_VIDEO_URL}
+            style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </div>
+    )}
   );
 }
