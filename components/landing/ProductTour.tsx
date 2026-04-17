@@ -478,7 +478,7 @@ export default function ProductTour() {
         </div>
 
         {/* Fenêtre */}
-        <div style={{ borderRadius:16, overflow:"hidden", border:`1px solid rgba(255,255,255,.09)`, boxShadow:"0 0 0 1px rgba(255,255,255,.04), 0 56px 140px rgba(0,0,0,.8)", background:T.bg, position:"relative", cursor:"none" }}>
+        <div style={{ borderRadius:16, overflow:"hidden", border:`1px solid rgba(255,255,255,.09)`, boxShadow:"0 0 0 1px rgba(255,255,255,.04), 0 56px 140px rgba(0,0,0,.8)", background:T.bg, position:"relative" }}>
 
           {/* Chrome */}
           <div style={{ height:36, background:darkDemo?"rgba(255,255,255,.03)":T.card, borderBottom:`1px solid ${T.border}`, display:"flex", alignItems:"center", padding:"0 14px", gap:9 }}>
