@@ -256,7 +256,32 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
 
         {/* Main content */}
-        <main style={{ flex: 1, overflowY: "auto", padding: "24px 28px" }}>
+        <main style={{ flex: 1, overflowY: "auto", padding: "24px 28px", position: "relative" }}>
+          {isDemo && pathname !== "/dashboard" ? (
+            <div style={{ position: "absolute", inset: 0, zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20, backdropFilter: "blur(6px)", background: "rgba(15,23,42,.7)" }}>
+              <div style={{ textAlign: "center", maxWidth: 380, padding: "0 20px" }}>
+                <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(59,130,246,.15)", border: "1px solid rgba(59,130,246,.3)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#3b82f6" strokeWidth="1.8">
+                    <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+                  </svg>
+                </div>
+                <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 22, fontWeight: 700, color: "#fff", marginBottom: 10 }}>
+                  Fonctionnalité réservée aux membres
+                </div>
+                <div style={{ fontSize: 14, color: "rgba(255,255,255,.55)", lineHeight: 1.6, marginBottom: 24 }}>
+                  Créez votre compte pour accéder au check-in mental, au log de trades, au journal et à toutes les analyses.
+                </div>
+                <a href="/#acces" style={{ display: "inline-block", background: "#3b82f6", color: "#fff", padding: "12px 28px", borderRadius: 8, fontSize: 14, fontWeight: 700, textDecoration: "none" }}>
+                  Créer mon compte →
+                </a>
+                <div style={{ marginTop: 14 }}>
+                  <a href="/dashboard" style={{ fontSize: 13, color: "rgba(255,255,255,.35)", textDecoration: "none" }}>
+                    ← Retour à la démo
+                  </a>
+                </div>
+              </div>
+            </div>
+          ) : null}
           {children}
         </main>
       </div>
