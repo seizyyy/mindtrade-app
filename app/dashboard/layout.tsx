@@ -34,13 +34,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const pathname = usePathname();
   const [todayScore, setTodayScore] = useState<number | null>(null);
   const [streak, setStreak] = useState(0);
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
   const supabase = createClient();
 
-  // Charger la préférence dark mode depuis localStorage
+  // Charger la préférence dark mode depuis localStorage (dark par défaut)
   useEffect(() => {
     const saved = localStorage.getItem("mt-dark");
-    if (saved === "1") setDark(true);
+    if (saved === "0") setDark(false);
   }, []);
 
   // Sauvegarder la préférence
