@@ -121,7 +121,7 @@ export default function QuizLead() {
   return (
     <>
       {/* Section landing */}
-      <section id="diagnostic" style={{ padding: "96px 5%", background: "var(--bg)" }}>
+      <section id="diagnostic" style={{ padding: "96px 5%", background: "var(--bg)", scrollMarginTop: 100 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
 
