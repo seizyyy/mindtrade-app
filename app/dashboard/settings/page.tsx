@@ -3,14 +3,25 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
 
+const MARKETS = ["Forex", "Indices / Futures", "Actions", "Crypto", "Multi"];
+const BIASES  = ["FOMO", "Revenge trading", "Overtrading", "Sorties prématurées", "Déplacer ses stops", "Sous-dimensionnement"];
+
 export default function SettingsPage() {
   const supabase = createClient();
-  const [displayName, setDisplayName] = useState("");
-  const [accountSize, setAccountSize] = useState("");
-  const [currency, setCurrency] = useState("USD");
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [loading, setLoading] = useState(true);
+
+  const [displayName,  setDisplayName]  = useState("");
+  const [market,       setMarket]       = useState("Forex");
+  const [accountSize,  setAccountSize]  = useState("");
+  const [currency,     setCurrency]     = useState("EUR");
+  const [maxRisk,      setMaxRisk]      = useState("");
+  const [maxDailyLoss, setMaxDailyLoss] = useState("");
+  const [monthlyGoal,  setMonthlyGoal]  = useState("");
+  const [sessionStart, setSessionStart] = useState("");
+  const [sessionEnd,   setSessionEnd]   = useState("");
+  const [biases,       setBiases]       = useState<string[]>([]);
+  const [saving,       setSaving]       = useState(false);
+  const [saved,        setSaved]        = useState(false);
+  const [loading,      setLoading]      = useState(true);
 
   useEffect(() => {
     async function load() {
@@ -18,13 +29,20 @@ export default function SettingsPage() {
       if (!user) return;
       const { data } = await supabase
         .from("profiles")
-        .select("display_name,market,account_size,currency")
+        .select("display_name,market,account_size,currency,max_risk_per_trade,max_daily_loss,monthly_goal,session_start,session_end,trading_biases")
         .eq("id", user.id)
         .single();
       if (data) {
         setDisplayName(data.display_name ?? "");
+        setMarket(data.market ?? "Forex");
         setAccountSize(data.account_size != null ? String(data.account_size) : "");
-        setCurrency(data.currency ?? "USD");
+        setCurrency(data.currency ?? "EUR");
+        setMaxRisk(data.max_risk_per_trade != null ? String(data.max_risk_per_trade) : "");
+        setMaxDailyLoss(data.max_daily_loss != null ? String(data.max_daily_loss) : "");
+        setMonthlyGoal(data.monthly_goal != null ? String(data.monthly_goal) : "");
+        setSessionStart(data.session_start ?? "");
+        setSessionEnd(data.session_end ?? "");
+        setBiases(data.trading_biases ?? []);
       }
       setLoading(false);
     }
@@ -36,94 +54,183 @@ export default function SettingsPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
     await supabase.from("profiles").update({
-      display_name: displayName || null,
-      account_size: accountSize ? parseFloat(accountSize) : null,
+      display_name:      displayName || null,
+      market:            market || null,
+      account_size:      accountSize  ? parseFloat(accountSize)  : null,
       currency,
+      max_risk_per_trade: maxRisk     ? parseFloat(maxRisk)      : null,
+      max_daily_loss:    maxDailyLoss ? parseFloat(maxDailyLoss) : null,
+      monthly_goal:      monthlyGoal  ? parseFloat(monthlyGoal)  : null,
+      session_start:     sessionStart || null,
+      session_end:       sessionEnd   || null,
+      trading_biases:    biases.length ? biases : null,
     }).eq("id", user.id);
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   }
 
-  const fieldStyle: React.CSSProperties = {
+  function toggleBias(b: string) {
+    setBiases(prev => prev.includes(b) ? prev.filter(x => x !== b) : [...prev, b]);
+  }
+
+  const cap = accountSize && !isNaN(parseFloat(accountSize)) ? parseFloat(accountSize) : null;
+
+  const field: React.CSSProperties = {
     width: "100%", padding: "10px 13px", borderRadius: 7,
     border: "1px solid var(--border)", background: "var(--bg2)",
     color: "var(--ink)", fontSize: 14, fontFamily: "var(--font-outfit)",
     outline: "none", boxSizing: "border-box",
   };
-  const labelStyle: React.CSSProperties = {
+  const label: React.CSSProperties = {
     fontSize: 11, fontWeight: 700, color: "var(--ink3)",
     textTransform: "uppercase", letterSpacing: ".1em", display: "block", marginBottom: 6,
+  };
+  const card: React.CSSProperties = {
+    background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "20px 22px",
+  };
+  const hint: React.CSSProperties = {
+    fontSize: 12, color: "var(--ink3)", marginTop: 6, lineHeight: 1.5,
   };
 
   if (loading) return <div style={{ color: "var(--ink3)", fontSize: 14, padding: 40 }}>Chargement…</div>;
 
   return (
-    <div style={{ maxWidth: 520 }}>
+    <div style={{ maxWidth: 560 }}>
       <div style={{ marginBottom: 28 }}>
         <h1 style={{ fontFamily: "var(--font-fraunces)", fontSize: 26, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Paramètres</h1>
         <p style={{ fontSize: 13, color: "var(--ink3)" }}>Tes préférences et informations de compte.</p>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
-        {/* Nom affiché */}
-        <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "20px 22px" }}>
+        {/* ── Profil ── */}
+        <div style={card}>
           <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 16 }}>Profil</div>
-          <div>
-            <label style={labelStyle}>Prénom / pseudo</label>
-            <input
-              value={displayName}
-              onChange={e => setDisplayName(e.target.value)}
-              placeholder="Ex : Thomas"
-              style={fieldStyle}
-            />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div>
+              <label style={label}>Prénom / pseudo</label>
+              <input value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="Ex : Thomas" style={field} />
+            </div>
+            <div>
+              <label style={label}>Marché principal</label>
+              <select value={market} onChange={e => setMarket(e.target.value)} style={field}>
+                {MARKETS.map(m => <option key={m} value={m}>{m}</option>)}
+              </select>
+            </div>
           </div>
         </div>
 
-        {/* Taille du compte */}
-        <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "20px 22px" }}>
+        {/* ── Capital ── */}
+        <div style={card}>
           <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Capital de trading</div>
           <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 16, lineHeight: 1.5 }}>
-            Utilisé pour calculer ton % de rendement sur le dashboard. Non partagé.
+            Utilisé pour calculer tes montants de risque réels. Non partagé.
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 10, alignItems: "end" }}>
             <div>
-              <label style={labelStyle}>Taille du compte</label>
-              <input
-                type="number"
-                min="0"
-                step="100"
-                value={accountSize}
-                onChange={e => setAccountSize(e.target.value)}
-                placeholder="Ex : 10000"
-                style={fieldStyle}
-              />
+              <label style={label}>Taille du compte</label>
+              <input type="number" min="0" step="100" value={accountSize} onChange={e => setAccountSize(e.target.value)} placeholder="Ex : 10 000" style={field} />
             </div>
             <div>
-              <label style={labelStyle}>Devise</label>
-              <select value={currency} onChange={e => setCurrency(e.target.value)} style={{ ...fieldStyle, width: "auto", minWidth: 90 }}>
-                {[
-                  { code: "EUR", symbol: "€" },
-                  { code: "USD", symbol: "$" },
-                  { code: "GBP", symbol: "£" },
-                  { code: "CHF", symbol: "CHF" },
-                  { code: "CAD", symbol: "CA$" },
-                  { code: "JPY", symbol: "¥" },
-                ].map(c => (
-                  <option key={c.code} value={c.code}>{c.symbol} {c.code}</option>
+              <label style={label}>Devise</label>
+              <select value={currency} onChange={e => setCurrency(e.target.value)} style={{ ...field, width: "auto", minWidth: 90 }}>
+                {[["EUR","€"],["USD","$"],["GBP","£"],["CHF","CHF"],["CAD","CA$"],["JPY","¥"]].map(([code, sym]) => (
+                  <option key={code} value={code}>{sym} {code}</option>
                 ))}
               </select>
             </div>
           </div>
-          {accountSize && !isNaN(parseFloat(accountSize)) && (
-            <div style={{ fontSize: 12, color: "var(--ink3)", marginTop: 8 }}>
-              1% de ton compte = <strong style={{ color: "var(--ink)" }}>{(parseFloat(accountSize) / 100).toFixed(0)} {currency}</strong> par trade
-            </div>
-          )}
+          {cap && <div style={hint}>1% de ton compte = <strong style={{ color: "var(--ink)" }}>{(cap / 100).toFixed(0)} {currency}</strong></div>}
         </div>
 
-        {/* Bouton */}
+        {/* ── Règles de risque ── */}
+        <div style={card}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Règles de risque</div>
+          <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 16, lineHeight: 1.5 }}>
+            MindTrade t'alertera si tu approches de ces limites lors du check-in.
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div>
+              <label style={label}>Risque max / trade</label>
+              <div style={{ position: "relative" }}>
+                <input type="number" min="0" max="100" step="0.1" value={maxRisk} onChange={e => setMaxRisk(e.target.value)} placeholder="Ex : 1" style={{ ...field, paddingRight: 30 }} />
+                <span style={{ position: "absolute", right: 11, top: "50%", transform: "translateY(-50%)", fontSize: 13, color: "var(--ink3)" }}>%</span>
+              </div>
+              {cap && maxRisk && <div style={hint}>= <strong style={{ color: "var(--ink)" }}>{((cap * parseFloat(maxRisk)) / 100).toFixed(0)} {currency}</strong> / trade</div>}
+            </div>
+            <div>
+              <label style={label}>Perte max / jour</label>
+              <div style={{ position: "relative" }}>
+                <input type="number" min="0" max="100" step="0.1" value={maxDailyLoss} onChange={e => setMaxDailyLoss(e.target.value)} placeholder="Ex : 3" style={{ ...field, paddingRight: 30 }} />
+                <span style={{ position: "absolute", right: 11, top: "50%", transform: "translateY(-50%)", fontSize: 13, color: "var(--ink3)" }}>%</span>
+              </div>
+              {cap && maxDailyLoss && <div style={hint}>= <strong style={{ color: "var(--ink)" }}>{((cap * parseFloat(maxDailyLoss)) / 100).toFixed(0)} {currency}</strong> avant d'arrêter</div>}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Objectif mensuel ── */}
+        <div style={card}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Objectif mensuel</div>
+          <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 16, lineHeight: 1.5 }}>
+            Affiché sur ton dashboard. Te donne un cap concret à tenir.
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, alignItems: "end" }}>
+            <div>
+              <label style={label}>Rendement visé ce mois</label>
+              <div style={{ position: "relative" }}>
+                <input type="number" min="0" max="1000" step="0.5" value={monthlyGoal} onChange={e => setMonthlyGoal(e.target.value)} placeholder="Ex : 5" style={{ ...field, paddingRight: 30 }} />
+                <span style={{ position: "absolute", right: 11, top: "50%", transform: "translateY(-50%)", fontSize: 13, color: "var(--ink3)" }}>%</span>
+              </div>
+              {cap && monthlyGoal && <div style={hint}>= <strong style={{ color: "var(--ink)" }}>{((cap * parseFloat(monthlyGoal)) / 100).toFixed(0)} {currency}</strong> à atteindre</div>}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Session de trading ── */}
+        <div style={card}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Session de trading</div>
+          <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 16, lineHeight: 1.5 }}>
+            Tes horaires habituels de trading.
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div>
+              <label style={label}>De</label>
+              <input type="time" value={sessionStart} onChange={e => setSessionStart(e.target.value)} style={field} />
+            </div>
+            <div>
+              <label style={label}>À</label>
+              <input type="time" value={sessionEnd} onChange={e => setSessionEnd(e.target.value)} style={field} />
+            </div>
+          </div>
+        </div>
+
+        {/* ── Biais à surveiller ── */}
+        <div style={card}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Biais à surveiller</div>
+          <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 16, lineHeight: 1.5 }}>
+            MindTrade intègre ces biais dans ton analyse post-session pour te donner des alertes personnalisées.
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {BIASES.map(b => {
+              const active = biases.includes(b);
+              return (
+                <button key={b} onClick={() => toggleBias(b)} style={{
+                  padding: "7px 14px", borderRadius: 20, fontSize: 13, fontWeight: 500,
+                  fontFamily: "var(--font-outfit)", cursor: "pointer", transition: "all .12s",
+                  border: `1.5px solid ${active ? "var(--navy)" : "var(--border)"}`,
+                  background: active ? "rgba(15,39,68,.07)" : "transparent",
+                  color: active ? "var(--navy)" : "var(--ink3)",
+                }}>
+                  {b}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── Save ── */}
         <button
           onClick={save}
           disabled={saving}
@@ -132,11 +239,12 @@ export default function SettingsPage() {
             background: saved ? "var(--g)" : "var(--navy)", color: "#fff",
             fontSize: 14, fontWeight: 700, cursor: saving ? "not-allowed" : "pointer",
             fontFamily: "var(--font-outfit)", opacity: saving ? 0.7 : 1,
-            transition: "background .2s",
+            transition: "background .2s", alignSelf: "flex-start",
           }}
         >
           {saved ? "✓ Sauvegardé" : saving ? "Sauvegarde…" : "Sauvegarder"}
         </button>
+
       </div>
     </div>
   );

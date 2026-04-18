@@ -150,7 +150,7 @@ export default function QuizLead() {
 
             {/* Right — preview card */}
             <div style={{ position: "relative" }}>
-              <div style={{ position: "relative", background: "#0f172a", border: "1px solid rgba(255,255,255,.08)", borderRadius: 20, overflow: "hidden", boxShadow: "0 40px 100px rgba(0,0,0,.25)" }}>
+              <div style={{ position: "relative", background: "#1e293b", border: "1px solid rgba(255,255,255,.08)", borderRadius: 20, overflow: "hidden", boxShadow: "0 40px 100px rgba(0,0,0,.25)" }}>
 
                 {/* Header */}
                 <div style={{ padding: "24px 28px 0" }}>
@@ -172,7 +172,7 @@ export default function QuizLead() {
                   </div>
 
                   {/* Insight */}
-                  <div style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 10, padding: "14px 16px", marginBottom: 20 }}>
+                  <div style={{ background: "#1e293b", border: "1px solid rgba(255,255,255,.06)", borderRadius: 10, padding: "14px 16px", marginBottom: 20 }}>
                     <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,.3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8 }}>Insight clé</div>
                     <div style={{ fontSize: 13, color: "rgba(255,255,255,.6)", lineHeight: 1.65 }}>
                       Les traders avec ce profil perdent en moyenne <strong style={{ color: "#fff" }}>40% de leur capital annuel</strong> sur des trades émotionnels identifiables.
