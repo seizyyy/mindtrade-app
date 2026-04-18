@@ -228,6 +228,30 @@ export default function DashboardPage() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
+      {/* ── Alerte perte journalière — EN PREMIER ── */}
+      {dailyLossReached && (
+        <div style={{ background: "var(--tint-r-bg)", border: "2px solid var(--tint-r-border)", borderRadius: 14, padding: "18px 22px", display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ fontSize: 28, flexShrink: 0 }}>⛔</div>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 800, color: "var(--r)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>Limite journalière atteinte — Ferme le terminal</div>
+            <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.65 }}>
+              Tu as perdu <strong style={{ color: "var(--r)" }}>{Math.abs(todayPnl).toFixed(0)} {currency}</strong> aujourd'hui — ta limite est <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {currency}</strong>. Revenir demain est toujours plus rentable que tenter de récupérer.
+            </div>
+          </div>
+        </div>
+      )}
+      {dailyLossClose && (
+        <div style={{ background: "var(--tint-a-bg)", border: "2px solid var(--tint-a-border)", borderRadius: 14, padding: "18px 22px", display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ fontSize: 28, flexShrink: 0 }}>⚠️</div>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 800, color: "var(--a)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>Limite journalière proche</div>
+            <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.65 }}>
+              Tu as perdu <strong style={{ color: "var(--a)" }}>{Math.abs(todayPnl).toFixed(0)} {currency}</strong> sur ta limite de <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {currency}</strong>. Il te reste <strong style={{ color: "var(--ink)" }}>{(maxDailyLossAmount! - Math.abs(todayPnl)).toFixed(0)} {currency}</strong> — trade uniquement tes meilleurs setups.
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Banner check-in manquant ── */}
       {!todayCheckin && (
         <div style={{ background: "var(--tint-a-bg)", border: "1px solid var(--tint-a-border)", borderRadius: 10, padding: "11px 16px", display: "flex", alignItems: "center", gap: 10 }}>
@@ -297,30 +321,6 @@ export default function DashboardPage() {
           <a href="/dashboard/checkin" style={{ flexShrink: 0, background: "#fff", color: "var(--navy)", padding: "10px 22px", borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
             Faire le check-in →
           </a>
-        </div>
-      )}
-
-      {/* ── Alerte perte journalière ── */}
-      {dailyLossReached && (
-        <div style={{ background: "var(--tint-r-bg)", border: "1.5px solid var(--tint-r-border)", borderRadius: 14, padding: "16px 20px", display: "flex", alignItems: "center", gap: 16 }}>
-          <div style={{ fontSize: 24, flexShrink: 0 }}>⛔</div>
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 800, color: "var(--r)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>Limite journalière atteinte</div>
-            <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.65 }}>
-              Tu as perdu <strong style={{ color: "var(--r)" }}>{Math.abs(todayPnl).toFixed(0)} {currency}</strong> aujourd'hui — ta limite est <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {currency}</strong>. Ferme le terminal. Revenir demain est toujours plus rentable que tenter de récupérer.
-            </div>
-          </div>
-        </div>
-      )}
-      {dailyLossClose && (
-        <div style={{ background: "var(--tint-a-bg)", border: "1.5px solid var(--tint-a-border)", borderRadius: 14, padding: "16px 20px", display: "flex", alignItems: "center", gap: 16 }}>
-          <div style={{ fontSize: 24, flexShrink: 0 }}>⚠️</div>
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 800, color: "var(--a)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>Limite journalière proche</div>
-            <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.65 }}>
-              Tu as perdu <strong style={{ color: "var(--a)" }}>{Math.abs(todayPnl).toFixed(0)} {currency}</strong> sur ta limite de <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {currency}</strong>. Il te reste <strong style={{ color: "var(--ink)" }}>{(maxDailyLossAmount! - Math.abs(todayPnl)).toFixed(0)} {currency}</strong> — trade uniquement tes meilleurs setups.
-            </div>
-          </div>
         </div>
       )}
 
