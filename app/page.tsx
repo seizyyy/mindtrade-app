@@ -14,7 +14,6 @@ import FAQ from "@/components/landing/FAQ";
 import CTAFinal from "@/components/landing/CTAFinal";
 import Footer from "@/components/landing/Footer";
 import CookieBanner from "@/components/landing/CookieBanner";
-import ExitIntent from "@/components/landing/ExitIntent";
 import ChatWidget from "@/components/landing/ChatWidget";
 
 export default function LandingPage() {
@@ -35,7 +34,6 @@ export default function LandingPage() {
         <Footer />
       </main>
       <CookieBanner />
-      <ExitIntent />
       <ChatWidget />
     </>
   );
