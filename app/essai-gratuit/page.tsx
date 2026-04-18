@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase";
 
 const questions = [
   { key: "energie", label: "Ton niveau d'énergie ce matin ?", emoji: ["😴 Épuisé", "😪 Fatigué", "😐 Neutre", "😊 Bien", "⚡ Excellent"] },
@@ -48,15 +49,15 @@ export default function EssaiGratuitPage() {
     ? { label: "Attention requise", color: "#92400e", bg: "rgba(146,64,14,.08)", border: "rgba(146,64,14,.2)", advice: "Tu peux trader, mais reste vigilant. Évite les trades impulsifs, vérifie deux fois tes setups, et stop automatique après 2 pertes consécutives." }
     : { label: "Ne trade pas aujourd'hui", color: "#9b1c1c", bg: "rgba(155,28,28,.08)", border: "rgba(155,28,28,.2)", advice: "Ton état mental n'est pas favorable au trading. Les stats montrent que trader dans cet état coûte en moyenne 3x plus que les sessions reportées. Reviens demain." };
 
-  function handleEmailSubmit(e: React.FormEvent) {
+  async function handleEmailSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!email.trim()) return;
     setEmailLoading(true);
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: today, email }));
-    setTimeout(() => {
-      setEmailLoading(false);
-      setStep(5);
-    }, 600);
+    const supabase = createClient();
+    await supabase.from("leads").upsert({ email: email.trim(), score }, { onConflict: "email" });
+    setEmailLoading(false);
+    setStep(5);
   }
 
   return (
