@@ -152,20 +152,14 @@ export default function SettingsPage() {
               <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 14, lineHeight: 1.5 }}>MindTrade t'alerte si tu approches ces limites en check-in.</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                 <div>
-                  <label style={label}>Risque max / trade</label>
-                  <div style={{ position: "relative" }}>
-                    <input type="number" min="0" max="100" step="0.1" value={maxRisk} onChange={e => setMaxRisk(e.target.value)} placeholder="1" style={{ ...field, paddingRight: 26 }} />
-                    <span style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "var(--ink3)" }}>%</span>
-                  </div>
-                  {cap && maxRisk && <div style={hint}>{((cap * parseFloat(maxRisk)) / 100).toFixed(0)} {currency}</div>}
+                  <label style={label}>Risque max / trade ({currency})</label>
+                  <input type="number" min="0" step="1" value={maxRisk} onChange={e => setMaxRisk(e.target.value)} placeholder="Ex : 500" style={field} />
+                  {cap && maxRisk && <div style={hint}>= <strong style={{ color: "var(--ink)" }}>{((parseFloat(maxRisk) / cap) * 100).toFixed(2)}%</strong> de ton capital</div>}
                 </div>
                 <div>
-                  <label style={label}>Perte max / jour</label>
-                  <div style={{ position: "relative" }}>
-                    <input type="number" min="0" max="100" step="0.1" value={maxDailyLoss} onChange={e => setMaxDailyLoss(e.target.value)} placeholder="3" style={{ ...field, paddingRight: 26 }} />
-                    <span style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "var(--ink3)" }}>%</span>
-                  </div>
-                  {cap && maxDailyLoss && <div style={hint}>{((cap * parseFloat(maxDailyLoss)) / 100).toFixed(0)} {currency}</div>}
+                  <label style={label}>Perte max / jour ({currency})</label>
+                  <input type="number" min="0" step="1" value={maxDailyLoss} onChange={e => setMaxDailyLoss(e.target.value)} placeholder="Ex : 1000" style={field} />
+                  {cap && maxDailyLoss && <div style={hint}>= <strong style={{ color: "var(--ink)" }}>{((parseFloat(maxDailyLoss) / cap) * 100).toFixed(2)}%</strong> de ton capital</div>}
                 </div>
               </div>
             </div>

@@ -96,7 +96,7 @@ export default function DashboardPage() {
   const [accountSize, setAccountSize] = useState<number | null>(null);
   const [displayName, setDisplayName] = useState<string>("");
   const [monthlyGoal, setMonthlyGoal] = useState<number | null>(null);
-  const [maxDailyLossPct, setMaxDailyLossPct] = useState<number | null>(null);
+  const [maxDailyLossAmount, setMaxDailyLossAmount] = useState<number | null>(null);
   const [currency, setCurrency] = useState<string>("EUR");
 
   const today = new Date().toISOString().split("T")[0];
@@ -123,7 +123,7 @@ export default function DashboardPage() {
       if (profile?.account_size) setAccountSize(profile.account_size);
       if (profile?.display_name) setDisplayName(profile.display_name);
       if (profile?.monthly_goal) setMonthlyGoal(profile.monthly_goal);
-      if (profile?.max_daily_loss) setMaxDailyLossPct(profile.max_daily_loss);
+      if (profile?.max_daily_loss) setMaxDailyLossAmount(profile.max_daily_loss);
       if (profile?.currency) setCurrency(profile.currency);
       // Affiche la carte unlock une seule fois
       const alreadySeen = localStorage.getItem("mt-unlocked");
@@ -167,7 +167,6 @@ export default function DashboardPage() {
   // Alerte perte journalière
   const todayTrades = trades.filter(t => t.date === today);
   const todayPnl = todayTrades.reduce((s, t) => s + t.pnl, 0);
-  const maxDailyLossAmount = accountSize && maxDailyLossPct ? (accountSize * maxDailyLossPct) / 100 : null;
   const dailyLossReached = maxDailyLossAmount !== null && todayPnl < 0 && Math.abs(todayPnl) >= maxDailyLossAmount;
   const dailyLossClose = maxDailyLossAmount !== null && todayPnl < 0 && Math.abs(todayPnl) >= maxDailyLossAmount * 0.75 && !dailyLossReached;
 

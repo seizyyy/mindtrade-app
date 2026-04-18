@@ -95,8 +95,8 @@ export default function CheckinPage() {
   const [existingScore, setExistingScore] = useState<number | null>(null);
   const [checkins, setCheckins] = useState<{ date: string; score: number }[]>([]);
   const [displayName, setDisplayName] = useState<string>("");
-  const [maxRiskPct, setMaxRiskPct] = useState<number | null>(null);
-  const [maxDailyLossPct, setMaxDailyLossPct] = useState<number | null>(null);
+  const [maxRiskAmount, setMaxRiskAmount] = useState<number | null>(null);
+  const [maxDailyLossAmount, setMaxDailyLossAmount] = useState<number | null>(null);
   const [accountSize, setAccountSize] = useState<number | null>(null);
   const [currency, setCurrency] = useState<string>("EUR");
   const [todayPnl, setTodayPnl] = useState<number>(0);
@@ -118,8 +118,8 @@ export default function CheckinPage() {
       if (todayData) { setAlreadyDone(true); setExistingScore(todayData.score); setStep(5); }
       setCheckins(histData || []);
       if (profile?.display_name) setDisplayName(profile.display_name);
-      if (profile?.max_risk_per_trade) setMaxRiskPct(profile.max_risk_per_trade);
-      if (profile?.max_daily_loss) setMaxDailyLossPct(profile.max_daily_loss);
+      if (profile?.max_risk_per_trade) setMaxRiskAmount(profile.max_risk_per_trade);
+      if (profile?.max_daily_loss) setMaxDailyLossAmount(profile.max_daily_loss);
       if (profile?.account_size) setAccountSize(profile.account_size);
       if (profile?.currency) setCurrency(profile.currency);
       const pnl = (todayTrades || []).reduce((s: number, t: { pnl: number }) => s + t.pnl, 0);
@@ -135,8 +135,6 @@ export default function CheckinPage() {
   const sleepWarning = getSleepWarning(answers.sommeil);
 
   // Alerte règles de risque
-  const maxDailyLossAmount = accountSize && maxDailyLossPct ? (accountSize * maxDailyLossPct) / 100 : null;
-  const maxRiskAmount = accountSize && maxRiskPct ? (accountSize * maxRiskPct) / 100 : null;
   const dailyLossReached = maxDailyLossAmount !== null && todayPnl < 0 && Math.abs(todayPnl) >= maxDailyLossAmount;
   const dailyLossClose = maxDailyLossAmount !== null && todayPnl < 0 && Math.abs(todayPnl) >= maxDailyLossAmount * 0.75 && !dailyLossReached;
 
@@ -259,7 +257,7 @@ export default function CheckinPage() {
               <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 10, padding: "12px 16px", marginBottom: 16 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>Rappel risque</div>
                 <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.6 }}>
-                  Risque max par trade : <strong style={{ color: "var(--ink)" }}>{maxRiskAmount.toFixed(0)} {currency}</strong> ({maxRiskPct}% de ton capital)
+                  Risque max par trade : <strong style={{ color: "var(--ink)" }}>{maxRiskAmount.toFixed(0)} {currency}</strong>
                 </div>
               </div>
             )}

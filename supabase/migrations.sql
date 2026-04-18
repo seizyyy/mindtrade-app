@@ -21,8 +21,11 @@ ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS account_size NUMERIC(12,2);
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS currency TEXT DEFAULT 'USD';
 
 -- 6. Règles de risque + objectif + session + biais (settings page)
-ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS max_risk_per_trade NUMERIC(5,2);
-ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS max_daily_loss     NUMERIC(5,2);
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS max_risk_per_trade NUMERIC(12,2);
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS max_daily_loss     NUMERIC(12,2);
+-- Si les colonnes existent déjà avec NUMERIC(5,2), les élargir :
+ALTER TABLE public.profiles ALTER COLUMN max_risk_per_trade TYPE NUMERIC(12,2);
+ALTER TABLE public.profiles ALTER COLUMN max_daily_loss TYPE NUMERIC(12,2);
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS monthly_goal       NUMERIC(5,2);
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS session_start      TEXT;
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS session_end        TEXT;
