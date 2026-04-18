@@ -420,16 +420,10 @@ export default function JournalPage() {
             <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20, lineHeight: 1.6, maxWidth: 380, margin: "0 auto 20px" }}>
               6 questions pour transformer ta session en apprentissage. Prends 5 minutes — c{"'"}est là que le vrai progrès se fait.
             </div>
-            {!todayEntry ? (
-              <div style={{ fontSize: 12, color: "var(--ink3)", background: "var(--bg2)", borderRadius: 8, padding: "10px 14px", display: "inline-block" }}>
-                Complète d{"'"}abord ton entrée du jour ↑ avant de démarrer la réflexion.
-              </div>
-            ) : (
-              <button onClick={() => { setQuizStep(0); setCurrentAnswer(""); }}
-                style={{ background: "var(--navy)", color: "#fff", border: "none", borderRadius: 8, padding: "12px 28px", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "var(--font-outfit)" }}>
-                Démarrer la réflexion →
-              </button>
-            )}
+            <button onClick={() => { setQuizStep(0); setCurrentAnswer(""); }}
+              style={{ background: "var(--navy)", color: "#fff", border: "none", borderRadius: 8, padding: "12px 28px", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "var(--font-outfit)" }}>
+              Démarrer la réflexion →
+            </button>
           </div>
         )}
 
