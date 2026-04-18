@@ -137,7 +137,7 @@ export default function JournalPage() {
       setQuizAnswers(supabaseQuiz);
       if (Object.keys(supabaseQuiz).length >= totalPrompts) setQuizDone(true);
     } else {
-      const savedQuiz = localStorage.getItem(`mt-quiz-${today}`);
+      const savedQuiz = localStorage.getItem(`mt-quiz-${user.id}-${today}`);
       if (savedQuiz) {
         const parsed = JSON.parse(savedQuiz);
         setQuizAnswers(parsed);
@@ -180,9 +180,9 @@ export default function JournalPage() {
   }
 
   async function saveQuizAnswers(answers: Record<number, string>) {
-    localStorage.setItem(`mt-quiz-${today}`, JSON.stringify(answers));
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
+    localStorage.setItem(`mt-quiz-${user.id}-${today}`, JSON.stringify(answers));
     await supabase.from("journal_entries").upsert({
       user_id: user.id,
       date: today,
