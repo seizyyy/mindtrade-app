@@ -65,30 +65,11 @@ export default function Hero() {
         </div>
 
         {/* RIGHT — Dashboard Preview */}
-        <div className="animate-fade-in hero-right-hide" style={{ position: 'relative', marginTop: -60, marginLeft: 40 }}>
+        <div className="animate-fade-in hero-right-hide" style={{ position: 'relative', marginTop: -60, marginLeft: 60 }}>
 
           {/* Glow */}
           <div style={{ position: 'absolute', top: '30%', left: '50%', transform: 'translateX(-50%)', width: 500, height: 300, background: 'radial-gradient(ellipse, rgba(59,130,246,.12) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
 
-          {/* Notif flottante — trade gagnant */}
-          <div style={{ position: 'absolute', top: -18, right: -10, zIndex: 10, background: '#fff', borderRadius: 12, padding: '10px 14px', boxShadow: '0 8px 32px rgba(0,0,0,.15)', display: 'flex', alignItems: 'center', gap: 10, minWidth: 180 }}>
-            <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(34,197,94,.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <span style={{ fontSize: 16 }}>📈</span>
-            </div>
-            <div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#0f172a' }}>NAS100 · +896€</div>
-              <div style={{ fontSize: 10, color: '#64748b', marginTop: 1 }}>Trade clôturé · État optimal</div>
-            </div>
-          </div>
-
-          {/* Notif flottante — streak */}
-          <div style={{ position: 'absolute', bottom: 60, left: -16, zIndex: 10, background: '#0f172a', border: '1px solid rgba(255,255,255,.1)', borderRadius: 12, padding: '10px 14px', boxShadow: '0 8px 32px rgba(0,0,0,.3)', display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ fontSize: 18 }}>🔥</span>
-            <div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: '#fff' }}>Streak 14 jours</div>
-              <div style={{ fontSize: 10, color: 'rgba(255,255,255,.4)', marginTop: 1 }}>Check-in consécutifs</div>
-            </div>
-          </div>
 
           <div className="animate-float" style={{ position: 'relative', zIndex: 1, background: '#0f172a', border: '1px solid rgba(255,255,255,.1)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 0 0 1px rgba(255,255,255,.04), 0 40px 100px rgba(0,0,0,.6)' }}>
 
