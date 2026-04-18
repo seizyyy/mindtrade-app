@@ -150,7 +150,7 @@ export default function EssaiGratuitPage() {
                 Ton score est prêt
               </h2>
               <p style={{ fontSize: 14, color: "var(--ink2)", lineHeight: 1.7, marginBottom: 28, maxWidth: 380, margin: "0 auto 28px" }}>
-                Entre ton email pour voir ton résultat.
+                Entre ton email pour débloquer ton résultat — il s'affiche immédiatement ici.
               </p>
               <form onSubmit={handleEmailSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 <input
