@@ -9,10 +9,23 @@ type Trade = { pnl: number; pair: string; emotion: string; date: string; respect
 
 const DAY_LABELS = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
-function UpgradeWall({ plan }: { plan: string }) {
+function UpgradeWall({ plan, userId, email }: { plan: string; userId: string; email: string }) {
   const isAnnual = plan === "annual";
   const upgradePrice = isAnnual ? 447 : 497;
   const savings = 597 - upgradePrice;
+  const [loading, setLoading] = useState(false);
+
+  async function handleUpgrade() {
+    setLoading(true);
+    const res = await fetch("/api/stripe/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ plan: "lifetime", email, userId }),
+    });
+    const data = await res.json();
+    if (data.url) window.location.href = data.url;
+    else setLoading(false);
+  }
 
   return (
     <div style={{ position: "absolute", inset: 0, zIndex: 10, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 14 }}>
@@ -45,24 +58,27 @@ function UpgradeWall({ plan }: { plan: string }) {
           <div style={{ fontSize: 12, color: "var(--g)", fontWeight: 600 }}>Tu économises {savings}€ · Accès à vie</div>
         </div>
 
-        <a
-          href={`/register?plan=lifetime&upgrade=1&from=${plan}`}
+        <button
+          onClick={handleUpgrade}
+          disabled={loading}
           style={{
-            display: "block",
+            width: "100%",
             background: "linear-gradient(135deg, #f59e0b, #b8860b)",
             color: "#fff",
             borderRadius: 8,
             padding: "13px",
             fontSize: 14,
             fontWeight: 700,
-            textDecoration: "none",
+            border: "none",
+            cursor: loading ? "not-allowed" : "pointer",
             fontFamily: "var(--font-outfit)",
             boxShadow: "0 4px 20px rgba(184,134,11,.35)",
             marginBottom: 12,
+            opacity: loading ? 0.7 : 1,
           }}
         >
-          Passer à Lifetime — {upgradePrice}€ →
-        </a>
+          {loading ? "Redirection…" : `Passer à Lifetime — ${upgradePrice}€ →`}
+        </button>
         <div style={{ fontSize: 11, color: "var(--ink3)" }}>Paiement unique · Accès immédiat · Garanti à vie</div>
       </div>
     </div>
@@ -76,11 +92,15 @@ export default function AlphaPage() {
   const [trades, setTrades] = useState<Trade[]>([]);
   const [loading, setLoading] = useState(true);
   const [userPlan, setUserPlan] = useState<string>("monthly");
+  const [userId, setUserId] = useState("");
+  const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.replace("/login"); return; }
+      setUserId(user.id);
+      setUserEmail(user.email ?? "");
       const { data: profile } = await supabase.from("profiles").select("plan").eq("id", user.id).single();
       const plan = profile?.plan ?? "monthly";
       setUserPlan(plan);
@@ -250,7 +270,7 @@ export default function AlphaPage() {
       {!isLifetime && (
         <div style={{ position: "relative" }}>
           {fakeContent}
-          <UpgradeWall plan={userPlan} />
+          <UpgradeWall plan={userPlan} userId={userId} email={userEmail} />
         </div>
       )}
 
