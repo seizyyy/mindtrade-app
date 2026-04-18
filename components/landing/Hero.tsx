@@ -65,61 +65,98 @@ export default function Hero() {
         </div>
 
         {/* RIGHT — Dashboard Preview */}
-        <div className="animate-fade-in hero-right-hide" style={{ paddingLeft: '6%' }}>
-          <div className="animate-float" style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,.08)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,.3),0 24px 64px rgba(0,0,0,.4)' }}>
-            <div style={{ height: 44, background: '#1e293b', borderBottom: '1px solid rgba(255,255,255,.07)', display: 'flex', alignItems: 'center', padding: '0 16px', gap: 8 }}>
-              {['#ff5f56','#ffbd2e','#27c93f'].map(c => <div key={c} style={{ width: 10, height: 10, borderRadius: '50%', background: c }} />)}
-              <span style={{ fontFamily: 'var(--font-montserrat)', fontSize: 11, fontWeight: 900, color: '#f1f5f9', marginLeft: 8 }}>MindTrade</span>
+        <div className="animate-fade-in hero-right-hide" style={{ paddingLeft: '2%' }}>
+          <div className="animate-float" style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,.08)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,.4),0 32px 80px rgba(0,0,0,.5)' }}>
+
+            {/* Chrome bar */}
+            <div style={{ height: 36, background: '#1e293b', borderBottom: '1px solid rgba(255,255,255,.07)', display: 'flex', alignItems: 'center', padding: '0 14px', gap: 6 }}>
+              {['#ff5f56','#ffbd2e','#27c93f'].map(c => <div key={c} style={{ width: 9, height: 9, borderRadius: '50%', background: c, opacity: .8 }} />)}
+              <div style={{ flex: 1, background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.07)', borderRadius: 4, height: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', maxWidth: 180, margin: '0 auto' }}>
+                <span style={{ fontSize: 9, color: 'rgba(255,255,255,.25)' }}>mindtrade.co/dashboard</span>
+              </div>
             </div>
-            <div style={{ padding: 16, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-              <div style={{ gridColumn: '1/-1', background: 'linear-gradient(135deg,var(--navy),var(--navy2))', borderRadius: 10, padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div>
-                  <div style={{ fontSize: 10, color: 'rgba(255,255,255,.4)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 4 }}>Score mental · aujourd'hui</div>
-                  <div style={{ fontFamily: 'var(--font-fraunces)', fontSize: 52, color: '#fff', lineHeight: 1, fontWeight: 700 }}>82</div>
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'rgba(245,158,11,.15)', border: '1px solid rgba(245,158,11,.25)', borderRadius: 12, padding: '4px 10px', marginTop: 6 }}>
-                    <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#f59e0b' }} />
-                    <span style={{ fontSize: 10, fontWeight: 600, color: '#f59e0b' }}>État optimal</span>
-                  </div>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: 10, color: 'rgba(255,255,255,.35)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>vs hier</div>
-                  <div style={{ fontFamily: 'var(--font-fraunces)', fontSize: 22, color: 'rgba(255,255,255,.9)' }}>+14 pts</div>
-                </div>
-              </div>
-              <div style={{ gridColumn: '1/-1', display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>
-                {[{label:'Win rate',val:'68%',color:'#22c55e',sub:null},{label:'P&L net',val:'+620€',color:'#22c55e',sub:'68% win'},{label:'Streak',val:'14j',color:'#60a5fa',sub:null}].map(m => (
-                  <div key={m.label} style={{ background: '#1e293b', borderRadius: 8, padding: '10px 12px' }}>
-                    <div style={{ fontSize: 9, fontWeight: 600, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 3 }}>{m.label}</div>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 5 }}>
-                      <div style={{ fontFamily: 'var(--font-fraunces)', fontSize: 18, fontWeight: 700, color: m.color }}>{m.val}</div>
-                      {m.sub && <div style={{ fontSize: 9, fontWeight: 700, color: 'rgba(34,197,94,.6)', background: 'rgba(34,197,94,.1)', borderRadius: 4, padding: '1px 5px' }}>{m.sub}</div>}
-                    </div>
+
+            {/* App layout */}
+            <div style={{ display: 'flex', height: 420 }}>
+
+              {/* Sidebar */}
+              <div style={{ width: 130, background: '#1e293b', borderRight: '1px solid rgba(255,255,255,.07)', padding: '10px 6px', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+                <div style={{ fontSize: 10, fontWeight: 900, color: '#f1f5f9', letterSpacing: '-.3px', padding: '2px 6px', marginBottom: 10 }}>MindTrade</div>
+                {['Vue d\'ensemble','Check-in','Log de trades','Rapport hebdo','Journal'].map((label, i) => (
+                  <div key={label} style={{ padding: '6px 8px', borderRadius: 5, background: i === 0 ? 'rgba(255,255,255,.08)' : 'transparent', border: `1px solid ${i === 0 ? 'rgba(255,255,255,.1)' : 'transparent'}`, color: i === 0 ? '#f1f5f9' : 'rgba(255,255,255,.35)', fontSize: 10, fontWeight: i === 0 ? 600 : 400, marginBottom: 1 }}>
+                    {label}
                   </div>
                 ))}
-              </div>
-              <div style={{ background: 'rgba(239,68,68,.08)', border: '1px solid rgba(239,68,68,.18)', borderRadius: 8, padding: '10px 12px' }}>
-                <div style={{ fontSize: 9, fontWeight: 700, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>⚠ Signal mental</div>
-                {[{name:'FOMO',pct:68,color:'#ef4444'},{name:'Revenge',pct:35,color:'#f59e0b'},{name:'Discipline',pct:85,color:'#22c55e'}].map(b => (
-                  <div key={b.name} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                    <div style={{ fontSize: 10, color: 'rgba(255,255,255,.45)', width: 70, flexShrink: 0 }}>{b.name}</div>
-                    <div style={{ flex: 1, height: 3, background: 'rgba(255,255,255,.08)', borderRadius: 2, overflow: 'hidden' }}>
-                      <div style={{ width: `${b.pct}%`, height: 3, background: b.color, borderRadius: 2 }} />
-                    </div>
-                    <div style={{ fontSize: 10, fontWeight: 700, color: b.color }}>{b.pct}%</div>
+                <div style={{ marginTop: 'auto', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 8, padding: '10px' }}>
+                  <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 3 }}>Score mental</div>
+                  <div style={{ fontSize: 22, fontWeight: 700, color: '#22c55e', lineHeight: 1 }}>82</div>
+                  <div style={{ fontSize: 9, color: '#22c55e', marginTop: 1, fontWeight: 600 }}>Optimal</div>
+                  <div style={{ height: 2, background: 'rgba(255,255,255,.08)', borderRadius: 1, marginTop: 6 }}>
+                    <div style={{ height: '100%', width: '82%', background: '#22c55e', borderRadius: 1 }} />
                   </div>
-                ))}
+                  <div style={{ fontSize: 9, color: 'rgba(255,255,255,.3)', marginTop: 4 }}>🔥 14j de streak</div>
+                </div>
               </div>
-              <div style={{ background: '#1e293b', borderRadius: 8, padding: '10px 12px' }}>
-                <div style={{ fontSize: 9, fontWeight: 600, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Check-ins · 4 semaines</div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: 2 }}>
-                  {CI_PATTERN.map((s, i) => (
-                    <div key={i} style={{ aspectRatio: '1', borderRadius: 2, background: s === 'ok' ? 'rgba(34,197,94,.25)' : s === 'miss' ? 'rgba(239,68,68,.2)' : s === 'now' ? '#3b82f6' : 'rgba(255,255,255,.05)' }} />
+
+              {/* Main */}
+              <div style={{ flex: 1, padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8, overflow: 'hidden' }}>
+
+                {/* Signal */}
+                <div style={{ background: 'rgba(34,197,94,.08)', border: '1px solid rgba(34,197,94,.2)', borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                    {[0,1,2].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: i === 0 ? '#22c55e' : 'rgba(255,255,255,.1)' }} />)}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 2 }}>Signal de session</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#22c55e' }}>État mental optimal</div>
+                    <div style={{ fontSize: 9, color: 'rgba(255,255,255,.4)', marginTop: 1 }}>Bonne condition pour opérer. Applique ton plan.</div>
+                  </div>
+                </div>
+
+                {/* 4 métriques */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 6 }}>
+                  {[
+                    { label: 'Score mental', val: '82', color: '#22c55e' },
+                    { label: 'Win rate',     val: '80%', color: '#22c55e' },
+                    { label: 'P&L net',      val: '+2 916€', color: '#22c55e' },
+                    { label: 'Profit factor',val: '9.38', color: '#22c55e' },
+                  ].map(m => (
+                    <div key={m.label} style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.07)', borderRadius: 7, padding: '10px 10px' }}>
+                      <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 5 }}>{m.label}</div>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: m.color, lineHeight: 1, fontFamily: 'Georgia, serif' }}>{m.val}</div>
+                    </div>
                   ))}
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 9, color: 'rgba(255,255,255,.3)' }}>
-                  <span>89% de complétion</span>
-                  <span style={{ color: '#22c55e', fontWeight: 700 }}>Streak 14j ↑</span>
+
+                {/* Graphique + trades */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 6, flex: 1 }}>
+                  <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.07)', borderRadius: 7, padding: '10px 12px' }}>
+                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Score mental — 7 jours</div>
+                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 56 }}>
+                      {[{d:'DI',s:60,c:'#f59e0b'},{d:'LU',s:100,c:'#22c55e'},{d:'MA',s:84,c:'#22c55e'},{d:'ME',s:40,c:'#ef4444'},{d:'JE',s:76,c:'#22c55e'},{d:'VE',s:92,c:'#22c55e'},{d:'SA',s:82,c:'#22c55e'}].map(b => (
+                        <div key={b.d} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+                          <div style={{ width: '100%', height: `${b.s * 0.52}px`, background: b.c, borderRadius: '2px 2px 0 0', opacity: .85 }} />
+                          <div style={{ fontSize: 7, color: 'rgba(255,255,255,.25)' }}>{b.d}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.07)', borderRadius: 7, padding: '10px 12px' }}>
+                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Derniers trades</div>
+                    {[
+                      { pair: 'NAS100',  pnl: '+896€',  color: '#22c55e' },
+                      { pair: 'GBP/USD', pnl: '+544€',  color: '#22c55e' },
+                      { pair: 'US30',    pnl: '-348€',  color: '#ef4444' },
+                      { pair: 'EUR/USD', pnl: '+704€',  color: '#22c55e' },
+                    ].map(t => (
+                      <div key={t.pair} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
+                        <div style={{ fontSize: 9, fontWeight: 600, color: 'rgba(255,255,255,.6)' }}>{t.pair}</div>
+                        <div style={{ fontSize: 9, fontWeight: 700, color: t.color }}>{t.pnl}</div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
+
               </div>
             </div>
           </div>
