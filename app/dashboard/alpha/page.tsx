@@ -17,14 +17,23 @@ function UpgradeWall({ plan, userId, email }: { plan: string; userId: string; em
 
   async function handleUpgrade() {
     setLoading(true);
-    const res = await fetch("/api/stripe/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan: `upgrade_${plan}`, email, userId }),
-    });
-    const data = await res.json();
-    if (data.url) window.location.href = data.url;
-    else setLoading(false);
+    try {
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan: `upgrade_${plan}`, email, userId }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Erreur : " + (data.error || "inconnue"));
+        setLoading(false);
+      }
+    } catch (e) {
+      alert("Erreur réseau. Réessaie.");
+      setLoading(false);
+    }
   }
 
   return (
