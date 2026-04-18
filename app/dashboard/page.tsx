@@ -112,7 +112,7 @@ export default function DashboardPage() {
         supabase.from("checkins").select("score,date").eq("user_id", user.id).eq("date", today).single(),
         supabase.from("trades").select("pnl,direction,pair,emotion,date,respected_rules")
           .eq("user_id", user.id).gte("date", monthAgo)
-          .order("date", { ascending: false }).limit(60),
+          .order("date", { ascending: false }).order("created_at", { ascending: false }).limit(60),
         supabase.from("checkins").select("score,date")
           .eq("user_id", user.id).order("date", { ascending: false }).limit(30),
         supabase.from("profiles").select("account_size,display_name,monthly_goal,max_daily_loss,currency").eq("id", user.id).single(),
