@@ -5,7 +5,7 @@ export default function ProductTour() {
     <section id="produit" style={{ padding: "120px 5%", background: "#0a0f1a", position: "relative", overflow: "hidden" }}>
       <div style={{ position:"absolute", top:"20%", left:"50%", transform:"translateX(-50%)", width:1000, height:600, background:"radial-gradient(ellipse, rgba(15,39,68,.75) 0%, transparent 70%)", pointerEvents:"none" }} />
 
-      <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative" }}>
 
         {/* Header */}
         <div style={{ textAlign:"center", marginBottom: 56 }}>
@@ -33,10 +33,10 @@ export default function ProductTour() {
           </div>
 
           {/* App layout */}
-          <div style={{ display:"flex", height:560 }}>
+          <div style={{ display:"flex", height:680 }}>
 
             {/* Sidebar */}
-            <div style={{ width:170, background:"#1e293b", borderRight:"1px solid rgba(255,255,255,.07)", padding:"12px 8px", display:"flex", flexDirection:"column", flexShrink:0 }}>
+            <div style={{ width:200, background:"#1e293b", borderRight:"1px solid rgba(255,255,255,.07)", padding:"12px 8px", display:"flex", flexDirection:"column", flexShrink:0 }}>
               <div style={{ fontSize:12, fontWeight:900, color:"#f1f5f9", letterSpacing:"-.4px", padding:"4px 8px", marginBottom:12 }}>MindTrade</div>
               <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
                 {[
@@ -85,7 +85,7 @@ export default function ProductTour() {
                 {[
                   { label:"Score mental", val:"80", sub:"État optimal", subColor:"#22c55e", valColor:"#22c55e", extra:"🔥 7j de streak" },
                   { label:"Win rate", val:"80%", sub:"4W · 1L · 7 jours", subColor:"rgba(255,255,255,.3)", valColor:"#22c55e" },
-                  { label:"P&L net", val:"+2 916€", sub:"Cette semaine · 80% win", subColor:"rgba(255,255,255,.3)", valColor:"#22c55e", badge:"+5.83%" },
+                  { label:"P&L net", val:"+2916€", sub:"Cette semaine · 80% win", subColor:"rgba(255,255,255,.3)", valColor:"#22c55e", badge:"+5.83%" },
                   { label:"Profit factor", val:"9.38", sub:"Stratégie rentable", subColor:"rgba(255,255,255,.3)", valColor:"#22c55e" },
                 ].map(m => (
                   <div key={m.label} style={{ background:"#1e293b", border:"1px solid rgba(255,255,255,.07)", borderRadius:10, padding:"14px 14px" }}>
