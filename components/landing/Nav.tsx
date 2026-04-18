@@ -59,7 +59,7 @@ export default function Nav() {
             <a href="/login" style={{ fontSize: 13, fontWeight: 500, color: "var(--ink2)", textDecoration: "none" }}
               onMouseOver={e => (e.currentTarget.style.color = "var(--ink)")}
               onMouseOut={e => (e.currentTarget.style.color = "var(--ink2)")}>
-              Connexion
+              Espace membre
             </a>
           )}
           <a href="#acces" style={{
