@@ -95,6 +95,11 @@ export default function CheckinPage() {
   const [existingScore, setExistingScore] = useState<number | null>(null);
   const [checkins, setCheckins] = useState<{ date: string; score: number }[]>([]);
   const [displayName, setDisplayName] = useState<string>("");
+  const [maxRiskPct, setMaxRiskPct] = useState<number | null>(null);
+  const [maxDailyLossPct, setMaxDailyLossPct] = useState<number | null>(null);
+  const [accountSize, setAccountSize] = useState<number | null>(null);
+  const [currency, setCurrency] = useState<string>("EUR");
+  const [todayPnl, setTodayPnl] = useState<number>(0);
 
   const today = new Date().toISOString().split("T")[0];
   const dayOfWeek = new Date().getDay(); // 0 = dimanche, 6 = samedi
@@ -104,14 +109,21 @@ export default function CheckinPage() {
     async function check() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.replace("/login"); return; }
-      const [{ data: todayData }, { data: histData }, { data: profile }] = await Promise.all([
+      const [{ data: todayData }, { data: histData }, { data: profile }, { data: todayTrades }] = await Promise.all([
         supabase.from("checkins").select("score").eq("user_id", user.id).eq("date", today).single(),
         supabase.from("checkins").select("score,date").eq("user_id", user.id).order("date", { ascending: false }).limit(30),
-        supabase.from("profiles").select("display_name").eq("id", user.id).single(),
+        supabase.from("profiles").select("display_name,max_risk_per_trade,max_daily_loss,account_size,currency").eq("id", user.id).single(),
+        supabase.from("trades").select("pnl").eq("user_id", user.id).eq("date", today),
       ]);
       if (todayData) { setAlreadyDone(true); setExistingScore(todayData.score); setStep(5); }
       setCheckins(histData || []);
       if (profile?.display_name) setDisplayName(profile.display_name);
+      if (profile?.max_risk_per_trade) setMaxRiskPct(profile.max_risk_per_trade);
+      if (profile?.max_daily_loss) setMaxDailyLossPct(profile.max_daily_loss);
+      if (profile?.account_size) setAccountSize(profile.account_size);
+      if (profile?.currency) setCurrency(profile.currency);
+      const pnl = (todayTrades || []).reduce((s: number, t: { pnl: number }) => s + t.pnl, 0);
+      setTodayPnl(pnl);
     }
     check();
   }, []);
@@ -121,6 +133,12 @@ export default function CheckinPage() {
   const verdict = step === 5 ? getVerdict(alreadyDone && existingScore ? existingScore : score) : null;
   const displayScore = alreadyDone && existingScore ? existingScore : score;
   const sleepWarning = getSleepWarning(answers.sommeil);
+
+  // Alerte règles de risque
+  const maxDailyLossAmount = accountSize && maxDailyLossPct ? (accountSize * maxDailyLossPct) / 100 : null;
+  const maxRiskAmount = accountSize && maxRiskPct ? (accountSize * maxRiskPct) / 100 : null;
+  const dailyLossReached = maxDailyLossAmount !== null && todayPnl < 0 && Math.abs(todayPnl) >= maxDailyLossAmount;
+  const dailyLossClose = maxDailyLossAmount !== null && todayPnl < 0 && Math.abs(todayPnl) >= maxDailyLossAmount * 0.75 && !dailyLossReached;
 
   function selectAndNext(val: number) {
     const newAnswers = { ...answers, [currentQ.key]: val };
@@ -217,6 +235,32 @@ export default function CheckinPage() {
               <div style={{ background: "var(--tint-r-bg)", border: "1px solid var(--tint-r-border)", borderRadius: 10, padding: "12px 16px", marginBottom: 16 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: "var(--r)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>⚠ Alerte sommeil</div>
                 <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.6 }}>{sleepWarning}</div>
+              </div>
+            )}
+
+            {/* Alerte règles de risque */}
+            {dailyLossReached && (
+              <div style={{ background: "var(--tint-r-bg)", border: "1px solid var(--tint-r-border)", borderRadius: 10, padding: "14px 16px", marginBottom: 16 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "var(--r)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 6 }}>⛔ Limite journalière atteinte</div>
+                <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.7 }}>
+                  Tu as perdu <strong style={{ color: "var(--r)" }}>{Math.abs(todayPnl).toFixed(0)} {currency}</strong> aujourd'hui — ta limite est fixée à <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {currency}</strong>. <strong>Arrête de trader maintenant.</strong> Revenir demain avec un état d'esprit frais est toujours plus rentable que de tenter de récupérer.
+                </div>
+              </div>
+            )}
+            {dailyLossClose && !dailyLossReached && (
+              <div style={{ background: "var(--tint-a-bg)", border: "1px solid var(--tint-a-border)", borderRadius: 10, padding: "14px 16px", marginBottom: 16 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "var(--a)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 6 }}>⚠ Limite journalière proche</div>
+                <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.7 }}>
+                  Tu as perdu <strong style={{ color: "var(--a)" }}>{Math.abs(todayPnl).toFixed(0)} {currency}</strong> sur ta limite de <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {currency}</strong>. Il te reste <strong style={{ color: "var(--ink)" }}>{(maxDailyLossAmount! - Math.abs(todayPnl)).toFixed(0)} {currency}</strong> avant la limite — trade uniquement tes meilleurs setups.
+                </div>
+              </div>
+            )}
+            {maxRiskAmount && !dailyLossReached && (
+              <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 10, padding: "12px 16px", marginBottom: 16 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>Rappel risque</div>
+                <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.6 }}>
+                  Risque max par trade : <strong style={{ color: "var(--ink)" }}>{maxRiskAmount.toFixed(0)} {currency}</strong> ({maxRiskPct}% de ton capital)
+                </div>
               </div>
             )}
 
