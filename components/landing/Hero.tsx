@@ -66,10 +66,10 @@ export default function Hero() {
 
         {/* RIGHT — Dashboard Preview */}
         <div className="animate-fade-in hero-right-hide" style={{ paddingLeft: '6%' }}>
-          <div className="animate-float" style={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 4px 24px rgba(12,12,10,.08),0 24px 64px rgba(12,12,10,.1)' }}>
-            <div style={{ height: 44, background: 'var(--card)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', padding: '0 16px', gap: 8 }}>
+          <div className="animate-float" style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,.08)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,.3),0 24px 64px rgba(0,0,0,.4)' }}>
+            <div style={{ height: 44, background: '#1e293b', borderBottom: '1px solid rgba(255,255,255,.07)', display: 'flex', alignItems: 'center', padding: '0 16px', gap: 8 }}>
               {['#ff5f56','#ffbd2e','#27c93f'].map(c => <div key={c} style={{ width: 10, height: 10, borderRadius: '50%', background: c }} />)}
-              <span style={{ fontFamily: 'var(--font-montserrat)', fontSize: 11, fontWeight: 900, color: 'var(--ink)', marginLeft: 8 }}>MindTrade</span>
+              <span style={{ fontFamily: 'var(--font-montserrat)', fontSize: 11, fontWeight: 900, color: '#f1f5f9', marginLeft: 8 }}>MindTrade</span>
             </div>
             <div style={{ padding: 16, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
               <div style={{ gridColumn: '1/-1', background: 'linear-gradient(135deg,var(--navy),var(--navy2))', borderRadius: 10, padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -87,38 +87,38 @@ export default function Hero() {
                 </div>
               </div>
               <div style={{ gridColumn: '1/-1', display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 8 }}>
-                {[{label:'Win rate',val:'68%',color:'#166534',sub:null},{label:'P&L net',val:'+620€',color:'#166534',sub:'68% win'},{label:'Streak',val:'14j',color:'var(--navy)',sub:null}].map(m => (
-                  <div key={m.label} style={{ background: 'var(--bg2)', borderRadius: 8, padding: '10px 12px' }}>
-                    <div style={{ fontSize: 9, fontWeight: 600, color: 'var(--ink3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 3 }}>{m.label}</div>
+                {[{label:'Win rate',val:'68%',color:'#22c55e',sub:null},{label:'P&L net',val:'+620€',color:'#22c55e',sub:'68% win'},{label:'Streak',val:'14j',color:'#60a5fa',sub:null}].map(m => (
+                  <div key={m.label} style={{ background: '#1e293b', borderRadius: 8, padding: '10px 12px' }}>
+                    <div style={{ fontSize: 9, fontWeight: 600, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 3 }}>{m.label}</div>
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: 5 }}>
                       <div style={{ fontFamily: 'var(--font-fraunces)', fontSize: 18, fontWeight: 700, color: m.color }}>{m.val}</div>
-                      {m.sub && <div style={{ fontSize: 9, fontWeight: 700, color: 'rgba(22,101,52,.5)', background: 'rgba(22,101,52,.08)', borderRadius: 4, padding: '1px 5px' }}>{m.sub}</div>}
+                      {m.sub && <div style={{ fontSize: 9, fontWeight: 700, color: 'rgba(34,197,94,.6)', background: 'rgba(34,197,94,.1)', borderRadius: 4, padding: '1px 5px' }}>{m.sub}</div>}
                     </div>
                   </div>
                 ))}
               </div>
-              <div style={{ background: 'rgba(155,28,28,.06)', border: '1px solid rgba(155,28,28,.12)', borderRadius: 8, padding: '10px 12px' }}>
-                <div style={{ fontSize: 9, fontWeight: 700, color: 'var(--r)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>⚠ Signal mental</div>
-                {[{name:'FOMO',pct:68,color:'var(--r)'},{name:'Revenge',pct:35,color:'var(--a)'},{name:'Discipline',pct:85,color:'var(--g)'}].map(b => (
+              <div style={{ background: 'rgba(239,68,68,.08)', border: '1px solid rgba(239,68,68,.18)', borderRadius: 8, padding: '10px 12px' }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>⚠ Signal mental</div>
+                {[{name:'FOMO',pct:68,color:'#ef4444'},{name:'Revenge',pct:35,color:'#f59e0b'},{name:'Discipline',pct:85,color:'#22c55e'}].map(b => (
                   <div key={b.name} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                    <div style={{ fontSize: 10, color: 'var(--ink2)', width: 70, flexShrink: 0 }}>{b.name}</div>
-                    <div style={{ flex: 1, height: 3, background: 'rgba(155,28,28,.1)', borderRadius: 2, overflow: 'hidden' }}>
+                    <div style={{ fontSize: 10, color: 'rgba(255,255,255,.45)', width: 70, flexShrink: 0 }}>{b.name}</div>
+                    <div style={{ flex: 1, height: 3, background: 'rgba(255,255,255,.08)', borderRadius: 2, overflow: 'hidden' }}>
                       <div style={{ width: `${b.pct}%`, height: 3, background: b.color, borderRadius: 2 }} />
                     </div>
                     <div style={{ fontSize: 10, fontWeight: 700, color: b.color }}>{b.pct}%</div>
                   </div>
                 ))}
               </div>
-              <div style={{ background: 'var(--bg2)', borderRadius: 8, padding: '10px 12px' }}>
-                <div style={{ fontSize: 9, fontWeight: 600, color: 'var(--ink3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Check-ins · 4 semaines</div>
+              <div style={{ background: '#1e293b', borderRadius: 8, padding: '10px 12px' }}>
+                <div style={{ fontSize: 9, fontWeight: 600, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Check-ins · 4 semaines</div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: 2 }}>
                   {CI_PATTERN.map((s, i) => (
-                    <div key={i} style={{ aspectRatio: '1', borderRadius: 2, background: ciColor[s] }} />
+                    <div key={i} style={{ aspectRatio: '1', borderRadius: 2, background: s === 'ok' ? 'rgba(34,197,94,.25)' : s === 'miss' ? 'rgba(239,68,68,.2)' : s === 'now' ? '#3b82f6' : 'rgba(255,255,255,.05)' }} />
                   ))}
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 9, color: 'var(--ink3)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 9, color: 'rgba(255,255,255,.3)' }}>
                   <span>89% de complétion</span>
-                  <span style={{ color: 'var(--g)', fontWeight: 700 }}>Streak 14j ↑</span>
+                  <span style={{ color: '#22c55e', fontWeight: 700 }}>Streak 14j ↑</span>
                 </div>
               </div>
             </div>
