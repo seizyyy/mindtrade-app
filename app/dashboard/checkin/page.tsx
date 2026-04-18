@@ -157,16 +157,21 @@ export default function CheckinPage() {
 
       {isWeekend && (
         <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 14, padding: "48px 40px", textAlign: "center" }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>📴</div>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>📊</div>
           <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 24, fontWeight: 700, color: "var(--ink)", marginBottom: 8 }}>
-            Marchés fermés ce week-end
+            {displayName ? `Bon week-end, ${displayName}.` : "Bon week-end."}
           </div>
-          <div style={{ fontSize: 14, color: "var(--ink3)", lineHeight: 1.7, maxWidth: 380, margin: "0 auto 28px" }}>
-            Le check-in mental est disponible du lundi au vendredi, avant ta session de trading.{displayName ? ` Profite du week-end, ${displayName} !` : " Profite du week-end !"}
+          <div style={{ fontSize: 14, color: "var(--ink3)", lineHeight: 1.8, maxWidth: 400, margin: "0 auto 28px" }}>
+            Les marchés sont fermés — c'est le bon moment pour <strong style={{ color: "var(--ink)" }}>relire ta semaine</strong>, identifier ce qui a fonctionné, et <strong style={{ color: "var(--ink)" }}>préparer celle qui arrive</strong>. Le check-in reprend lundi.
           </div>
-          <a href="/dashboard" style={{ display: "inline-block", padding: "11px 28px", borderRadius: 8, background: "var(--navy)", color: "#fff", textDecoration: "none", fontSize: 14, fontWeight: 700 }}>
-            Retour au dashboard →
-          </a>
+          <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+            <a href="/dashboard/rapport" style={{ display: "inline-block", padding: "11px 24px", borderRadius: 8, background: "var(--navy)", color: "#fff", textDecoration: "none", fontSize: 14, fontWeight: 700 }}>
+              Voir mon rapport →
+            </a>
+            <a href="/dashboard/journal" style={{ display: "inline-block", padding: "11px 24px", borderRadius: 8, background: "var(--bg2)", border: "1px solid var(--border)", color: "var(--ink)", textDecoration: "none", fontSize: 14, fontWeight: 600 }}>
+              Écrire dans mon journal →
+            </a>
+          </div>
         </div>
       )}
 
