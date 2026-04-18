@@ -96,167 +96,155 @@ export default function SettingsPage() {
   if (loading) return <div style={{ color: "var(--ink3)", fontSize: 14, padding: 40 }}>Chargement…</div>;
 
   return (
-    <div style={{ maxWidth: 900 }}>
+    <div style={{ maxWidth: 780 }}>
       <div style={{ marginBottom: 28 }}>
         <h1 style={{ fontFamily: "var(--font-fraunces)", fontSize: 26, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Paramètres</h1>
         <p style={{ fontSize: 13, color: "var(--ink3)" }}>Tes préférences et informations de compte.</p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, alignItems: "start" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
 
-        {/* ── Colonne gauche ── */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-
-          {/* Profil */}
-          <div style={card}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 16 }}>Profil</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <div>
-                <label style={label}>Prénom / pseudo</label>
-                <input value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="Ex : Thomas" style={field} />
-              </div>
-              <div>
-                <label style={label}>Marché principal</label>
-                <select value={market} onChange={e => setMarket(e.target.value)} style={field}>
-                  {MARKETS.map(m => <option key={m} value={m}>{m}</option>)}
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* Règles de risque */}
-          <div style={card}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Règles de risque</div>
-            <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 16, lineHeight: 1.5 }}>
-              MindTrade t'alertera si tu approches de ces limites lors du check-in.
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <div>
-                <label style={label}>Risque max / trade</label>
-                <div style={{ position: "relative" }}>
-                  <input type="number" min="0" max="100" step="0.1" value={maxRisk} onChange={e => setMaxRisk(e.target.value)} placeholder="Ex : 1" style={{ ...field, paddingRight: 30 }} />
-                  <span style={{ position: "absolute", right: 11, top: "50%", transform: "translateY(-50%)", fontSize: 13, color: "var(--ink3)" }}>%</span>
-                </div>
-                {cap && maxRisk && <div style={hint}>= <strong style={{ color: "var(--ink)" }}>{((cap * parseFloat(maxRisk)) / 100).toFixed(0)} {currency}</strong> / trade</div>}
-              </div>
-              <div>
-                <label style={label}>Perte max / jour</label>
-                <div style={{ position: "relative" }}>
-                  <input type="number" min="0" max="100" step="0.1" value={maxDailyLoss} onChange={e => setMaxDailyLoss(e.target.value)} placeholder="Ex : 3" style={{ ...field, paddingRight: 30 }} />
-                  <span style={{ position: "absolute", right: 11, top: "50%", transform: "translateY(-50%)", fontSize: 13, color: "var(--ink3)" }}>%</span>
-                </div>
-                {cap && maxDailyLoss && <div style={hint}>= <strong style={{ color: "var(--ink)" }}>{((cap * parseFloat(maxDailyLoss)) / 100).toFixed(0)} {currency}</strong> avant d'arrêter</div>}
-              </div>
-            </div>
-          </div>
-
-          {/* Session de trading */}
-          <div style={card}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Session de trading</div>
-            <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 16, lineHeight: 1.5 }}>
-              Tes horaires habituels de trading.
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-              <div>
-                <label style={label}>De</label>
-                <input type="time" value={sessionStart} onChange={e => setSessionStart(e.target.value)} style={field} />
-              </div>
-              <div>
-                <label style={label}>À</label>
-                <input type="time" value={sessionEnd} onChange={e => setSessionEnd(e.target.value)} style={field} />
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        {/* ── Colonne droite ── */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-
-          {/* Capital de trading */}
-          <div style={card}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Capital de trading</div>
-            <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 16, lineHeight: 1.5 }}>
-              Utilisé pour calculer tes montants de risque réels. Non partagé.
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <div>
-                <label style={label}>Taille du compte</label>
-                <input type="number" min="0" step="100" value={accountSize} onChange={e => setAccountSize(e.target.value)} placeholder="Ex : 10 000" style={field} />
-              </div>
-              <div>
-                <label style={label}>Devise</label>
-                <select value={currency} onChange={e => setCurrency(e.target.value)} style={field}>
-                  {[["EUR","€"],["USD","$"],["GBP","£"],["CHF","CHF"],["CAD","CA$"],["JPY","¥"]].map(([code, sym]) => (
-                    <option key={code} value={code}>{sym} {code}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            {cap && <div style={hint}>1% de ton compte = <strong style={{ color: "var(--ink)" }}>{(cap / 100).toFixed(0)} {currency}</strong></div>}
-          </div>
-
-          {/* Objectif mensuel */}
-          <div style={card}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Objectif mensuel</div>
-            <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 16, lineHeight: 1.5 }}>
-              Visible dans la carte P&L de ton dashboard sous forme de barre de progression.
+        {/* ── Profil ── */}
+        <div style={card}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 16 }}>Profil</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+            <div>
+              <label style={label}>Prénom / pseudo</label>
+              <input value={displayName} onChange={e => setDisplayName(e.target.value)} placeholder="Ex : Thomas" style={field} />
             </div>
             <div>
+              <label style={label}>Marché principal</label>
+              <select value={market} onChange={e => setMarket(e.target.value)} style={field}>
+                {MARKETS.map(m => <option key={m} value={m}>{m}</option>)}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Capital + Règles de risque ── */}
+        <div style={card}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
+
+            {/* Capital */}
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Capital de trading</div>
+              <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 14, lineHeight: 1.5 }}>Utilisé pour calculer tes montants réels. Non partagé.</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 10, alignItems: "end" }}>
+                <div>
+                  <label style={label}>Taille du compte</label>
+                  <input type="number" min="0" step="100" value={accountSize} onChange={e => setAccountSize(e.target.value)} placeholder="Ex : 10 000" style={field} />
+                </div>
+                <div>
+                  <label style={label}>Devise</label>
+                  <select value={currency} onChange={e => setCurrency(e.target.value)} style={{ ...field, width: "auto", minWidth: 84 }}>
+                    {[["EUR","€"],["USD","$"],["GBP","£"],["CHF","CHF"],["CAD","CA$"],["JPY","¥"]].map(([code, sym]) => (
+                      <option key={code} value={code}>{sym} {code}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              {cap && <div style={hint}>1% = <strong style={{ color: "var(--ink)" }}>{(cap / 100).toFixed(0)} {currency}</strong></div>}
+            </div>
+
+            {/* Séparateur vertical */}
+            <div style={{ borderLeft: "1px solid var(--border)", paddingLeft: 32 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Règles de risque</div>
+              <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 14, lineHeight: 1.5 }}>MindTrade t'alerte si tu approches ces limites en check-in.</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                <div>
+                  <label style={label}>Risque max / trade</label>
+                  <div style={{ position: "relative" }}>
+                    <input type="number" min="0" max="100" step="0.1" value={maxRisk} onChange={e => setMaxRisk(e.target.value)} placeholder="1" style={{ ...field, paddingRight: 26 }} />
+                    <span style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "var(--ink3)" }}>%</span>
+                  </div>
+                  {cap && maxRisk && <div style={hint}>{((cap * parseFloat(maxRisk)) / 100).toFixed(0)} {currency}</div>}
+                </div>
+                <div>
+                  <label style={label}>Perte max / jour</label>
+                  <div style={{ position: "relative" }}>
+                    <input type="number" min="0" max="100" step="0.1" value={maxDailyLoss} onChange={e => setMaxDailyLoss(e.target.value)} placeholder="3" style={{ ...field, paddingRight: 26 }} />
+                    <span style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "var(--ink3)" }}>%</span>
+                  </div>
+                  {cap && maxDailyLoss && <div style={hint}>{((cap * parseFloat(maxDailyLoss)) / 100).toFixed(0)} {currency}</div>}
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* ── Objectif mensuel + Session ── */}
+        <div style={card}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
+
+            {/* Objectif */}
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Objectif mensuel</div>
+              <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 14, lineHeight: 1.5 }}>Affiché en barre de progression dans la carte P&L.</div>
               <label style={label}>Pourcentage visé ce mois</label>
               <div style={{ position: "relative" }}>
-                <input type="number" min="0" max="1000" step="0.5" value={monthlyGoal} onChange={e => setMonthlyGoal(e.target.value)} placeholder="Ex : 5" style={{ ...field, paddingRight: 30 }} />
-                <span style={{ position: "absolute", right: 11, top: "50%", transform: "translateY(-50%)", fontSize: 13, color: "var(--ink3)" }}>%</span>
+                <input type="number" min="0" max="1000" step="0.5" value={monthlyGoal} onChange={e => setMonthlyGoal(e.target.value)} placeholder="Ex : 5" style={{ ...field, paddingRight: 26 }} />
+                <span style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "var(--ink3)" }}>%</span>
               </div>
               {cap && monthlyGoal && <div style={hint}>= <strong style={{ color: "var(--ink)" }}>{((cap * parseFloat(monthlyGoal)) / 100).toFixed(0)} {currency}</strong> à atteindre</div>}
             </div>
-          </div>
 
-          {/* Biais à surveiller */}
-          <div style={card}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Biais à surveiller</div>
-            <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 16, lineHeight: 1.5 }}>
-              MindTrade intègre ces biais dans ton analyse post-session pour te donner des alertes personnalisées.
+            {/* Session */}
+            <div style={{ borderLeft: "1px solid var(--border)", paddingLeft: 32 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Session de trading</div>
+              <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 14, lineHeight: 1.5 }}>Tes horaires habituels de trading.</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                <div>
+                  <label style={label}>De</label>
+                  <input type="time" value={sessionStart} onChange={e => setSessionStart(e.target.value)} style={field} />
+                </div>
+                <div>
+                  <label style={label}>À</label>
+                  <input type="time" value={sessionEnd} onChange={e => setSessionEnd(e.target.value)} style={field} />
+                </div>
+              </div>
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-              {BIASES.map(b => {
-                const active = biases.includes(b);
-                return (
-                  <button key={b} onClick={() => toggleBias(b)} style={{
-                    padding: "7px 14px", borderRadius: 20, fontSize: 13, fontWeight: 500,
-                    fontFamily: "var(--font-outfit)", cursor: "pointer", transition: "all .12s",
-                    border: `1.5px solid ${active ? "var(--navy)" : "var(--border)"}`,
-                    background: active ? "rgba(15,39,68,.07)" : "transparent",
-                    color: active ? "var(--navy)" : "var(--ink3)",
-                  }}>
-                    {b}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
 
+          </div>
+        </div>
+
+        {/* ── Biais ── */}
+        <div style={card}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Biais à surveiller</div>
+          <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 14, lineHeight: 1.5 }}>
+            Intégrés dans ton analyse post-session pour des alertes personnalisées.
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {BIASES.map(b => {
+              const active = biases.includes(b);
+              return (
+                <button key={b} onClick={() => toggleBias(b)} style={{
+                  padding: "7px 16px", borderRadius: 20, fontSize: 13, fontWeight: 500,
+                  fontFamily: "var(--font-outfit)", cursor: "pointer", transition: "all .12s",
+                  border: `1.5px solid ${active ? "var(--navy)" : "var(--border)"}`,
+                  background: active ? "rgba(15,39,68,.07)" : "transparent",
+                  color: active ? "var(--navy)" : "var(--ink3)",
+                }}>
+                  {b}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ── Save ── */}
+        <div>
+          <button onClick={save} disabled={saving} style={{
+            padding: "11px 28px", borderRadius: 8, border: "none",
+            background: saved ? "var(--g)" : "var(--navy)", color: "#fff",
+            fontSize: 14, fontWeight: 700, cursor: saving ? "not-allowed" : "pointer",
+            fontFamily: "var(--font-outfit)", opacity: saving ? 0.7 : 1, transition: "background .2s",
+          }}>
+            {saved ? "✓ Sauvegardé" : saving ? "Sauvegarde…" : "Sauvegarder"}
+          </button>
         </div>
 
       </div>
-
-      {/* ── Save ── */}
-      <div style={{ marginTop: 16 }}>
-        <button
-          onClick={save}
-          disabled={saving}
-          style={{
-            padding: "12px 24px", borderRadius: 8, border: "none",
-            background: saved ? "var(--g)" : "var(--navy)", color: "#fff",
-            fontSize: 14, fontWeight: 700, cursor: saving ? "not-allowed" : "pointer",
-            fontFamily: "var(--font-outfit)", opacity: saving ? 0.7 : 1,
-            transition: "background .2s",
-          }}
-        >
-          {saved ? "✓ Sauvegardé" : saving ? "Sauvegarde…" : "Sauvegarder"}
-        </button>
-      </div>
-
     </div>
   );
 }
