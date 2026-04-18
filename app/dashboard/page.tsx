@@ -7,19 +7,6 @@ import { useRouter } from "next/navigation";
 type Checkin = { score: number; date: string };
 type Trade = { pnl: number; direction: string; pair: string; emotion: string; date: string; respected_rules: boolean };
 
-function DemoLock() {
-  return (
-    <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(5px)", background: "rgba(15,23,42,.55)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, zIndex: 5 }}>
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="rgba(255,255,255,.7)" strokeWidth="1.8">
-        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
-      </svg>
-      <a href="/#acces" style={{ fontSize: 11, fontWeight: 700, color: "#fff", textDecoration: "none", background: "#3b82f6", borderRadius: 5, padding: "4px 10px" }}>
-        Débloquer
-      </a>
-    </div>
-  );
-}
-
 // ── Signal feu tricolore ─────────────────────────────────────────────────────
 function getSignal(score: number | null, consecutiveLosses: number, hasToxicRecent: boolean) {
   if (!score) return null;
@@ -108,7 +95,6 @@ export default function DashboardPage() {
   const [showUnlocked, setShowUnlocked] = useState(false);
   const [accountSize, setAccountSize] = useState<number | null>(null);
   const [displayName, setDisplayName] = useState<string>("");
-  const [isDemo, setIsDemo] = useState(false);
 
   const today = new Date().toISOString().split("T")[0];
   const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split("T")[0];
@@ -118,7 +104,6 @@ export default function DashboardPage() {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.replace("/login"); return; }
-      if (user.email === "demo@mindtrade.co") setIsDemo(true);
       const [{ data: ci }, { data: tr }, { data: cis }, { data: profile }] = await Promise.all([
         supabase.from("checkins").select("score,date").eq("user_id", user.id).eq("date", today).single(),
         supabase.from("trades").select("pnl,direction,pair,emotion,date,respected_rules")
@@ -321,7 +306,6 @@ export default function DashboardPage() {
 
         {/* P&L net */}
         <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "16px 18px", position: "relative", overflow: "hidden" }}>
-          {isDemo && <DemoLock />}
           <div style={{ fontSize: 10, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8 }}>P&L net</div>
           <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
             <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 38, fontWeight: 700, color: weekTrades.length > 0 ? pnlNet >= 0 ? "var(--g)" : "var(--r)" : "var(--ink3)", lineHeight: 1 }}>
@@ -348,7 +332,6 @@ export default function DashboardPage() {
 
         {/* Profit factor */}
         <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "16px 18px", position: "relative", overflow: "hidden" }}>
-          {isDemo && <DemoLock />}
           <div style={{ fontSize: 10, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8 }}>Profit factor</div>
           <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 38, fontWeight: 700, color: pfColor, lineHeight: 1, marginBottom: 4 }}>
             {profitFactor ?? "—"}

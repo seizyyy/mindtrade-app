@@ -35,7 +35,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [todayScore, setTodayScore] = useState<number | null>(null);
   const [streak, setStreak] = useState(0);
   const [dark, setDark] = useState(false);
-  const [isDemo, setIsDemo] = useState(false);
   const supabase = createClient();
 
   // Charger la préférence dark mode depuis localStorage
@@ -79,7 +78,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.replace("/login"); return; }
-      if (user.email === "demo@mindtrade.co") { setIsDemo(true); }
 
       let { data: profile } = await supabase
         .from("profiles")
@@ -165,20 +163,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
       </div>
 
-      {isDemo && (
-        <div style={{ background: "linear-gradient(90deg, #1e3a5f, #1e40af)", borderBottom: "1px solid rgba(59,130,246,.3)", padding: "10px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0, gap: 12 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#60a5fa", flexShrink: 0 }} />
-            <span style={{ fontSize: 13, color: "rgba(255,255,255,.85)", fontWeight: 500 }}>
-              Vous explorez le dashboard en <strong style={{ color: "#fff" }}>mode démo</strong> — les données sont fictives et non sauvegardées.
-            </span>
-          </div>
-          <a href="/#acces" style={{ flexShrink: 0, background: "#3b82f6", color: "#fff", padding: "7px 16px", borderRadius: 6, fontSize: 12, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>
-            Créer mon compte →
-          </a>
-        </div>
-      )}
-
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
         {/* Sidebar */}
         <div style={{ width: 200, background: "var(--card)", borderRight: "1px solid var(--border)", padding: "12px 8px", display: "flex", flexDirection: "column", flexShrink: 0, overflowY: "auto" }}>
@@ -255,31 +239,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         {/* Main content */}
         <main style={{ flex: 1, overflowY: "auto", padding: "24px 28px", position: "relative" }}>
-          {isDemo && pathname !== "/dashboard" ? (
-            <div style={{ position: "absolute", inset: 0, zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20, backdropFilter: "blur(6px)", background: "rgba(15,23,42,.7)" }}>
-              <div style={{ textAlign: "center", maxWidth: 380, padding: "0 20px" }}>
-                <div style={{ width: 56, height: 56, borderRadius: "50%", background: "rgba(59,130,246,.15)", border: "1px solid rgba(59,130,246,.3)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
-                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#3b82f6" strokeWidth="1.8">
-                    <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
-                  </svg>
-                </div>
-                <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 22, fontWeight: 700, color: "#fff", marginBottom: 10 }}>
-                  Fonctionnalité réservée aux membres
-                </div>
-                <div style={{ fontSize: 14, color: "rgba(255,255,255,.55)", lineHeight: 1.6, marginBottom: 24 }}>
-                  Créez votre compte pour accéder au check-in mental, au log de trades, au journal et à toutes les analyses.
-                </div>
-                <a href="/#acces" style={{ display: "inline-block", background: "#3b82f6", color: "#fff", padding: "12px 28px", borderRadius: 8, fontSize: 14, fontWeight: 700, textDecoration: "none" }}>
-                  Créer mon compte →
-                </a>
-                <div style={{ marginTop: 14 }}>
-                  <a href="/dashboard" style={{ fontSize: 13, color: "rgba(255,255,255,.35)", textDecoration: "none" }}>
-                    ← Retour à la démo
-                  </a>
-                </div>
-              </div>
-            </div>
-          ) : null}
           {children}
         </main>
       </div>
