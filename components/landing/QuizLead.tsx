@@ -150,9 +150,6 @@ export default function QuizLead() {
 
             {/* Right — preview card */}
             <div style={{ position: "relative" }}>
-              {/* Glow */}
-              <div style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-50%,-50%)", width: 400, height: 300, background: "radial-gradient(ellipse, rgba(155,28,28,.08) 0%, transparent 70%)", pointerEvents: "none" }} />
-
               <div style={{ position: "relative", background: "#0f172a", border: "1px solid rgba(255,255,255,.08)", borderRadius: 20, overflow: "hidden", boxShadow: "0 40px 100px rgba(0,0,0,.25)" }}>
 
                 {/* Header */}
