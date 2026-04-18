@@ -211,7 +211,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
             {/* Dark mode toggle */}
             <div style={{ marginTop: 10, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 2px" }}>
-              <a href="/" style={{ fontSize: 12, color: "var(--ink3)", textDecoration: "none", display: "flex", alignItems: "center", gap: 5 }}>
+              <a href="/?preview=1" style={{ fontSize: 12, color: "var(--ink3)", textDecoration: "none", display: "flex", alignItems: "center", gap: 5 }}>
                 <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
                 Retour au site
               </a>
