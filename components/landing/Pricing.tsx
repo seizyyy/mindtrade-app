@@ -110,7 +110,6 @@ export default function Pricing() {
               <div style={{ fontSize: 11, fontWeight: 700, color: "var(--gold)", textTransform: "uppercase", letterSpacing: ".1em" }}>Lifetime</div>
               <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:4 }}>
                 <span style={{ fontSize: 10, fontWeight: 800, color: "var(--gold)", background: "rgba(184,134,11,.12)", border: "1px solid rgba(184,134,11,.35)", padding: "3px 10px", borderRadius: 20, letterSpacing: ".04em" }}>EXCLUSIF</span>
-                <span style={{ fontSize: 10, fontWeight: 700, color: "#ef4444" }}>🔥 Offre de lancement</span>
               </div>
             </div>
 
@@ -118,8 +117,6 @@ export default function Pricing() {
               <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 48, fontWeight: 700, color: "#fff", lineHeight: 1 }}>597€</div>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-              <span style={{ fontSize: 13, color: "rgba(255,255,255,.3)", textDecoration: "line-through" }}>1 197€</span>
-              <span style={{ fontSize: 11, fontWeight: 700, color: "var(--gold)" }}>−50%</span>
             </div>
             <div style={{ fontSize: 12, color: "rgba(255,255,255,.35)", marginBottom: 4 }}>Paiement unique · Accès à vie</div>
 
