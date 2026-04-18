@@ -65,7 +65,7 @@ export default function Hero() {
         </div>
 
         {/* RIGHT — Dashboard Preview */}
-        <div className="animate-fade-in hero-right-hide" style={{ position: 'relative' }}>
+        <div className="animate-fade-in hero-right-hide" style={{ position: 'relative', marginTop: -60, marginLeft: 40 }}>
 
           {/* Glow */}
           <div style={{ position: 'absolute', top: '30%', left: '50%', transform: 'translateX(-50%)', width: 500, height: 300, background: 'radial-gradient(ellipse, rgba(59,130,246,.12) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
