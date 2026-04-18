@@ -38,14 +38,20 @@ export async function POST(req: NextRequest) {
 
     if (userId && plan) {
       const resolvedPlan = plan.startsWith("upgrade_") ? "lifetime" : plan;
+      const customerId = session.customer as string;
+
       await supabase
         .from("profiles")
-        .update({
-          plan: resolvedPlan,
-          plan_active: true,
-          stripe_customer_id: session.customer as string,
-        })
+        .update({ plan: resolvedPlan, plan_active: true, stripe_customer_id: customerId })
         .eq("id", userId);
+
+      // Si c'est un upgrade, annuler l'abonnement récurrent actif
+      if (plan.startsWith("upgrade_") && customerId) {
+        const subs = await stripe.subscriptions.list({ customer: customerId, status: "active" });
+        for (const sub of subs.data) {
+          await stripe.subscriptions.cancel(sub.id);
+        }
+      }
     }
   }
 
