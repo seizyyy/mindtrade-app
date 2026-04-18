@@ -187,6 +187,14 @@ export default function ProductTour() {
           </div>
         </div>
 
+        {/* CTA */}
+        <div style={{ textAlign:"center", marginTop:40 }}>
+          <a href="#acces" style={{ display:"inline-block", background:"#fff", color:"#0f172a", padding:"14px 36px", borderRadius:8, fontSize:14, fontWeight:700, textDecoration:"none", fontFamily:"var(--font-outfit)", letterSpacing:"-.01em" }}>
+            Commencer maintenant →
+          </a>
+          <div style={{ fontSize:12, color:"rgba(255,255,255,.25)", marginTop:12 }}>Remboursé 14 jours si pas convaincu</div>
+        </div>
+
         {/* Légende */}
         <div style={{ display:"flex", justifyContent:"center", gap:28, marginTop:32, flexWrap:"wrap" }}>
           {[
