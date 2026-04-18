@@ -15,7 +15,6 @@ const reviews = [
     stars: 5,
     initials: "TM", name: "Thomas M.", role: "Day trader · Forex · 4 ans",
     date: "Mars 2026",
-    result: "+27% win rate en 6 semaines",
     text: "J'utilisais un autre journal depuis 2 ans. MindTrade m'a appris quelque chose qu'aucune stat ne pouvait me donner : savoir quand ne pas trader. En 6 semaines mon win rate est passé de 51% à 65%.",
     featured: true,
   },
@@ -23,23 +22,20 @@ const reviews = [
     stars: 5,
     initials: "AR", name: "Alexandre R.", role: "Futures · Indices · 6 ans",
     date: "Fév. 2026",
-    result: "Revenge trading éliminé",
     text: "Avant, je savais que j'étais en tilt seulement après avoir perdu 3 trades de suite. MindTrade me le dit avant d'entrer. C'est la différence entre un miroir et un conseiller.",
     featured: false,
   },
   {
     stars: 5,
-    initials: "PK", name: "Pierre K.", role: "Day trader · Crypto · 3 ans",
+    initials: "PK", name: "Pierre K.", role: "Day trader · Forex · 3 ans",
     date: "Janv. 2026",
-    result: "Score moyen : 71 → 84",
     text: "Je pensais que mon problème c'était mon système. En réalité c'était mon état mental. Le check-in quotidien m'a forcé à être honnête avec moi-même.",
     featured: false,
   },
   {
     stars: 4,
-    initials: "JL", name: "Julie L.", role: "Swing trader · Actions · 2 ans",
+    initials: "JL", name: "Julie L.", role: "Swing trader · Indices · 2 ans",
     date: "Mars 2026",
-    result: "3 sessions évitées = ~240€ économisés",
     text: "Le score mental avant les charts c'est vraiment utile. J'ai stoppé 3 sessions la semaine dernière avec un score à 52. Interface très propre. J'aurais aimé plus de détails sur les biais mais dans l'ensemble c'est vraiment bien.",
     featured: false,
   },
@@ -47,16 +43,14 @@ const reviews = [
     stars: 4,
     initials: "MF", name: "Marc F.", role: "Swing trader · Forex · 5 ans",
     date: "Fév. 2026",
-    result: "Discipline : 62% → 89%",
     text: "Le journal structuré change vraiment les choses. Je vois exactement pourquoi j'ai perdu et dans quel état j'étais. Seul bémol : l'import automatique depuis mon broker manque encore, mais le support m'a dit que c'est prévu.",
     featured: false,
   },
   {
     stars: 3,
-    initials: "SB", name: "Samuel B.", role: "Scalper · Indices · 1 an",
-    date: "Mars 2026",
-    result: "Utilisation en cours",
-    text: "Concept vraiment intéressant et je comprends la valeur. Pour l'instant je m'habitue encore au check-in quotidien — c'est un changement de routine. Le dashboard est clair. À voir sur la durée.",
+    initials: "SB", name: "Samuel B.", role: "Scalper · Gold · 1 an",
+    date: "Fév. 2026",
+    text: "J'ai demandé un remboursement au bout de 10 jours. Pas parce que le produit est mauvais — le concept est solide — mais je n'étais tout simplement pas prêt à changer mes habitudes. Le support a traité ça sans aucun problème.",
     featured: false,
   },
 ];
@@ -118,10 +112,6 @@ export default function SocialProof() {
             <div style={{ flex: 1 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
                 <Stars count={featured.stars} />
-                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(22,101,52,.07)", border: "1px solid rgba(22,101,52,.15)", borderRadius: 20, padding: "3px 12px" }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--g)" }} />
-                  <span style={{ fontSize: 11, fontWeight: 700, color: "var(--g)" }}>↑ {featured.result}</span>
-                </div>
               </div>
               <p style={{ fontSize: 15, color: "var(--ink2)", lineHeight: 1.75, fontStyle: "italic", margin: 0 }}>
                 &ldquo;{featured.text}&rdquo;
@@ -151,11 +141,6 @@ export default function SocialProof() {
                 &ldquo;{r.text}&rdquo;
               </p>
 
-              {r.result && r.stars >= 4 && (
-                <div style={{ fontSize: 11, fontWeight: 700, color: "var(--g)", background: "rgba(22,101,52,.06)", border: "1px solid rgba(22,101,52,.12)", borderRadius: 20, padding: "3px 10px", display: "inline-block", marginTop: 4 }}>
-                  ↑ {r.result}
-                </div>
-              )}
             </div>
           ))}
         </div>
