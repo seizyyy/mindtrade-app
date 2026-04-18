@@ -96,6 +96,8 @@ export default function DashboardPage() {
   const [accountSize, setAccountSize] = useState<number | null>(null);
   const [displayName, setDisplayName] = useState<string>("");
   const [monthlyGoal, setMonthlyGoal] = useState<number | null>(null);
+  const [maxDailyLossPct, setMaxDailyLossPct] = useState<number | null>(null);
+  const [currency, setCurrency] = useState<string>("EUR");
 
   const today = new Date().toISOString().split("T")[0];
   const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split("T")[0];
@@ -113,7 +115,7 @@ export default function DashboardPage() {
           .order("date", { ascending: false }).limit(60),
         supabase.from("checkins").select("score,date")
           .eq("user_id", user.id).order("date", { ascending: false }).limit(30),
-        supabase.from("profiles").select("account_size,display_name,monthly_goal").eq("id", user.id).single(),
+        supabase.from("profiles").select("account_size,display_name,monthly_goal,max_daily_loss,currency").eq("id", user.id).single(),
       ]);
       setTodayCheckin(ci || null);
       setTrades(tr || []);
@@ -121,6 +123,8 @@ export default function DashboardPage() {
       if (profile?.account_size) setAccountSize(profile.account_size);
       if (profile?.display_name) setDisplayName(profile.display_name);
       if (profile?.monthly_goal) setMonthlyGoal(profile.monthly_goal);
+      if (profile?.max_daily_loss) setMaxDailyLossPct(profile.max_daily_loss);
+      if (profile?.currency) setCurrency(profile.currency);
       // Affiche la carte unlock une seule fois
       const alreadySeen = localStorage.getItem("mt-unlocked");
       if (!alreadySeen && (cis || []).length >= 3 && (tr || []).length >= 1) {
@@ -159,6 +163,13 @@ export default function DashboardPage() {
     (allWinsSum / allLossSum).toFixed(2);
   const pfNum = profitFactor === null ? null : profitFactor === "∞" ? Infinity : parseFloat(profitFactor);
   const pfColor = pfNum === null ? "var(--ink3)" : pfNum >= 1.5 ? "var(--g)" : pfNum >= 1 ? "var(--a)" : "var(--r)";
+
+  // Alerte perte journalière
+  const todayTrades = trades.filter(t => t.date === today);
+  const todayPnl = todayTrades.reduce((s, t) => s + t.pnl, 0);
+  const maxDailyLossAmount = accountSize && maxDailyLossPct ? (accountSize * maxDailyLossPct) / 100 : null;
+  const dailyLossReached = maxDailyLossAmount !== null && todayPnl < 0 && Math.abs(todayPnl) >= maxDailyLossAmount;
+  const dailyLossClose = maxDailyLossAmount !== null && todayPnl < 0 && Math.abs(todayPnl) >= maxDailyLossAmount * 0.75 && !dailyLossReached;
 
   // Objectif mensuel
   const monthTrades = trades.filter(t => t.date >= monthStart);
@@ -287,6 +298,30 @@ export default function DashboardPage() {
           <a href="/dashboard/checkin" style={{ flexShrink: 0, background: "#fff", color: "var(--navy)", padding: "10px 22px", borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
             Faire le check-in →
           </a>
+        </div>
+      )}
+
+      {/* ── Alerte perte journalière ── */}
+      {dailyLossReached && (
+        <div style={{ background: "var(--tint-r-bg)", border: "1.5px solid var(--tint-r-border)", borderRadius: 14, padding: "16px 20px", display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ fontSize: 24, flexShrink: 0 }}>⛔</div>
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 800, color: "var(--r)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>Limite journalière atteinte</div>
+            <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.65 }}>
+              Tu as perdu <strong style={{ color: "var(--r)" }}>{Math.abs(todayPnl).toFixed(0)} {currency}</strong> aujourd'hui — ta limite est <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {currency}</strong>. Ferme le terminal. Revenir demain est toujours plus rentable que tenter de récupérer.
+            </div>
+          </div>
+        </div>
+      )}
+      {dailyLossClose && (
+        <div style={{ background: "var(--tint-a-bg)", border: "1.5px solid var(--tint-a-border)", borderRadius: 14, padding: "16px 20px", display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ fontSize: 24, flexShrink: 0 }}>⚠️</div>
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 800, color: "var(--a)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>Limite journalière proche</div>
+            <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.65 }}>
+              Tu as perdu <strong style={{ color: "var(--a)" }}>{Math.abs(todayPnl).toFixed(0)} {currency}</strong> sur ta limite de <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {currency}</strong>. Il te reste <strong style={{ color: "var(--ink)" }}>{(maxDailyLossAmount! - Math.abs(todayPnl)).toFixed(0)} {currency}</strong> — trade uniquement tes meilleurs setups.
+            </div>
+          </div>
         </div>
       )}
 
