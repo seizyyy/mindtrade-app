@@ -178,7 +178,7 @@ export default function SettingsPage() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, alignItems: "end" }}>
             <div>
-              <label style={label}>Rendement visé ce mois</label>
+              <label style={label}>Pourcentage visé ce mois</label>
               <div style={{ position: "relative" }}>
                 <input type="number" min="0" max="1000" step="0.5" value={monthlyGoal} onChange={e => setMonthlyGoal(e.target.value)} placeholder="Ex : 5" style={{ ...field, paddingRight: 30 }} />
                 <span style={{ position: "absolute", right: 11, top: "50%", transform: "translateY(-50%)", fontSize: 13, color: "var(--ink3)" }}>%</span>
