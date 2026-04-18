@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import AnnouncementBar from "@/components/landing/AnnouncementBar";
 import Nav from "@/components/landing/Nav";
@@ -21,11 +21,10 @@ import ChatWidget from "@/components/landing/ChatWidget";
 
 export default function LandingPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const supabase = createClient();
 
   useEffect(() => {
-    if (searchParams.get("preview") === "1") return;
+    if (window.location.search.includes("preview=1")) return;
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) router.replace("/dashboard");
     });
