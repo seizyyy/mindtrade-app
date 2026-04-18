@@ -95,10 +95,12 @@ export default function DashboardPage() {
   const [showUnlocked, setShowUnlocked] = useState(false);
   const [accountSize, setAccountSize] = useState<number | null>(null);
   const [displayName, setDisplayName] = useState<string>("");
+  const [monthlyGoal, setMonthlyGoal] = useState<number | null>(null);
 
   const today = new Date().toISOString().split("T")[0];
   const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split("T")[0];
   const monthAgo = new Date(Date.now() - 30 * 86400000).toISOString().split("T")[0];
+  const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split("T")[0];
 
   useEffect(() => {
     async function load() {
@@ -111,13 +113,14 @@ export default function DashboardPage() {
           .order("date", { ascending: false }).limit(60),
         supabase.from("checkins").select("score,date")
           .eq("user_id", user.id).order("date", { ascending: false }).limit(30),
-        supabase.from("profiles").select("account_size,display_name").eq("id", user.id).single(),
+        supabase.from("profiles").select("account_size,display_name,monthly_goal").eq("id", user.id).single(),
       ]);
       setTodayCheckin(ci || null);
       setTrades(tr || []);
       setCheckins(cis || []);
       if (profile?.account_size) setAccountSize(profile.account_size);
       if (profile?.display_name) setDisplayName(profile.display_name);
+      if (profile?.monthly_goal) setMonthlyGoal(profile.monthly_goal);
       // Affiche la carte unlock une seule fois
       const alreadySeen = localStorage.getItem("mt-unlocked");
       if (!alreadySeen && (cis || []).length >= 3 && (tr || []).length >= 1) {
@@ -156,6 +159,12 @@ export default function DashboardPage() {
     (allWinsSum / allLossSum).toFixed(2);
   const pfNum = profitFactor === null ? null : profitFactor === "∞" ? Infinity : parseFloat(profitFactor);
   const pfColor = pfNum === null ? "var(--ink3)" : pfNum >= 1.5 ? "var(--g)" : pfNum >= 1 ? "var(--a)" : "var(--r)";
+
+  // Objectif mensuel
+  const monthTrades = trades.filter(t => t.date >= monthStart);
+  const monthPnl = monthTrades.reduce((s, t) => s + t.pnl, 0);
+  const monthPnlPct = accountSize && accountSize > 0 ? (monthPnl / accountSize) * 100 : null;
+  const goalProgress = monthlyGoal && monthPnlPct !== null ? Math.min(100, Math.max(0, (monthPnlPct / monthlyGoal) * 100)) : null;
 
   // Pertes consécutives (du plus récent)
   let consecutiveLosses = 0;
@@ -328,6 +337,19 @@ export default function DashboardPage() {
               : <><span>Cette semaine · </span><a href="/dashboard/settings" style={{ color: "var(--navy)", textDecoration: "none", fontWeight: 600 }}>Ajouter ton capital →</a></>
             }
           </div>
+          {goalProgress !== null && (
+            <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 5 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".08em" }}>Objectif mensuel</div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: goalProgress >= 100 ? "var(--g)" : "var(--ink2)" }}>
+                  {monthPnlPct! >= 0 ? "+" : ""}{monthPnlPct!.toFixed(1)}% / {monthlyGoal}%
+                </div>
+              </div>
+              <div style={{ height: 4, borderRadius: 2, background: "var(--bg3)", overflow: "hidden" }}>
+                <div style={{ height: "100%", width: `${goalProgress}%`, borderRadius: 2, background: goalProgress >= 100 ? "var(--g)" : monthPnlPct! < 0 ? "var(--r)" : "var(--navy)", transition: "width .4s" }} />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Profit factor */}

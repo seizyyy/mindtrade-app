@@ -174,7 +174,7 @@ export default function SettingsPage() {
         <div style={card}>
           <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Objectif mensuel</div>
           <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 16, lineHeight: 1.5 }}>
-            Affiché sur ton dashboard. Te donne un cap concret à tenir.
+            Visible dans la carte P&L de ton dashboard sous forme de barre de progression.
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, alignItems: "end" }}>
             <div>
