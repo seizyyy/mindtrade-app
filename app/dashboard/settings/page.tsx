@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
 
-const MARKETS = ["Forex", "Indices / Futures", "Actions", "Crypto", "Multi"];
+const MARKETS = ["Forex", "Indices / Futures", "Actions", "Crypto", "Matières premières"];
 const BIASES  = ["FOMO", "Revenge trading", "Overtrading", "Sorties prématurées", "Déplacer ses stops", "Sous-dimensionnement"];
 
 export default function SettingsPage() {
