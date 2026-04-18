@@ -46,6 +46,39 @@ const QUIZ_PROMPTS = [
   { icon: "💡", q: "Qu'as-tu appris ou confirmé aujourd'hui que tu vas intégrer demain ?", placeholder: "Un insight concret sur toi-même ou sur le marché..." },
 ];
 
+const BIAS_QUESTIONS: Record<string, { icon: string; q: string; placeholder: string }> = {
+  "FOMO": {
+    icon: "⚡",
+    q: "Tu surveilles le FOMO — as-tu ressenti une envie d'entrer sans signal clair aujourd'hui ?",
+    placeholder: "Décris le moment précis, ce que tu as ressenti, et comment tu as réagi...",
+  },
+  "Revenge trading": {
+    icon: "🔥",
+    q: "Tu surveilles le revenge trading — après une perte, as-tu voulu récupérer rapidement ?",
+    placeholder: "Comment tu as réagi après ta perte ? Tu as attendu le prochain setup ou tu as re-entré ?",
+  },
+  "Overtrading": {
+    icon: "📊",
+    q: "Tu surveilles l'overtrading — as-tu pris plus de trades que prévu aujourd'hui ?",
+    placeholder: "Y a-t-il eu des trades superflus ? Qu'est-ce qui t'a poussé à les prendre ?",
+  },
+  "Sorties prématurées": {
+    icon: "✂️",
+    q: "Tu surveilles les sorties prématurées — as-tu coupé une position avant ton objectif aujourd'hui ?",
+    placeholder: "Quelle émotion t'a poussé à sortir tôt ? La peur de rendre, l'impatience ?",
+  },
+  "Déplacer ses stops": {
+    icon: "🎯",
+    q: "Tu surveilles ce biais — as-tu déplacé ou élargi un stop-loss aujourd'hui ?",
+    placeholder: "Si oui, quelle justification tu t'es donnée à ce moment-là ?",
+  },
+  "Sous-dimensionnement": {
+    icon: "📉",
+    q: "Tu surveilles le sous-dimensionnement — as-tu réduit ta taille par peur sur un setup valide ?",
+    placeholder: "Y a-t-il eu un trade que tu as sous-tradé par manque de confiance ?",
+  },
+};
+
 export default function JournalPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -63,6 +96,7 @@ export default function JournalPage() {
   const [quizAnswers, setQuizAnswers] = useState<Record<number, string>>({});
   const [quizDone, setQuizDone] = useState(false);
   const [currentAnswer, setCurrentAnswer] = useState("");
+  const [userBiases, setUserBiases] = useState<string[]>([]);
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -81,10 +115,15 @@ export default function JournalPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.replace("/login"); return; }
 
-    const [{ data: journalData }, { data: tradesData }] = await Promise.all([
+    const [{ data: journalData }, { data: tradesData }, { data: profileData }] = await Promise.all([
       supabase.from("journal_entries").select("*").eq("user_id", user.id).order("date", { ascending: false }).limit(30),
       supabase.from("trades").select("id,pair,direction,pnl,emotion,respected_rules").eq("user_id", user.id).eq("date", today),
+      supabase.from("profiles").select("trading_biases").eq("id", user.id).single(),
     ]);
+    const loadedBiases: string[] = profileData?.trading_biases || [];
+    setUserBiases(loadedBiases);
+    const biasPromptCount = loadedBiases.filter(b => BIAS_QUESTIONS[b]).length;
+    const totalPrompts = QUIZ_PROMPTS.length + biasPromptCount;
 
     const allEntries = journalData || [];
     setEntries(allEntries);
@@ -96,13 +135,13 @@ export default function JournalPage() {
     const supabaseQuiz = te?.quiz_answers;
     if (supabaseQuiz && Object.keys(supabaseQuiz).length > 0) {
       setQuizAnswers(supabaseQuiz);
-      if (Object.keys(supabaseQuiz).length >= QUIZ_PROMPTS.length) setQuizDone(true);
+      if (Object.keys(supabaseQuiz).length >= totalPrompts) setQuizDone(true);
     } else {
       const savedQuiz = localStorage.getItem(`mt-quiz-${today}`);
       if (savedQuiz) {
         const parsed = JSON.parse(savedQuiz);
         setQuizAnswers(parsed);
-        if (Object.keys(parsed).length >= QUIZ_PROMPTS.length) setQuizDone(true);
+        if (Object.keys(parsed).length >= totalPrompts) setQuizDone(true);
       }
     }
     if (te) {
@@ -159,6 +198,9 @@ export default function JournalPage() {
   }
 
   const viewEntry = selectedDate ? entries.find(e => e.date === selectedDate) : null;
+
+  const biasPrompts = userBiases.filter(b => BIAS_QUESTIONS[b]).map(b => BIAS_QUESTIONS[b]);
+  const allPrompts = [...QUIZ_PROMPTS, ...biasPrompts];
 
   if (loading) return <div style={{ color: "var(--ink3)", fontSize: 13 }}>Chargement...</div>;
 
@@ -430,12 +472,12 @@ export default function JournalPage() {
         {/* Quiz en cours */}
         {quizStep !== null && !quizDone && (() => {
           const step = quizStep as number;
-          const prompt = QUIZ_PROMPTS[step];
+          const prompt = allPrompts[step];
           const answeredCount = Object.keys(quizAnswers).length;
           function saveAndNext() {
             const updated: Record<number, string> = { ...quizAnswers, [step]: currentAnswer };
             setQuizAnswers(updated);
-            if (step < QUIZ_PROMPTS.length - 1) {
+            if (step < allPrompts.length - 1) {
               setQuizStep(step + 1);
               setCurrentAnswer(updated[step + 1] || "");
             } else {
@@ -454,12 +496,17 @@ export default function JournalPage() {
             <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 14, padding: "28px 32px" }}>
               {/* Progress */}
               <div style={{ display: "flex", gap: 6, marginBottom: 24 }}>
-                {QUIZ_PROMPTS.map((_, i) => (
+                {allPrompts.map((_, i) => (
                   <div key={i} style={{ flex: 1, height: 3, borderRadius: 2, background: i < step ? "var(--navy)" : i === step ? "var(--navy)" : "var(--bg3)", opacity: i === step ? 0.45 : 1 }} />
                 ))}
               </div>
+              {step >= QUIZ_PROMPTS.length && (
+                <div style={{ fontSize: 10, fontWeight: 700, color: "var(--navy)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8, background: "rgba(15,39,68,.07)", display: "inline-block", padding: "3px 8px", borderRadius: 4 }}>
+                  Biais personnalisé
+                </div>
+              )}
               <div style={{ fontSize: 11, color: "var(--ink3)", marginBottom: 6, fontWeight: 600 }}>
-                Question {step + 1} sur {QUIZ_PROMPTS.length}
+                Question {step + 1} sur {allPrompts.length}
               </div>
               <div style={{ fontSize: 22, marginBottom: 10 }}>{prompt.icon}</div>
               <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 17, color: "var(--ink)", lineHeight: 1.4, marginBottom: 20 }}>
@@ -479,11 +526,11 @@ export default function JournalPage() {
                   ← Précédent
                 </button>
                 <span style={{ fontSize: 11, color: "var(--ink3)" }}>
-                  {answeredCount}/{QUIZ_PROMPTS.length} répondues
+                  {answeredCount}/{allPrompts.length} répondues
                 </span>
                 <button onClick={saveAndNext}
                   style={{ background: "var(--navy)", color: "#fff", border: "none", borderRadius: 7, padding: "9px 20px", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "var(--font-outfit)" }}>
-                  {step < QUIZ_PROMPTS.length - 1 ? "Suivant →" : "Terminer ✓"}
+                  {step < allPrompts.length - 1 ? "Suivant →" : "Terminer ✓"}
                 </button>
               </div>
             </div>
@@ -503,7 +550,7 @@ export default function JournalPage() {
               </div>
             </div>
             <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
-              {QUIZ_PROMPTS.map((p, i) => quizAnswers[i] ? (
+              {allPrompts.map((p, i) => quizAnswers[i] ? (
                 <div key={i}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
                     <span style={{ fontSize: 14 }}>{p.icon}</span>
