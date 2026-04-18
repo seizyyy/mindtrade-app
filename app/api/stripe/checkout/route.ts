@@ -9,6 +9,8 @@ const PRICE_IDS: Record<string, string> = {
   monthly: process.env.STRIPE_PRICE_MONTHLY!,
   annual: process.env.STRIPE_PRICE_ANNUAL!,
   lifetime: process.env.STRIPE_PRICE_LIFETIME!,
+  upgrade_monthly: process.env.STRIPE_PRICE_UPGRADE_MONTHLY!,
+  upgrade_annual: process.env.STRIPE_PRICE_UPGRADE_ANNUAL!,
 };
 
 export async function POST(req: NextRequest) {
@@ -20,7 +22,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
     }
 
-    const isRecurring = plan !== "lifetime";
+    const isRecurring = plan === "monthly" || plan === "annual";
 
     const session = await stripe.checkout.sessions.create({
       mode: isRecurring ? "subscription" : "payment",

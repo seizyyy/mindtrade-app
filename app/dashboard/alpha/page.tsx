@@ -20,7 +20,7 @@ function UpgradeWall({ plan, userId, email }: { plan: string; userId: string; em
     const res = await fetch("/api/stripe/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan: "lifetime", email, userId }),
+      body: JSON.stringify({ plan: `upgrade_${plan}`, email, userId }),
     });
     const data = await res.json();
     if (data.url) window.location.href = data.url;

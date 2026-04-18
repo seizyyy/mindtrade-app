@@ -26,9 +26,10 @@ export async function POST(req: NextRequest) {
     const plan = session.metadata?.plan;
 
     if (userId && plan) {
+      const resolvedPlan = plan.startsWith("upgrade_") ? "lifetime" : plan;
       await supabase
         .from("profiles")
-        .update({ plan, plan_active: true, stripe_customer_id: session.customer as string })
+        .update({ plan: resolvedPlan, plan_active: true, stripe_customer_id: session.customer as string })
         .eq("id", userId);
     }
 
