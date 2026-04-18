@@ -7,7 +7,7 @@ export default function ProductTour() {
       <div style={{ position:"absolute", top:"20%", left:"50%", transform:"translateX(-50%)", width:1000, height:600, background:"radial-gradient(ellipse, rgba(15,39,68,.75) 0%, transparent 70%)", pointerEvents:"none" }} />
       <div style={{ position:"absolute", bottom:0, right:"10%", width:400, height:400, background:"radial-gradient(circle, rgba(59,130,246,.06) 0%, transparent 70%)", pointerEvents:"none" }} />
 
-      <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}>
+      <div style={{ maxWidth: 860, margin: "0 auto", position: "relative" }}>
 
         {/* Header */}
         <div style={{ textAlign:"center", marginBottom: 56 }}>
