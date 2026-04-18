@@ -66,7 +66,7 @@ export default function ProductTour() {
             </div>
 
             {/* Main */}
-            <div style={{ flex:1, overflowY:"auto", padding:"18px 20px", background:"#0f172a", display:"flex", flexDirection:"column", gap:12 }}>
+            <div style={{ flex:1, overflowY:"hidden", padding:"18px 20px", background:"#0f172a", display:"flex", flexDirection:"column", gap:12 }}>
 
               {/* Signal */}
               <div style={{ background:"rgba(34,197,94,.08)", border:"1px solid rgba(34,197,94,.2)", borderRadius:10, padding:"14px 18px", display:"flex", alignItems:"center", gap:12 }}>
