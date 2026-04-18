@@ -41,10 +41,10 @@ function UpgradeWall({ plan, userId, email }: { plan: string; userId: string; em
         <div style={{ fontSize: 28, marginBottom: 12 }}>⭐</div>
         <div style={{ fontSize: 10, fontWeight: 800, color: "#b8860b", background: "rgba(184,134,11,.12)", border: "1px solid rgba(184,134,11,.35)", padding: "3px 12px", borderRadius: 20, letterSpacing: ".08em", textTransform: "uppercase", display: "inline-block", marginBottom: 16 }}>Accès Alpha</div>
         <h3 style={{ fontFamily: "var(--font-fraunces)", fontSize: 22, fontWeight: 700, color: "var(--ink)", margin: "0 0 10px" }}>
-          Débloque ton intelligence comportementale
+          Passe à Lifetime — MindTrade à vie
         </h3>
         <p style={{ fontSize: 13, color: "var(--ink3)", lineHeight: 1.7, marginBottom: 24 }}>
-          Corrélations état mental / P&L, tes patterns par jour, tes émotions en chiffres — tout ce que tes données révèlent sur toi.
+          Un seul paiement, accès à vie à MindTrade + Alpha en exclusivité : corrélations état mental / P&L, patterns par jour, émotions en chiffres — tout ce que tes données révèlent sur toi.
         </p>
 
         <div style={{ background: "rgba(184,134,11,.07)", border: "1px solid rgba(184,134,11,.2)", borderRadius: 12, padding: "16px 20px", marginBottom: 24 }}>
