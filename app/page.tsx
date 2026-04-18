@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase";
 import AnnouncementBar from "@/components/landing/AnnouncementBar";
 import Nav from "@/components/landing/Nav";
 import Hero from "@/components/landing/Hero";
@@ -17,6 +20,15 @@ import CookieBanner from "@/components/landing/CookieBanner";
 import ChatWidget from "@/components/landing/ChatWidget";
 
 export default function LandingPage() {
+  const router = useRouter();
+  const supabase = createClient();
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) router.replace("/dashboard");
+    });
+  }, []);
+
   return (
     <>
       <AnnouncementBar />
