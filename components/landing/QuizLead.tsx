@@ -150,37 +150,49 @@ export default function QuizLead() {
 
             {/* Right — preview card */}
             <div style={{ position: "relative" }}>
-              <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16, padding: 28, boxShadow: "0 4px 24px rgba(12,12,10,.07)" }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 16 }}>Exemple de profil</div>
+              {/* Glow */}
+              <div style={{ position: "absolute", top: "40%", left: "50%", transform: "translate(-50%,-50%)", width: 400, height: 300, background: "radial-gradient(ellipse, rgba(155,28,28,.08) 0%, transparent 70%)", pointerEvents: "none" }} />
 
-                <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20, padding: "14px 16px", background: "rgba(155,28,28,.05)", border: "1px solid rgba(155,28,28,.12)", borderRadius: 10 }}>
-                  <div style={{ fontSize: 28 }}>🔥</div>
-                  <div>
-                    <div style={{ fontSize: 14, fontWeight: 700, color: "#9b1c1c" }}>Trader émotionnel</div>
-                    <div style={{ fontSize: 12, color: "var(--ink3)", marginTop: 2 }}>Profil identifié · 38% des traders</div>
+              <div style={{ position: "relative", background: "#0f172a", border: "1px solid rgba(255,255,255,.08)", borderRadius: 20, overflow: "hidden", boxShadow: "0 40px 100px rgba(0,0,0,.25)" }}>
+
+                {/* Header */}
+                <div style={{ padding: "24px 28px 0" }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,.25)", textTransform: "uppercase", letterSpacing: ".14em", marginBottom: 20 }}>Exemple de profil</div>
+
+                  {/* Profil badge */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 18px", background: "rgba(155,28,28,.12)", border: "1px solid rgba(155,28,28,.25)", borderRadius: 12, marginBottom: 20 }}>
+                    <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(155,28,28,.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>🔥</div>
+                    <div>
+                      <div style={{ fontSize: 15, fontWeight: 700, color: "#fca5a5" }}>Trader émotionnel</div>
+                      <div style={{ fontSize: 11, color: "rgba(255,255,255,.35)", marginTop: 3 }}>Profil identifié · 38% des traders</div>
+                    </div>
+                    <div style={{ marginLeft: "auto", background: "rgba(155,28,28,.2)", border: "1px solid rgba(155,28,28,.3)", borderRadius: 20, padding: "3px 10px", fontSize: 10, fontWeight: 700, color: "#fca5a5", whiteSpace: "nowrap" }}>Actif</div>
+                  </div>
+
+                  {/* Description */}
+                  <div style={{ fontSize: 13, color: "rgba(255,255,255,.5)", lineHeight: 1.7, marginBottom: 20 }}>
+                    Tu as les connaissances — mais tes émotions sabotent tes décisions au pire moment.
+                  </div>
+
+                  {/* Insight */}
+                  <div style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 10, padding: "14px 16px", marginBottom: 20 }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,.3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8 }}>Insight clé</div>
+                    <div style={{ fontSize: 13, color: "rgba(255,255,255,.6)", lineHeight: 1.65 }}>
+                      Les traders avec ce profil perdent en moyenne <strong style={{ color: "#fff" }}>40% de leur capital annuel</strong> sur des trades émotionnels identifiables.
+                    </div>
                   </div>
                 </div>
 
-                <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.7, marginBottom: 16 }}>
-                  Tu as les connaissances — mais tes émotions sabotent tes décisions au pire moment.
+                {/* Blurred footer */}
+                <div style={{ padding: "0 28px 0", filter: "blur(5px)", opacity: 0.3, pointerEvents: "none" }}>
+                  <div style={{ height: 9, background: "rgba(255,255,255,.12)", borderRadius: 4, marginBottom: 7, width: "75%" }} />
+                  <div style={{ height: 9, background: "rgba(255,255,255,.12)", borderRadius: 4, width: "55%" }} />
                 </div>
 
-                <div style={{ background: "var(--bg2)", borderRadius: 8, padding: "12px 14px", marginBottom: 14 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 6 }}>Insight clé</div>
-                  <div style={{ fontSize: 12, color: "var(--ink2)", lineHeight: 1.6 }}>
-                    Les traders avec ce profil perdent en moyenne <strong style={{ color: "var(--ink)" }}>40% de leur capital annuel</strong> sur des trades émotionnels identifiables.
-                  </div>
-                </div>
-
-                {/* Blurred lines suggesting more content */}
-                <div style={{ filter: "blur(4px)", opacity: 0.4, pointerEvents: "none" }}>
-                  <div style={{ height: 10, background: "var(--bg3)", borderRadius: 4, marginBottom: 6, width: "80%" }} />
-                  <div style={{ height: 10, background: "var(--bg3)", borderRadius: 4, marginBottom: 6, width: "60%" }} />
-                  <div style={{ height: 10, background: "var(--bg3)", borderRadius: 4, width: "70%" }} />
-                </div>
-                <div style={{ textAlign: "center", marginTop: 12 }}>
-                  <button onClick={openQuiz} style={{ fontSize: 12, color: "var(--navy)", fontWeight: 600, background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-outfit)" }}>
-                    Voir mon profil complet →
+                {/* CTA footer */}
+                <div style={{ padding: "16px 28px 24px", textAlign: "center", borderTop: "1px solid rgba(255,255,255,.06)", marginTop: 16 }}>
+                  <button onClick={openQuiz} style={{ fontSize: 13, fontWeight: 700, color: "#fff", background: "rgba(255,255,255,.08)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 8, padding: "10px 24px", cursor: "pointer", fontFamily: "var(--font-outfit)" }}>
+                    Découvrir mon profil →
                   </button>
                 </div>
               </div>
