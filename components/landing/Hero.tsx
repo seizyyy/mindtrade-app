@@ -19,7 +19,7 @@ export default function Hero() {
       <div style={{ position: 'absolute', top: -200, right: -100, width: 600, height: 600, background: 'radial-gradient(circle,rgba(15,39,68,.06) 0%,transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', bottom: -100, left: -100, width: 400, height: 400, background: 'radial-gradient(circle,rgba(184,134,11,.05) 0%,transparent 70%)', pointerEvents: 'none' }} />
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', display: 'grid', gridTemplateColumns: '1fr 1.25fr', gap: 60, alignItems: 'center' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'center' }}>
         {/* LEFT */}
         <div>
           <div className="animate-fade-in" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 20, padding: '6px 14px', marginBottom: 28 }}>
@@ -70,7 +70,7 @@ export default function Hero() {
           {/* Glow */}
           <div style={{ position: 'absolute', top: '30%', left: '50%', transform: 'translateX(-50%)', width: 500, height: 300, background: 'radial-gradient(ellipse, rgba(59,130,246,.12) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
 
-          <div className="animate-float" style={{ position: 'relative', zIndex: 1, background: '#0f172a', border: '1px solid rgba(255,255,255,.1)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 0 0 1px rgba(255,255,255,.04), 0 40px 100px rgba(0,0,0,.6)', transform: 'perspective(1200px) rotateY(-4deg) rotateX(2deg)' }}>
+          <div className="animate-float" style={{ position: 'relative', zIndex: 1, background: '#0f172a', border: '1px solid rgba(255,255,255,.1)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 0 0 1px rgba(255,255,255,.04), 0 40px 100px rgba(0,0,0,.6)' }}>
 
             {/* Chrome bar */}
             <div style={{ height: 36, background: '#1e293b', borderBottom: '1px solid rgba(255,255,255,.07)', display: 'flex', alignItems: 'center', padding: '0 14px', gap: 6 }}>
