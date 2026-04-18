@@ -65,36 +65,40 @@ export default function Hero() {
         </div>
 
         {/* RIGHT — Dashboard Preview */}
-        <div className="animate-fade-in hero-right-hide" style={{ paddingLeft: '2%' }}>
-          <div className="animate-float" style={{ background: '#0f172a', border: '1px solid rgba(255,255,255,.08)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 4px 24px rgba(0,0,0,.4),0 32px 80px rgba(0,0,0,.5)' }}>
+        <div className="animate-fade-in hero-right-hide" style={{ position: 'relative' }}>
+
+          {/* Glow */}
+          <div style={{ position: 'absolute', top: '30%', left: '50%', transform: 'translateX(-50%)', width: 500, height: 300, background: 'radial-gradient(ellipse, rgba(59,130,246,.12) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+
+          <div className="animate-float" style={{ position: 'relative', zIndex: 1, background: '#0f172a', border: '1px solid rgba(255,255,255,.1)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 0 0 1px rgba(255,255,255,.04), 0 40px 100px rgba(0,0,0,.6)', transform: 'perspective(1200px) rotateY(-4deg) rotateX(2deg)' }}>
 
             {/* Chrome bar */}
             <div style={{ height: 36, background: '#1e293b', borderBottom: '1px solid rgba(255,255,255,.07)', display: 'flex', alignItems: 'center', padding: '0 14px', gap: 6 }}>
               {['#ff5f56','#ffbd2e','#27c93f'].map(c => <div key={c} style={{ width: 9, height: 9, borderRadius: '50%', background: c, opacity: .8 }} />)}
-              <div style={{ flex: 1, background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.07)', borderRadius: 4, height: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', maxWidth: 180, margin: '0 auto' }}>
-                <span style={{ fontSize: 9, color: 'rgba(255,255,255,.25)' }}>mindtrade.co/dashboard</span>
+              <div style={{ flex: 1, background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.06)', borderRadius: 4, height: 18, display: 'flex', alignItems: 'center', justifyContent: 'center', maxWidth: 180, margin: '0 auto' }}>
+                <span style={{ fontSize: 9, color: 'rgba(255,255,255,.2)' }}>mindtrade.co/dashboard</span>
               </div>
             </div>
 
             {/* App layout */}
-            <div style={{ display: 'flex', height: 420 }}>
+            <div style={{ display: 'flex', height: 400 }}>
 
               {/* Sidebar */}
               <div style={{ width: 130, background: '#1e293b', borderRight: '1px solid rgba(255,255,255,.07)', padding: '10px 6px', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
                 <div style={{ fontSize: 10, fontWeight: 900, color: '#f1f5f9', letterSpacing: '-.3px', padding: '2px 6px', marginBottom: 10 }}>MindTrade</div>
-                {['Vue d\'ensemble','Check-in','Log de trades','Rapport hebdo','Journal'].map((label, i) => (
-                  <div key={label} style={{ padding: '6px 8px', borderRadius: 5, background: i === 0 ? 'rgba(255,255,255,.08)' : 'transparent', border: `1px solid ${i === 0 ? 'rgba(255,255,255,.1)' : 'transparent'}`, color: i === 0 ? '#f1f5f9' : 'rgba(255,255,255,.35)', fontSize: 10, fontWeight: i === 0 ? 600 : 400, marginBottom: 1 }}>
+                {["Vue d'ensemble",'Check-in','Log de trades','Rapport hebdo','Journal'].map((label, i) => (
+                  <div key={label} style={{ padding: '6px 8px', borderRadius: 5, background: i === 0 ? 'rgba(255,255,255,.08)' : 'transparent', border: `1px solid ${i === 0 ? 'rgba(255,255,255,.1)' : 'transparent'}`, color: i === 0 ? '#f1f5f9' : 'rgba(255,255,255,.3)', fontSize: 10, fontWeight: i === 0 ? 600 : 400, marginBottom: 1 }}>
                     {label}
                   </div>
                 ))}
-                <div style={{ marginTop: 'auto', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 8, padding: '10px' }}>
-                  <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 3 }}>Score mental</div>
+                <div style={{ marginTop: 'auto', background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.07)', borderRadius: 8, padding: '10px' }}>
+                  <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 3 }}>Score mental</div>
                   <div style={{ fontSize: 22, fontWeight: 700, color: '#22c55e', lineHeight: 1 }}>82</div>
                   <div style={{ fontSize: 9, color: '#22c55e', marginTop: 1, fontWeight: 600 }}>Optimal</div>
                   <div style={{ height: 2, background: 'rgba(255,255,255,.08)', borderRadius: 1, marginTop: 6 }}>
                     <div style={{ height: '100%', width: '82%', background: '#22c55e', borderRadius: 1 }} />
                   </div>
-                  <div style={{ fontSize: 9, color: 'rgba(255,255,255,.3)', marginTop: 4 }}>🔥 14j de streak</div>
+                  <div style={{ fontSize: 9, color: 'rgba(255,255,255,.25)', marginTop: 4 }}>🔥 14j de streak</div>
                 </div>
               </div>
 
@@ -102,55 +106,55 @@ export default function Hero() {
               <div style={{ flex: 1, padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8, overflow: 'hidden' }}>
 
                 {/* Signal */}
-                <div style={{ background: 'rgba(34,197,94,.08)', border: '1px solid rgba(34,197,94,.2)', borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ background: 'rgba(34,197,94,.07)', border: '1px solid rgba(34,197,94,.18)', borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                    {[0,1,2].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: i === 0 ? '#22c55e' : 'rgba(255,255,255,.1)' }} />)}
+                    {[0,1,2].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: i === 0 ? '#22c55e' : 'rgba(255,255,255,.08)' }} />)}
                   </div>
                   <div>
-                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 2 }}>Signal de session</div>
+                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 2 }}>Signal de session</div>
                     <div style={{ fontSize: 13, fontWeight: 700, color: '#22c55e' }}>État mental optimal</div>
-                    <div style={{ fontSize: 9, color: 'rgba(255,255,255,.4)', marginTop: 1 }}>Bonne condition pour opérer. Applique ton plan.</div>
+                    <div style={{ fontSize: 9, color: 'rgba(255,255,255,.35)', marginTop: 1 }}>Bonne condition pour opérer. Applique ton plan.</div>
                   </div>
                 </div>
 
                 {/* 4 métriques */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 6 }}>
                   {[
-                    { label: 'Score mental', val: '82', color: '#22c55e' },
-                    { label: 'Win rate',     val: '80%', color: '#22c55e' },
+                    { label: 'Score mental', val: '82',      color: '#22c55e' },
+                    { label: 'Win rate',     val: '80%',     color: '#22c55e' },
                     { label: 'P&L net',      val: '+2 916€', color: '#22c55e' },
-                    { label: 'Profit factor',val: '9.38', color: '#22c55e' },
+                    { label: 'Profit factor',val: '9.38',    color: '#22c55e' },
                   ].map(m => (
-                    <div key={m.label} style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.07)', borderRadius: 7, padding: '10px 10px' }}>
-                      <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 5 }}>{m.label}</div>
-                      <div style={{ fontSize: 18, fontWeight: 700, color: m.color, lineHeight: 1, fontFamily: 'Georgia, serif' }}>{m.val}</div>
+                    <div key={m.label} style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px' }}>
+                      <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 5 }}>{m.label}</div>
+                      <div style={{ fontSize: 17, fontWeight: 700, color: m.color, lineHeight: 1, fontFamily: 'Georgia, serif' }}>{m.val}</div>
                     </div>
                   ))}
                 </div>
 
                 {/* Graphique + trades */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 6, flex: 1 }}>
-                  <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.07)', borderRadius: 7, padding: '10px 12px' }}>
-                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Score mental — 7 jours</div>
-                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 56 }}>
+                  <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px' }}>
+                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Score mental — 7 jours</div>
+                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 60 }}>
                       {[{d:'DI',s:60,c:'#f59e0b'},{d:'LU',s:100,c:'#22c55e'},{d:'MA',s:84,c:'#22c55e'},{d:'ME',s:40,c:'#ef4444'},{d:'JE',s:76,c:'#22c55e'},{d:'VE',s:92,c:'#22c55e'},{d:'SA',s:82,c:'#22c55e'}].map(b => (
                         <div key={b.d} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                          <div style={{ width: '100%', height: `${b.s * 0.52}px`, background: b.c, borderRadius: '2px 2px 0 0', opacity: .85 }} />
-                          <div style={{ fontSize: 7, color: 'rgba(255,255,255,.25)' }}>{b.d}</div>
+                          <div style={{ width: '100%', height: `${b.s * 0.55}px`, background: b.c, borderRadius: '2px 2px 0 0', opacity: .8 }} />
+                          <div style={{ fontSize: 7, color: 'rgba(255,255,255,.2)' }}>{b.d}</div>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.07)', borderRadius: 7, padding: '10px 12px' }}>
-                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Derniers trades</div>
+                  <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px' }}>
+                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Derniers trades</div>
                     {[
-                      { pair: 'NAS100',  pnl: '+896€',  color: '#22c55e' },
-                      { pair: 'GBP/USD', pnl: '+544€',  color: '#22c55e' },
-                      { pair: 'US30',    pnl: '-348€',  color: '#ef4444' },
-                      { pair: 'EUR/USD', pnl: '+704€',  color: '#22c55e' },
+                      { pair: 'NAS100',  pnl: '+896€', color: '#22c55e' },
+                      { pair: 'GBP/USD', pnl: '+544€', color: '#22c55e' },
+                      { pair: 'US30',    pnl: '-348€', color: '#ef4444' },
+                      { pair: 'EUR/USD', pnl: '+704€', color: '#22c55e' },
                     ].map(t => (
-                      <div key={t.pair} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
-                        <div style={{ fontSize: 9, fontWeight: 600, color: 'rgba(255,255,255,.6)' }}>{t.pair}</div>
+                      <div key={t.pair} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                        <div style={{ fontSize: 9, fontWeight: 600, color: 'rgba(255,255,255,.5)' }}>{t.pair}</div>
                         <div style={{ fontSize: 9, fontWeight: 700, color: t.color }}>{t.pnl}</div>
                       </div>
                     ))}
