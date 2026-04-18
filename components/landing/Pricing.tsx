@@ -19,6 +19,7 @@ const planFeatures = {
   ],
   lifetime: [
     "Tout le plan annuel inclus, à vie",
+    "Accès Alpha — Intelligence comportementale exclusive",
     "Toutes les futures fonctionnalités incluses",
     "Accès prioritaire aux nouvelles features",
     "Support direct — réponse sous 24h",

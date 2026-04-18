@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 
-const navItems = [
+const navItems: { id: string; href: string; label: string; icon: React.ReactNode; gold?: boolean }[] = [
   { id: "dashboard",    href: "/dashboard",             label: "Vue d'ensemble", icon: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> },
   { id: "checkin",      href: "/dashboard/checkin",     label: "Check-in",       icon: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg> },
   { id: "trades",       href: "/dashboard/trades",      label: "Log de trades",  icon: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> },
@@ -13,6 +13,7 @@ const navItems = [
   { id: "confluences",  href: "/dashboard/confluences", label: "Confluences",    icon: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> },
   { id: "guide",        href: "/dashboard/guide",       label: "Guide",          icon: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> },
   { id: "settings",     href: "/dashboard/settings",    label: "Paramètres",     icon: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg> },
+  { id: "alpha",        href: "/dashboard/alpha",       label: "Alpha",          icon: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#fbbf24" strokeWidth="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>, gold: true },
 ];
 
 function getScoreColor(score: number | null) {
@@ -173,13 +174,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <a key={item.id} href={item.href} style={{
                   display: "flex", alignItems: "center", gap: 9,
                   padding: "8px 10px", borderRadius: 7, textDecoration: "none",
-                  background: active ? "var(--bg2)" : "transparent",
-                  border: `1px solid ${active ? "var(--border)" : "transparent"}`,
-                  color: active ? "var(--ink)" : "var(--ink2)",
+                  background: active ? (item.gold ? "rgba(251,191,36,.1)" : "var(--bg2)") : "transparent",
+                  border: `1px solid ${active ? (item.gold ? "rgba(251,191,36,.3)" : "var(--border)") : "transparent"}`,
+                  color: item.gold ? "#fbbf24" : (active ? "var(--ink)" : "var(--ink2)"),
                   fontSize: 13, fontWeight: active ? 600 : 500,
                   transition: "all .12s",
                 }}>
-                  <span style={{ opacity: active ? 1 : 0.5, flexShrink: 0 }}>{item.icon}</span>
+                  <span style={{ opacity: active ? 1 : 0.7, flexShrink: 0 }}>{item.icon}</span>
                   {item.label}
                 </a>
               );
