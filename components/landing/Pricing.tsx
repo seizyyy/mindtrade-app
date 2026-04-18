@@ -163,46 +163,6 @@ export default function Pricing() {
           ))}
         </div>
 
-        {/* Témoignages */}
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:16, marginTop:48 }}>
-          {[
-            { name:"Thomas M.", role:"Trader Forex", text:"\"Depuis que je fais le check-in chaque matin, j'ai arrêté de trader les jours où mon score est sous 65. Mon win rate a pris +12% en 6 semaines.\"", score:"82" },
-            { name:"Julie R.", role:"Trader Indices", text:"\"J'ai réalisé que 80% de mes pertes arrivaient quand j'étais stressé. MindTrade m'a juste rendu ça visible. C'est tout ce dont j'avais besoin.\"", score:"74" },
-            { name:"Karim B.", role:"Swing Trader", text:"\"Le rapport hebdo est devenu mon rituel du dimanche. En 3 mois, j'ai complètement changé ma façon de gérer le risque.\"", score:"91" },
-          ].map(t => (
-            <div key={t.name} style={{ background:"rgba(255,255,255,.04)", border:"1px solid rgba(255,255,255,.08)", borderRadius:14, padding:"22px 24px" }}>
-              <div style={{ fontSize:13, color:"rgba(255,255,255,.6)", lineHeight:1.7, marginBottom:16, fontStyle:"italic" }}>{t.text}</div>
-              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-                <div>
-                  <div style={{ fontSize:13, fontWeight:700, color:"#fff" }}>{t.name}</div>
-                  <div style={{ fontSize:11, color:"rgba(255,255,255,.3)" }}>{t.role}</div>
-                </div>
-                <div style={{ background:"rgba(34,197,94,.1)", border:"1px solid rgba(34,197,94,.2)", borderRadius:8, padding:"4px 10px", fontSize:11, fontWeight:700, color:"#22c55e" }}>
-                  Score {t.score}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* FAQ */}
-        <div style={{ marginTop:48 }}>
-          <div style={{ fontSize:12, fontWeight:700, color:"rgba(255,255,255,.3)", textTransform:"uppercase", letterSpacing:".12em", textAlign:"center", marginBottom:24 }}>Questions fréquentes</div>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
-            {[
-              { q:"Mes données sont-elles privées ?", a:"Oui. Tes check-ins, trades et journal sont privés et chiffrés. Personne d'autre ne peut y accéder." },
-              { q:"Puis-je annuler à tout moment ?", a:"Oui pour le mensuel — aucun engagement. L'annuel est remboursé 14 jours après l'achat." },
-              { q:"Le Lifetime inclut les futures fonctionnalités ?", a:"Oui. Toutes les nouvelles fonctionnalités ajoutées au produit seront incluses sans frais supplémentaires." },
-              { q:"Faut-il connecter son broker ?", a:"Non. MindTrade fonctionne avec une saisie manuelle rapide. Aucune connexion à un broker n'est nécessaire." },
-            ].map(f => (
-              <div key={f.q} style={{ background:"rgba(255,255,255,.03)", border:"1px solid rgba(255,255,255,.07)", borderRadius:12, padding:"18px 20px" }}>
-                <div style={{ fontSize:13, fontWeight:700, color:"#fff", marginBottom:8 }}>{f.q}</div>
-                <div style={{ fontSize:13, color:"rgba(255,255,255,.45)", lineHeight:1.6 }}>{f.a}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Check-in gratuit — mise en avant */}
         <div style={{
           marginTop: 48,
