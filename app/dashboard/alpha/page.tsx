@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 type Checkin = { score: number; date: string };
 type Trade = { pnl: number; pair: string; emotion: string; date: string; respected_rules: boolean };
 
-const DAY_LABELS = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
+const DAY_LABELS = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
 export default function AlphaPage() {
   const supabase = createClient();
@@ -20,6 +20,8 @@ export default function AlphaPage() {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.replace("/login"); return; }
+      const { data: profile } = await supabase.from("profiles").select("plan").eq("id", user.id).single();
+      if (profile?.plan !== "lifetime") { router.replace("/dashboard"); return; }
       const [{ data: ci }, { data: tr }] = await Promise.all([
         supabase.from("checkins").select("score,date").eq("user_id", user.id).order("date", { ascending: false }).limit(90),
         supabase.from("trades").select("pnl,pair,emotion,date,respected_rules").eq("user_id", user.id).order("date", { ascending: false }).limit(200),
@@ -241,7 +243,7 @@ export default function AlphaPage() {
           </div>
 
           {/* ── Alerte prédictive ── */}
-          {todayCheckin && dayAvg !== null && dayPnls.length >= 3 && (
+          {todayCheckin && dayAvg !== null && dayPnls.length >= 3 && todayDow >= 1 && todayDow <= 5 && (
             <div style={{ ...card, background: dayAvg < 0 ? "var(--tint-r-bg)" : "var(--tint-g-bg)", border: `1.5px solid ${dayAvg < 0 ? "var(--tint-r-border)" : "var(--tint-g-border)"}` }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: dayAvg < 0 ? "var(--r)" : "var(--g)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8 }}>⚡ Signal prédictif — {DAY_LABELS[todayDow]}</div>
               <div style={{ fontSize: 14, color: "var(--ink2)", lineHeight: 1.7 }}>
