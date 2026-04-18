@@ -12,7 +12,7 @@ const cards = [
     iconStroke: "#fbbf24",
     iconPath: <><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></>,
     title: "Les outils \"IA\"",
-    desc: "Ils envoient ton CSV à ChatGPT et te retournent des insights génériques. Ils ne savent pas si tu as mal dormi. Ils ne voient pas ton état avant la session.",
+    desc: "Ils analysent tes trades et te retournent des insights génériques. Ils ne savent pas si tu as mal dormi. Ils ne voient pas ton état avant la session.",
     quote: "\"L'IA m'a dit que je fais du revenge trading. Utile. Mais comment j'arrête ?\"",
   },
   {
@@ -21,7 +21,7 @@ const cards = [
     iconPath: <path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>,
     title: "Les 600 statistiques",
     desc: "Tu passes 2h à configurer des dashboards. Tu te perds dans des pivots et des charts. Tu trades moins parce que tu journalises plus. L'outil est devenu une charge.",
-    quote: "\"TradesViz est puissant mais j'ai abandonné après 3 semaines. Trop complexe.\"",
+    quote: "\"J'avais un journal complet mais j'ai abandonné après 3 semaines. Trop complexe, trop long.\"",
   },
 ];
 
@@ -34,7 +34,7 @@ export default function Problem() {
           90% des traders perdent non pas à cause de leur stratégie — mais à cause de leur état mental.
         </h2>
         <p style={{ fontSize: 17, color: "rgba(255,255,255,.6)", lineHeight: 1.7, maxWidth: 560 }}>
-          TradesViz te dit que tu as perdu vendredi. Edgewonk te montre que tu fais du FOMO. Toi tu le savais déjà. Le problème c{"'"}est que personne ne t{"'"}arrête <em style={{ color: "rgba(255,255,255,.6)" }}>avant</em> d{"'"}entrer.
+          Ton journal te dit que tu as perdu vendredi. Tes stats te montrent que tu fais du FOMO. Toi tu le savais déjà. Le problème c{"'"}est que personne ne t{"'"}arrête <em style={{ color: "rgba(255,255,255,.6)" }}>avant</em> d{"'"}entrer.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 2, marginTop: 56 }}>
           {cards.map((c, i) => (

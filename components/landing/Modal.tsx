@@ -8,7 +8,7 @@ const questions = [
   { q: "Depuis combien de temps trades-tu ?", opts: ["Moins d'1 an", "1 à 3 ans", "3 à 5 ans", "Plus de 5 ans"] },
   { q: "Quel est ton plus grand défi en trading ?", opts: ["Respect de mes stops", "Revenge trading / FOMO", "Manque de discipline", "Gestion des émotions"] },
   { q: "Sur quels marchés trades-tu ?", opts: ["Forex", "Indices / Futures", "Actions", "Crypto"] },
-  { q: "Utilises-tu déjà un journal de trading ?", opts: ["Non, jamais", "Oui, un spreadsheet", "Oui, Edgewonk / TradeZella / autre", "J'essaie mais j'abandonne"] },
+  { q: "Utilises-tu déjà un journal de trading ?", opts: ["Non, jamais", "Oui, un spreadsheet", "Oui, un outil dédié", "J'essaie mais j'abandonne"] },
 ];
 
 export default function Modal({ open, onClose }: Props) {
