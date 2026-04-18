@@ -72,10 +72,9 @@ export default function SocialProof() {
             <div style={{ width: 1, height: 52, background: "var(--border)" }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
               {[
-                { stars: 5, pct: 72 },
-                { stars: 4, pct: 19 },
-                { stars: 3, pct: 7 },
-                { stars: 2, pct: 2 },
+                { stars: 5, pct: 50 },
+                { stars: 4, pct: 33 },
+                { stars: 3, pct: 17 },
               ].map(r => (
                 <div key={r.stars} style={{ display: "flex", alignItems: "center", gap: 7 }}>
                   <span style={{ fontSize: 11, color: "var(--ink3)", width: 10, textAlign: "right" }}>{r.stars}</span>
@@ -96,7 +95,7 @@ export default function SocialProof() {
             <div key={i} style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "22px 24px", display: "flex", flexDirection: "column" }}>
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 14 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: "50%", background: r.stars >= 4 ? "var(--navy)" : "var(--bg3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: r.stars >= 4 ? "#fff" : "var(--ink2)", flexShrink: 0 }}>{r.initials}</div>
+                  <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--navy)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: "#fff", flexShrink: 0 }}>{r.initials}</div>
                   <div>
                     <div style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)" }}>{r.name}</div>
                     <div style={{ fontSize: 11, color: "var(--ink3)" }}>{r.role}</div>
