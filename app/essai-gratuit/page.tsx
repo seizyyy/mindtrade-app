@@ -74,15 +74,18 @@ export default function EssaiGratuitPage() {
           {/* DÉJÀ FAIT */}
           {step === "already" && (
             <div style={{ textAlign: "center" }}>
-              <div style={{ width: 60, height: 60, borderRadius: 16, background: "rgba(15,39,68,.07)", border: "1px solid rgba(15,39,68,.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, margin: "0 auto 24px" }}>🔒</div>
+              <div style={{ width: 60, height: 60, borderRadius: 16, background: "rgba(15,39,68,.07)", border: "1px solid rgba(15,39,68,.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, margin: "0 auto 24px" }}>🧠</div>
               <h1 style={{ fontFamily: "var(--font-fraunces)", fontSize: "clamp(26px,4vw,36px)", fontWeight: 700, lineHeight: 1.15, letterSpacing: "-.02em", marginBottom: 14, color: "var(--ink)" }}>
-                Tu as déjà fait ton check-in aujourd'hui
+                Tu as déjà testé MindTrade.
               </h1>
+              <p style={{ fontSize: 15, color: "var(--ink2)", lineHeight: 1.7, marginBottom: 12 }}>
+                Les traders qui font leur check-in <strong style={{ color: "var(--ink)" }}>chaque matin</strong> réduisent leurs pertes émotionnelles de 40%. Une fois c'est bien — tous les jours c'est ce qui change vraiment.
+              </p>
               <p style={{ fontSize: 15, color: "var(--ink2)", lineHeight: 1.7, marginBottom: 32 }}>
-                Le check-in est disponible une fois par jour. Pour accéder à ton score chaque matin — et à toutes les analyses — rejoins MindTrade.
+                Rejoins MindTrade et accède à ton score chaque matin, ton signal de session, et toutes tes analyses.
               </p>
               <a href="/#acces" style={{ display: "inline-block", background: "var(--ink)", color: "#fff", borderRadius: 8, padding: "14px 32px", fontSize: 14, fontWeight: 700, textDecoration: "none", fontFamily: "var(--font-outfit)", marginBottom: 14 }}>
-                Voir les offres →
+                Je veux trader avec la bonne tête →
               </a>
               <div style={{ fontSize: 13, color: "var(--ink3)" }}>
                 <a href="/login" style={{ color: "var(--navy)", textDecoration: "none", fontWeight: 600 }}>J'ai déjà un compte →</a>
