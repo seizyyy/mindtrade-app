@@ -9,31 +9,98 @@ type Trade = { pnl: number; pair: string; emotion: string; date: string; respect
 
 const DAY_LABELS = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
+function UpgradeWall({ plan }: { plan: string }) {
+  const isAnnual = plan === "annual";
+  const upgradePrice = isAnnual ? 447 : 497;
+  const savings = 597 - upgradePrice;
+
+  return (
+    <div style={{ position: "absolute", inset: 0, zIndex: 10, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 14 }}>
+      <div style={{
+        background: "var(--card)",
+        border: "1px solid rgba(184,134,11,.4)",
+        borderRadius: 16,
+        padding: "36px 40px",
+        textAlign: "center",
+        maxWidth: 420,
+        boxShadow: "0 24px 64px rgba(0,0,0,.5)",
+      }}>
+        <div style={{ fontSize: 28, marginBottom: 12 }}>⭐</div>
+        <div style={{ fontSize: 10, fontWeight: 800, color: "#b8860b", background: "rgba(184,134,11,.12)", border: "1px solid rgba(184,134,11,.35)", padding: "3px 12px", borderRadius: 20, letterSpacing: ".08em", textTransform: "uppercase", display: "inline-block", marginBottom: 16 }}>Accès Alpha</div>
+        <h3 style={{ fontFamily: "var(--font-fraunces)", fontSize: 22, fontWeight: 700, color: "var(--ink)", margin: "0 0 10px" }}>
+          Débloque ton intelligence comportementale
+        </h3>
+        <p style={{ fontSize: 13, color: "var(--ink3)", lineHeight: 1.7, marginBottom: 24 }}>
+          Corrélations état mental / P&L, tes patterns par jour, tes émotions en chiffres — tout ce que tes données révèlent sur toi.
+        </p>
+
+        <div style={{ background: "rgba(184,134,11,.07)", border: "1px solid rgba(184,134,11,.2)", borderRadius: 12, padding: "16px 20px", marginBottom: 24 }}>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,.4)", marginBottom: 8, textTransform: "uppercase", letterSpacing: ".08em", fontWeight: 700 }}>
+            Offre abonné {isAnnual ? "annuel" : "mensuel"}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 6 }}>
+            <span style={{ fontSize: 14, color: "var(--ink3)", textDecoration: "line-through" }}>597€</span>
+            <span style={{ fontFamily: "var(--font-fraunces)", fontSize: 32, fontWeight: 700, color: "#fbbf24" }}>{upgradePrice}€</span>
+          </div>
+          <div style={{ fontSize: 12, color: "var(--g)", fontWeight: 600 }}>Tu économises {savings}€ · Accès à vie</div>
+        </div>
+
+        <a
+          href={`/register?plan=lifetime&upgrade=1&from=${plan}`}
+          style={{
+            display: "block",
+            background: "linear-gradient(135deg, #f59e0b, #b8860b)",
+            color: "#fff",
+            borderRadius: 8,
+            padding: "13px",
+            fontSize: 14,
+            fontWeight: 700,
+            textDecoration: "none",
+            fontFamily: "var(--font-outfit)",
+            boxShadow: "0 4px 20px rgba(184,134,11,.35)",
+            marginBottom: 12,
+          }}
+        >
+          Passer à Lifetime — {upgradePrice}€ →
+        </a>
+        <div style={{ fontSize: 11, color: "var(--ink3)" }}>Paiement unique · Accès immédiat · Garanti à vie</div>
+      </div>
+    </div>
+  );
+}
+
 export default function AlphaPage() {
   const supabase = createClient();
   const router = useRouter();
   const [checkins, setCheckins] = useState<Checkin[]>([]);
   const [trades, setTrades] = useState<Trade[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userPlan, setUserPlan] = useState<string>("monthly");
 
   useEffect(() => {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.replace("/login"); return; }
       const { data: profile } = await supabase.from("profiles").select("plan").eq("id", user.id).single();
-      if (profile?.plan !== "lifetime") { router.replace("/dashboard"); return; }
-      const [{ data: ci }, { data: tr }] = await Promise.all([
-        supabase.from("checkins").select("score,date").eq("user_id", user.id).order("date", { ascending: false }).limit(90),
-        supabase.from("trades").select("pnl,pair,emotion,date,respected_rules").eq("user_id", user.id).order("date", { ascending: false }).limit(200),
-      ]);
-      setCheckins(ci || []);
-      setTrades(tr || []);
+      const plan = profile?.plan ?? "monthly";
+      setUserPlan(plan);
+
+      if (plan === "lifetime") {
+        const [{ data: ci }, { data: tr }] = await Promise.all([
+          supabase.from("checkins").select("score,date").eq("user_id", user.id).order("date", { ascending: false }).limit(90),
+          supabase.from("trades").select("pnl,pair,emotion,date,respected_rules").eq("user_id", user.id).order("date", { ascending: false }).limit(200),
+        ]);
+        setCheckins(ci || []);
+        setTrades(tr || []);
+      }
       setLoading(false);
     }
     load();
   }, []);
 
   if (loading) return <div style={{ color: "var(--ink3)", fontSize: 14, padding: 40 }}>Chargement…</div>;
+
+  const isLifetime = userPlan === "lifetime";
 
   const hasTrades = trades.length >= 3;
   const hasCheckins = checkins.length >= 5;
@@ -106,6 +173,65 @@ export default function AlphaPage() {
     background: "var(--card)", border: "1px solid var(--border)", borderRadius: 14, padding: "22px 24px",
   };
 
+  // Fake blurred preview data for non-lifetime users
+  const fakeContent = (
+    <div style={{ display: "flex", flexDirection: "column", gap: 14, filter: "blur(6px)", pointerEvents: "none", userSelect: "none" }}>
+      <div style={card}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Corrélation état mental → performance</div>
+        <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20 }}>Ce que ton score mental prédit réellement sur tes trades.</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+          {[{ c: "var(--r)", l: "État dégradé", v: "-347€", wr: "28% win" }, { c: "var(--a)", l: "Attention", v: "+82€", wr: "54% win" }, { c: "var(--g)", l: "État optimal", v: "+612€", wr: "79% win" }].map(b => (
+            <div key={b.l} style={{ background: "var(--bg2)", borderRadius: 10, padding: "16px 18px", borderLeft: `3px solid ${b.c}` }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: b.c, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>{b.l}</div>
+              <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 26, fontWeight: 700, color: b.c, lineHeight: 1, marginBottom: 4 }}>{b.v}</div>
+              <div style={{ fontSize: 12, color: "var(--ink3)" }}>moy. par trade · {b.wr}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={card}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 16 }}>Performance par jour de semaine</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
+          {["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"].map((d, i) => (
+            <div key={d} style={{ textAlign: "center", background: "var(--bg2)", borderRadius: 10, padding: "14px 8px" }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", marginBottom: 8 }}>{d}</div>
+              <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 18, fontWeight: 700, color: i % 3 === 2 ? "var(--r)" : "var(--g)", marginBottom: 4 }}>{i % 3 === 2 ? "-284€" : "+539€"}</div>
+              <div style={{ fontSize: 10, color: "var(--ink3)" }}>{i % 3 === 2 ? "33% win" : "75% win"}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+        <div style={card}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 16 }}>Tes émotions en chiffres</div>
+          {["Confiant", "Calme", "Stressé", "Revanche"].map((e, i) => (
+            <div key={e} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+              <div style={{ fontSize: 13, color: "var(--ink2)", width: 90 }}>{e}</div>
+              <div style={{ flex: 1, height: 5, background: "var(--bg3)", borderRadius: 3, overflow: "hidden" }}>
+                <div style={{ height: "100%", width: `${[82, 64, 38, 20][i]}%`, background: i < 2 ? "var(--g)" : "var(--r)", borderRadius: 3 }} />
+              </div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: i < 2 ? "var(--g)" : "var(--r)", width: 70, textAlign: "right" }}>{["+748€", "+183€", "-291€", "-512€"][i]}</div>
+            </div>
+          ))}
+        </div>
+        <div style={card}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 16 }}>Évolution du score mental</div>
+          {[{ l: "30 derniers jours", v: "74/100" }, { l: "60 derniers jours", v: "68/100" }, { l: "90 derniers jours", v: "71/100" }].map(({ l, v }) => (
+            <div key={l} style={{ marginBottom: 14 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                <span style={{ fontSize: 12, color: "var(--ink3)" }}>{l}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "var(--g)" }}>{v}</span>
+              </div>
+              <div style={{ height: 5, background: "var(--bg3)", borderRadius: 3, overflow: "hidden" }}>
+                <div style={{ height: "100%", width: "74%", background: "var(--g)", borderRadius: 3 }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div style={{ maxWidth: 860 }}>
 
@@ -120,7 +246,16 @@ export default function AlphaPage() {
         </div>
       </div>
 
-      {(!hasTrades || !hasCheckins) && (
+      {/* Non-lifetime : contenu flouté + upgrade wall */}
+      {!isLifetime && (
+        <div style={{ position: "relative" }}>
+          {fakeContent}
+          <UpgradeWall plan={userPlan} />
+        </div>
+      )}
+
+      {/* Lifetime : contenu réel */}
+      {isLifetime && (!hasTrades || !hasCheckins) && (
         <div style={{ ...card, textAlign: "center", padding: "40px 24px", color: "var(--ink3)" }}>
           <div style={{ fontSize: 32, marginBottom: 12 }}>📊</div>
           <div style={{ fontSize: 15, fontWeight: 600, color: "var(--ink)", marginBottom: 8 }}>Pas encore assez de données</div>
@@ -128,7 +263,7 @@ export default function AlphaPage() {
         </div>
       )}
 
-      {hasTrades && hasCheckins && (
+      {isLifetime && hasTrades && hasCheckins && (
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
           {/* ── Corrélation Score / P&L ── */}
@@ -165,7 +300,7 @@ export default function AlphaPage() {
           <div style={card}>
             <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Performance par jour de semaine</div>
             <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20 }}>Tes meilleurs et pires jours selon tes données réelles.</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 8 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
               {[1, 2, 3, 4, 5].map(d => {
                 const arr = byDay[d];
                 const a = avg(arr);
@@ -188,7 +323,6 @@ export default function AlphaPage() {
           {/* ── Émotion / Performance + Score Evolution ── */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
 
-            {/* Émotion */}
             <div style={card}>
               <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Tes émotions en chiffres</div>
               <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 16 }}>Impact réel de chaque état sur tes résultats.</div>
@@ -212,7 +346,6 @@ export default function AlphaPage() {
               )}
             </div>
 
-            {/* Score évolution */}
             <div style={card}>
               <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Évolution du score mental</div>
               <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20 }}>Ta progression psychologique dans le temps.</div>
