@@ -71,7 +71,7 @@ export default function SettingsPage() {
   }
 
   function toggleBias(b: string) {
-    setBiases(prev => prev.includes(b) ? prev.filter(x => x !== b) : [...prev, b]);
+    setBiases(prev => prev.includes(b) ? prev.filter(x => x !== b) : prev.length < 2 ? [...prev, b] : prev);
   }
 
   const cap = accountSize && !isNaN(parseFloat(accountSize)) ? parseFloat(accountSize) : null;
@@ -210,20 +210,27 @@ export default function SettingsPage() {
 
         {/* ── Biais ── */}
         <div style={card}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Biais à surveiller</div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>Biais à surveiller</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: biases.length >= 2 ? "var(--navy)" : "var(--ink3)" }}>
+              {biases.length}/2
+            </div>
+          </div>
           <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 14, lineHeight: 1.5 }}>
-            Intégrés dans ton analyse post-session pour des alertes personnalisées.
+            Choisis tes 2 points faibles principaux — ajoutés comme questions dans ta réflexion post-session.
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {BIASES.map(b => {
               const active = biases.includes(b);
+              const disabled = !active && biases.length >= 2;
               return (
-                <button key={b} onClick={() => toggleBias(b)} style={{
+                <button key={b} onClick={() => toggleBias(b)} disabled={disabled} style={{
                   padding: "7px 16px", borderRadius: 20, fontSize: 13, fontWeight: 500,
-                  fontFamily: "var(--font-outfit)", cursor: "pointer", transition: "all .12s",
+                  fontFamily: "var(--font-outfit)", cursor: disabled ? "not-allowed" : "pointer", transition: "all .12s",
                   border: `1.5px solid ${active ? "var(--navy)" : "var(--border)"}`,
                   background: active ? "rgba(15,39,68,.07)" : "transparent",
                   color: active ? "var(--navy)" : "var(--ink3)",
+                  opacity: disabled ? 0.35 : 1,
                 }}>
                   {b}
                 </button>
