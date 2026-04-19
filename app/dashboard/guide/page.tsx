@@ -135,6 +135,26 @@ const sections = [
     ],
     tip: "3 lignes après chaque séance suffisent. La régularité compte plus que la longueur.",
   },
+  {
+    id: "alpha",
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+    ),
+    color: "var(--gold)",
+    tintBg: "rgba(212,168,50,.08)",
+    tintBorder: "rgba(212,168,50,.25)",
+    title: "MindTrade Alpha — Lifetime exclusif",
+    subtitle: "Analyses avancées réservées aux abonnés à vie",
+    steps: [
+      { label: "Corrélation émotion / performance", desc: "Vois exactement combien chaque état émotionnel te rapporte ou te coûte en moyenne par trade. FOMO, Calme, Confiant, Anxieux — chacun a un impact chiffré sur tes résultats." },
+      { label: "Performance par jour de la semaine", desc: "Tes lundis sont-ils rentables ? Tes vendredis catastrophiques ? Alpha détecte tes jours forts et faibles sur l'historique complet de tes trades." },
+      { label: "Signal prédictif du jour", desc: "Basé sur ton historique, Alpha prédit ta performance probable du jour. Si tes jeudis sont structurellement mauvais, tu le sais avant d'ouvrir un seul chart." },
+    ],
+    tip: "Alpha est inclus dans le plan Lifetime — un seul paiement, accès à vie à toutes les fonctionnalités actuelles et futures.",
+    isAlpha: true,
+  },
 ];
 
 export default function GuidePage() {
@@ -193,6 +213,44 @@ export default function GuidePage() {
       {/* Sections détaillées */}
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         {sections.map((s) => (
+          (s as any).isAlpha ? (
+            /* ── Section Alpha — rendu premium ── */
+            <div key={s.id} style={{ background: "linear-gradient(145deg, #0f2744 0%, #1a3a5c 60%, #0f2744 100%)", borderRadius: 14, overflow: "hidden", border: "1px solid rgba(212,168,50,.25)", position: "relative" }}>
+              <div style={{ position: "absolute", top: -30, right: -30, width: 140, height: 140, borderRadius: "50%", background: "rgba(212,168,50,.06)", pointerEvents: "none" }} />
+              <div style={{ padding: "18px 24px 16px", borderBottom: "1px solid rgba(212,168,50,.15)", display: "flex", alignItems: "flex-start", gap: 14 }}>
+                <div style={{ width: 38, height: 38, borderRadius: 10, background: "rgba(212,168,50,.12)", border: "1px solid rgba(212,168,50,.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--gold)", flexShrink: 0 }}>
+                  {s.icon}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>{s.title}</div>
+                    <span style={{ fontSize: 10, fontWeight: 700, color: "var(--gold)", background: "rgba(212,168,50,.15)", border: "1px solid rgba(212,168,50,.3)", borderRadius: 20, padding: "2px 8px", textTransform: "uppercase", letterSpacing: ".08em" }}>Lifetime</span>
+                  </div>
+                  <div style={{ fontSize: 12, color: "rgba(255,255,255,.5)", marginTop: 2 }}>{s.subtitle}</div>
+                </div>
+              </div>
+              <div style={{ padding: "16px 24px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 16 }}>
+                  {s.steps.map((step, i) => (
+                    <div key={i} style={{ display: "flex", gap: 12 }}>
+                      <div style={{ width: 22, height: 22, borderRadius: "50%", background: "rgba(212,168,50,.12)", border: "1px solid rgba(212,168,50,.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, color: "var(--gold)", flexShrink: 0, marginTop: 1 }}>{i + 1}</div>
+                      <div>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: "#fff", marginBottom: 2 }}>{step.label}</div>
+                        <div style={{ fontSize: 13, color: "rgba(255,255,255,.55)", lineHeight: 1.55 }}>{step.desc}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ marginBottom: 16, background: "rgba(212,168,50,.06)", border: "1px solid rgba(212,168,50,.2)", borderRadius: 8, padding: "10px 14px", display: "flex", gap: 10, alignItems: "flex-start" }}>
+                  <span style={{ fontSize: 14, flexShrink: 0 }}>💡</span>
+                  <div style={{ fontSize: 12, color: "rgba(255,255,255,.6)", lineHeight: 1.55 }}>{s.tip}</div>
+                </div>
+                <a href="/dashboard/alpha" style={{ display: "block", textAlign: "center", background: "var(--gold)", color: "#0f2744", padding: "11px", borderRadius: 9, fontSize: 13, fontWeight: 800, textDecoration: "none", letterSpacing: ".01em" }}>
+                  Découvrir MindTrade Alpha →
+                </a>
+              </div>
+            </div>
+          ) : (
           <div key={s.id} style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 14, overflow: "hidden" }}>
             <div style={{ padding: "18px 24px 16px", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "flex-start", gap: 14 }}>
               <div style={{ width: 38, height: 38, borderRadius: 10, background: s.tintBg, border: `1px solid ${s.tintBorder}`, display: "flex", alignItems: "center", justifyContent: "center", color: s.color, flexShrink: 0 }}>
@@ -221,6 +279,7 @@ export default function GuidePage() {
               </div>
             </div>
           </div>
+          )
         ))}
       </div>
 
