@@ -509,58 +509,90 @@ export default function AlphaPage() {
         </div>{/* end left column */}
 
         {/* ── Panneau droit ── */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 14, position: "sticky", top: 20 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
           {/* Profil trader */}
-          {profileLines.length > 0 && (
-            <div style={{ background: "linear-gradient(145deg, #0f2744, #1a3a5c)", border: "1px solid rgba(212,168,50,.25)", borderRadius: 14, padding: "20px 22px" }}>
-              <div style={{ fontSize: 10, fontWeight: 800, color: "var(--gold)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10 }}>Ton profil de trader</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {profileLines.map((line, i) => (
-                  <div key={i} style={{ fontSize: 13, color: "rgba(255,255,255,.75)", lineHeight: 1.6 }}>{line}</div>
-                ))}
-              </div>
+          <div style={{ background: "linear-gradient(160deg, #0c1e38 0%, #152d4a 100%)", border: "1px solid rgba(212,168,50,.3)", borderRadius: 16, padding: "22px 24px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+              <span style={{ fontSize: 16 }}>⭐</span>
+              <div style={{ fontSize: 11, fontWeight: 800, color: "var(--gold)", textTransform: "uppercase", letterSpacing: ".12em" }}>Ton profil de trader</div>
             </div>
-          )}
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {globalWr !== null && (
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderRadius: 10, background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.06)" }}>
+                  <span style={{ fontSize: 12, color: "rgba(255,255,255,.5)" }}>Win rate global</span>
+                  <span style={{ fontSize: 15, fontWeight: 800, color: globalWr >= 60 ? "var(--g)" : globalWr >= 45 ? "var(--a)" : "var(--r)" }}>{globalWr}%</span>
+                </div>
+              )}
+              {globalAvg !== null && (
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderRadius: 10, background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.06)" }}>
+                  <span style={{ fontSize: 12, color: "rgba(255,255,255,.5)" }}>Moy. par trade</span>
+                  <span style={{ fontSize: 15, fontWeight: 800, color: globalAvg >= 0 ? "var(--g)" : "var(--r)" }}>{globalAvg >= 0 ? "+" : ""}{globalAvg.toFixed(0)}{sym(currency)}</span>
+                </div>
+              )}
+              {bestEmo && (
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderRadius: 10, background: "rgba(34,197,94,.06)", border: "1px solid rgba(34,197,94,.15)" }}>
+                  <span style={{ fontSize: 12, color: "rgba(255,255,255,.5)" }}>Meilleur état</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "var(--g)" }}>{bestEmo.emotion}</span>
+                </div>
+              )}
+              {worstEmo && worstEmo.avg < 0 && (
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderRadius: 10, background: "rgba(239,68,68,.06)", border: "1px solid rgba(239,68,68,.15)" }}>
+                  <span style={{ fontSize: 12, color: "rgba(255,255,255,.5)" }}>Point faible</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "var(--r)" }}>{worstEmo.emotion}</span>
+                </div>
+              )}
+              {disciplineRate !== null && (
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderRadius: 10, background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.06)" }}>
+                  <span style={{ fontSize: 12, color: "rgba(255,255,255,.5)" }}>Taux de discipline</span>
+                  <span style={{ fontSize: 15, fontWeight: 800, color: disciplineRate >= 75 ? "var(--g)" : disciplineRate >= 50 ? "var(--a)" : "var(--r)" }}>{disciplineRate}%</span>
+                </div>
+              )}
+            </div>
+          </div>
 
           {/* Insights auto-détectés */}
           {insights.length > 0 && (
             <div style={card}>
-              <div style={{ fontSize: 10, fontWeight: 800, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 }}>Insights personnalisés</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <div style={{ fontSize: 11, fontWeight: 800, color: "var(--ink)", marginBottom: 4 }}>Insights détectés</div>
+              <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 14 }}>Générés depuis tes données réelles.</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {insights.map((ins, i) => (
-                  <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "10px 12px", borderRadius: 8, background: ins.type === "pos" ? "rgba(34,197,94,.06)" : ins.type === "neg" ? "rgba(239,68,68,.06)" : "rgba(255,255,255,.03)", border: `1px solid ${ins.type === "pos" ? "rgba(34,197,94,.15)" : ins.type === "neg" ? "rgba(239,68,68,.15)" : "var(--border)"}` }}>
-                    <span style={{ fontSize: 12, flexShrink: 0, marginTop: 1 }}>{ins.type === "pos" ? "↑" : ins.type === "neg" ? "↓" : "→"}</span>
-                    <div style={{ fontSize: 12, color: "var(--ink2)", lineHeight: 1.55 }}>{ins.text}</div>
+                  <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "11px 14px", borderRadius: 10, background: ins.type === "pos" ? "rgba(34,197,94,.05)" : ins.type === "neg" ? "rgba(239,68,68,.05)" : "var(--bg2)", border: `1px solid ${ins.type === "pos" ? "rgba(34,197,94,.18)" : ins.type === "neg" ? "rgba(239,68,68,.18)" : "var(--border)"}` }}>
+                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: ins.type === "pos" ? "var(--g)" : ins.type === "neg" ? "var(--r)" : "var(--ink3)", flexShrink: 0, marginTop: 5 }} />
+                    <div style={{ fontSize: 12, color: "var(--ink2)", lineHeight: 1.6 }}>{ins.text}</div>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Tes paires */}
+          {/* Performance par paire */}
           {pairStats.length > 0 && (
             <div style={card}>
-              <div style={{ fontSize: 10, fontWeight: 800, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 }}>Performance par paire</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {pairStats.slice(0, 6).map((p, i) => {
+              <div style={{ fontSize: 11, fontWeight: 800, color: "var(--ink)", marginBottom: 4 }}>Performance par paire</div>
+              <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 16 }}>P&L moyen sur tes {pairStats.reduce((s, p) => s + p.count, 0)} trades loggés.</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {(() => {
                   const maxAbs = Math.max(...pairStats.map(x => Math.abs(x.avg)));
-                  const pct = maxAbs > 0 ? (Math.abs(p.avg) / maxAbs) * 100 : 0;
-                  return (
-                    <div key={p.pair}>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                        <span style={{ fontSize: 12, color: "var(--ink2)", fontWeight: 600 }}>{p.pair}</span>
-                        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                          <span style={{ fontSize: 11, color: "var(--ink3)" }}>{p.wr}% win · {p.count}t</span>
-                          <span style={{ fontSize: 12, fontWeight: 700, color: p.avg >= 0 ? "var(--g)" : "var(--r)" }}>{p.avg >= 0 ? "+" : ""}{p.avg.toFixed(0)}{sym(currency)}</span>
+                  return pairStats.slice(0, 6).map(p => {
+                    const pct = maxAbs > 0 ? (Math.abs(p.avg) / maxAbs) * 100 : 0;
+                    return (
+                      <div key={p.pair}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+                          <span style={{ fontSize: 13, color: "var(--ink)", fontWeight: 600 }}>{p.pair}</span>
+                          <div style={{ display: "flex", gap: 10, alignItems: "baseline" }}>
+                            <span style={{ fontSize: 11, color: "var(--ink3)" }}>{p.wr}% · {p.count}t</span>
+                            <span style={{ fontSize: 13, fontWeight: 800, color: p.avg >= 0 ? "var(--g)" : "var(--r)" }}>{p.avg >= 0 ? "+" : ""}{p.avg.toFixed(0)}{sym(currency)}</span>
+                          </div>
+                        </div>
+                        <div style={{ height: 5, background: "var(--bg3)", borderRadius: 3, overflow: "hidden" }}>
+                          <div style={{ height: "100%", width: `${pct}%`, background: p.avg >= 0 ? "var(--g)" : "var(--r)", borderRadius: 3 }} />
                         </div>
                       </div>
-                      <div style={{ height: 4, background: "var(--bg3)", borderRadius: 3, overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: `${pct}%`, background: p.avg >= 0 ? "var(--g)" : "var(--r)", borderRadius: 3 }} />
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  });
+                })()}
               </div>
             </div>
           )}
@@ -568,23 +600,30 @@ export default function AlphaPage() {
           {/* Impact discipline */}
           {disciplineAvg !== null && undisciplineAvg !== null && undisciplinedPnls.length >= 2 && (
             <div style={card}>
-              <div style={{ fontSize: 10, fontWeight: 800, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 }}>Impact discipline</div>
-              <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 14 }}>P&L moyen selon que tu respectes tes règles ou non.</div>
+              <div style={{ fontSize: 11, fontWeight: 800, color: "var(--ink)", marginBottom: 4 }}>Impact discipline</div>
+              <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 16 }}>Ce que respecter tes règles change concrètement.</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderRadius: 8, background: "rgba(34,197,94,.06)", border: "1px solid rgba(34,197,94,.15)" }}>
-                  <div>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: "var(--g)", marginBottom: 2 }}>Règles respectées</div>
-                    <div style={{ fontSize: 11, color: "var(--ink3)" }}>{disciplinedPnls.length} trades · {disciplineRate}%</div>
+                <div style={{ padding: "14px 16px", borderRadius: 10, background: "rgba(34,197,94,.05)", border: "1px solid rgba(34,197,94,.18)" }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "var(--g)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>Règles respectées</div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+                    <div style={{ fontSize: 11, color: "var(--ink3)" }}>{disciplinedPnls.length} trades · {disciplineRate}% du temps</div>
+                    <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 22, fontWeight: 700, color: disciplineAvg >= 0 ? "var(--g)" : "var(--r)" }}>{disciplineAvg >= 0 ? "+" : ""}{disciplineAvg.toFixed(0)}{sym(currency)}</div>
                   </div>
-                  <div style={{ fontSize: 16, fontWeight: 800, color: disciplineAvg >= 0 ? "var(--g)" : "var(--r)" }}>{disciplineAvg >= 0 ? "+" : ""}{disciplineAvg.toFixed(0)}{sym(currency)}</div>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderRadius: 8, background: "rgba(239,68,68,.06)", border: "1px solid rgba(239,68,68,.15)" }}>
-                  <div>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: "var(--r)", marginBottom: 2 }}>Règles non respectées</div>
-                    <div style={{ fontSize: 11, color: "var(--ink3)" }}>{undisciplinedPnls.length} trades · {100 - (disciplineRate ?? 0)}%</div>
+                <div style={{ padding: "14px 16px", borderRadius: 10, background: "rgba(239,68,68,.05)", border: "1px solid rgba(239,68,68,.18)" }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "var(--r)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>Règles non respectées</div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+                    <div style={{ fontSize: 11, color: "var(--ink3)" }}>{undisciplinedPnls.length} trades · {100 - (disciplineRate ?? 0)}% du temps</div>
+                    <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 22, fontWeight: 700, color: undisciplineAvg >= 0 ? "var(--g)" : "var(--r)" }}>{undisciplineAvg >= 0 ? "+" : ""}{undisciplineAvg.toFixed(0)}{sym(currency)}</div>
                   </div>
-                  <div style={{ fontSize: 16, fontWeight: 800, color: undisciplineAvg >= 0 ? "var(--g)" : "var(--r)" }}>{undisciplineAvg >= 0 ? "+" : ""}{undisciplineAvg.toFixed(0)}{sym(currency)}</div>
                 </div>
+                {disciplineAvg !== null && undisciplineAvg !== null && (
+                  <div style={{ fontSize: 12, color: disciplineAvg > undisciplineAvg ? "var(--g)" : "var(--ink3)", fontWeight: 600, textAlign: "center", paddingTop: 4 }}>
+                    {disciplineAvg > undisciplineAvg
+                      ? `Respecter tes règles = +${(disciplineAvg - undisciplineAvg).toFixed(0)}${sym(currency)}/trade`
+                      : `Écart minime — tes règles sont à réévaluer`}
+                  </div>
+                )}
               </div>
             </div>
           )}
