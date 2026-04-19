@@ -1,5 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase";
+
 const sections = [
   {
     id: "settings",
@@ -158,6 +161,22 @@ const sections = [
 ];
 
 export default function GuidePage() {
+  const [plan, setPlan] = useState<string>("monthly");
+  const supabase = createClient();
+
+  useEffect(() => {
+    async function load() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await supabase.from("profiles").select("plan").eq("id", user.id).single();
+      if (data?.plan) setPlan(data.plan);
+    }
+    load();
+  }, []);
+
+  const isLifetime = plan === "lifetime";
+  const isAnnual = plan === "annual";
+
   return (
     <div style={{ maxWidth: 720, margin: "0 auto" }}>
 
@@ -245,12 +264,22 @@ export default function GuidePage() {
                   <span style={{ fontSize: 14, flexShrink: 0 }}>💡</span>
                   <div style={{ fontSize: 12, color: "rgba(255,255,255,.6)", lineHeight: 1.55 }}>{s.tip}</div>
                 </div>
-                <div style={{ textAlign: "center", marginBottom: 10 }}>
-                  <span style={{ fontSize: 12, color: "rgba(255,255,255,.4)" }}>Accès immédiat après upgrade · Rabais abonné appliqué automatiquement</span>
-                </div>
-                <a href="/dashboard/alpha" style={{ display: "block", textAlign: "center", background: "var(--gold)", color: "#0f2744", padding: "11px", borderRadius: 9, fontSize: 13, fontWeight: 800, textDecoration: "none", letterSpacing: ".01em" }}>
-                  Upgrader vers Lifetime et accéder à Alpha →
-                </a>
+                {isLifetime ? (
+                  <a href="/dashboard/alpha" style={{ display: "block", textAlign: "center", background: "var(--gold)", color: "#0f2744", padding: "11px", borderRadius: 9, fontSize: 13, fontWeight: 800, textDecoration: "none", letterSpacing: ".01em" }}>
+                    Accéder à MindTrade Alpha →
+                  </a>
+                ) : (
+                  <>
+                    <div style={{ textAlign: "center", marginBottom: 10 }}>
+                      <span style={{ fontSize: 12, color: "rgba(255,255,255,.4)" }}>
+                        {isAnnual ? "Abonné annuel — rabais appliqué sur le Lifetime" : "Abonné mensuel — montant déjà payé déduit"} · Accès immédiat
+                      </span>
+                    </div>
+                    <a href="/dashboard/alpha" style={{ display: "block", textAlign: "center", background: "var(--gold)", color: "#0f2744", padding: "11px", borderRadius: 9, fontSize: 13, fontWeight: 800, textDecoration: "none", letterSpacing: ".01em" }}>
+                      Upgrader vers Lifetime et accéder à Alpha →
+                    </a>
+                  </>
+                )}
               </div>
             </div>
           ) : (
