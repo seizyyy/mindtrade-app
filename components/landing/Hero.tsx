@@ -87,11 +87,14 @@ export default function Hero() {
               {/* Sidebar */}
               <div style={{ width: 130, background: '#1e293b', borderRight: '1px solid rgba(255,255,255,.07)', padding: '10px 6px', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
                 <div style={{ fontSize: 10, fontWeight: 900, color: '#f1f5f9', letterSpacing: '-.3px', padding: '2px 6px', marginBottom: 10 }}>MindTrade</div>
-                {["Vue d'ensemble",'Check-in','Log de trades','Rapport hebdo','Journal'].map((label, i) => (
-                  <div key={label} style={{ padding: '6px 8px', borderRadius: 5, background: i === 0 ? 'rgba(255,255,255,.08)' : 'transparent', border: `1px solid ${i === 0 ? 'rgba(255,255,255,.1)' : 'transparent'}`, color: i === 0 ? '#f1f5f9' : 'rgba(255,255,255,.3)', fontSize: 10, fontWeight: i === 0 ? 600 : 400, marginBottom: 1 }}>
+                {["Vue d'ensemble",'Check-in','Log de trades','Rapport hebdo','Journal','Confluences','Guide','Paramètres'].map((label, i) => (
+                  <div key={label} style={{ padding: '5px 8px', borderRadius: 5, background: i === 0 ? 'rgba(255,255,255,.08)' : 'transparent', border: `1px solid ${i === 0 ? 'rgba(255,255,255,.1)' : 'transparent'}`, color: i === 0 ? '#f1f5f9' : 'rgba(255,255,255,.3)', fontSize: 9, fontWeight: i === 0 ? 600 : 400, marginBottom: 1 }}>
                     {label}
                   </div>
                 ))}
+                <div style={{ padding: '5px 8px', borderRadius: 5, background: 'rgba(251,191,36,.08)', border: '1px solid rgba(251,191,36,.2)', color: '#fbbf24', fontSize: 9, fontWeight: 600, marginBottom: 1 }}>
+                  ★ Alpha
+                </div>
                 <div style={{ marginTop: 'auto', background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.07)', borderRadius: 8, padding: '10px' }}>
                   <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 3 }}>Score mental</div>
                   <div style={{ fontSize: 22, fontWeight: 700, color: '#22c55e', lineHeight: 1 }}>82</div>
