@@ -50,6 +50,7 @@ export default function ConfluencesPage() {
   const [saving, setSaving] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
+  const [minConfluences, setMinConfluences] = useState<number>(1);
   const [form, setForm] = useState({ titre: "", description: "", type: "required" as "required" | "bonus" });
 
   // Pre-trade quiz
@@ -72,9 +73,17 @@ export default function ConfluencesPage() {
     if (!user) { router.replace("/login"); return; }
     setCurrentUserId(user.id);
     setPtQuestions(loadQuestions(user.id));
+    const saved = localStorage.getItem(`mt-min-confluences-${user.id}`);
+    if (saved) setMinConfluences(parseInt(saved));
     const { data } = await supabase.from("confluences").select("*").eq("user_id", user.id).order("type").order("created_at");
     setConfluences(data || []);
     setLoading(false);
+  }
+
+  function updateMin(val: number) {
+    const clamped = Math.max(1, Math.min(confluences.length || 10, val));
+    setMinConfluences(clamped);
+    if (currentUserId) localStorage.setItem(`mt-min-confluences-${currentUserId}`, String(clamped));
   }
 
   async function addConfluence() {
@@ -115,7 +124,10 @@ export default function ConfluencesPage() {
   const setupScore = confluences.length > 0
     ? Math.round(((checkedRequired * 2 + checkedBonus) / (required.length * 2 + bonus.length)) * 100)
     : null;
+  const totalChecked = checkedRequired + checkedBonus;
+  const minReached = totalChecked >= minConfluences;
   const setupVerdict = setupScore === null ? null
+    : !minReached ? { label: `Minimum non atteint — ${totalChecked}/${minConfluences} confluences cochées`, color: "var(--r)", bg: "var(--tint-r-bg)", border: "var(--tint-r-border)" }
     : setupScore >= 80 ? { label: "Setup valide — tu peux entrer", color: "var(--g)", bg: "var(--tint-g-bg)", border: "var(--tint-g-border)" }
     : setupScore >= 50 ? { label: "Setup partiel — attends confirmation", color: "var(--a)", bg: "var(--tint-a-bg)", border: "var(--tint-a-border)" }
     : { label: "Setup invalide — ne trade pas", color: "var(--r)", bg: "var(--tint-r-bg)", border: "var(--tint-r-border)" };
@@ -214,10 +226,25 @@ export default function ConfluencesPage() {
               {setupVerdict.label}
             </div>
           )}
-          <button onClick={() => setCheckedIds(new Set())}
-            style={{ marginTop: 12, background: "none", border: "none", fontSize: 12, color: "var(--ink3)", cursor: "pointer", padding: 0, fontFamily: "var(--font-outfit)", textDecoration: "underline" }}>
-            Réinitialiser les coches
-          </button>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 14, paddingTop: 12, borderTop: "1px solid var(--border)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".08em" }}>Minimum pour trader</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 0, border: "1px solid var(--border)", borderRadius: 7, overflow: "hidden" }}>
+                <button onClick={() => updateMin(minConfluences - 1)}
+                  style={{ width: 28, height: 28, background: "var(--bg2)", border: "none", color: "var(--ink2)", fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "var(--font-outfit)", lineHeight: 1 }}>−</button>
+                <span style={{ padding: "0 12px", fontSize: 13, fontWeight: 700, color: "var(--ink)", background: "var(--card)", minWidth: 32, textAlign: "center" }}>{minConfluences}</span>
+                <button onClick={() => updateMin(minConfluences + 1)}
+                  style={{ width: 28, height: 28, background: "var(--bg2)", border: "none", color: "var(--ink2)", fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "var(--font-outfit)", lineHeight: 1 }}>+</button>
+              </div>
+              <span style={{ fontSize: 11, color: minReached ? "var(--g)" : "var(--r)", fontWeight: 600 }}>
+                {totalChecked}/{minConfluences} {minReached ? "✓" : ""}
+              </span>
+            </div>
+            <button onClick={() => setCheckedIds(new Set())}
+              style={{ background: "none", border: "none", fontSize: 12, color: "var(--ink3)", cursor: "pointer", padding: 0, fontFamily: "var(--font-outfit)", textDecoration: "underline" }}>
+              Réinitialiser
+            </button>
+          </div>
         </div>
       )}
 
