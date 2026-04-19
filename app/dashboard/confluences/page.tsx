@@ -119,15 +119,13 @@ export default function ConfluencesPage() {
 
   const checkedCount = confluences.filter(c => checkedIds.has(c.id)).length;
   const setupScore = confluences.length > 0
-    ? Math.round((checkedCount / confluences.length) * 100)
+    ? Math.min(100, Math.round((checkedCount / minConfluences) * 100))
     : null;
   const minReached = checkedCount >= minConfluences;
   const setupVerdict = setupScore === null ? null
-    : !minReached
-      ? { label: `Minimum non atteint — ${checkedCount}/${minConfluences} confluences cochées`, color: "var(--r)", bg: "var(--tint-r-bg)", border: "var(--tint-r-border)" }
-      : setupScore === 100
-        ? { label: "Setup valide — tu peux entrer", color: "var(--g)", bg: "var(--tint-g-bg)", border: "var(--tint-g-border)" }
-        : { label: `Setup partiel — ${checkedCount}/${confluences.length} confluences cochées`, color: "var(--a)", bg: "var(--tint-a-bg)", border: "var(--tint-a-border)" };
+    : minReached
+      ? { label: `Setup valide — ${checkedCount} confluences cochées`, color: "var(--g)", bg: "var(--tint-g-bg)", border: "var(--tint-g-border)" }
+      : { label: `Minimum non atteint — ${checkedCount}/${minConfluences} confluences cochées`, color: "var(--r)", bg: "var(--tint-r-bg)", border: "var(--tint-r-border)" };
 
   function ptDeleteQuestion(id: string) {
     const updated = ptQuestions.filter(q => q.id !== id);
