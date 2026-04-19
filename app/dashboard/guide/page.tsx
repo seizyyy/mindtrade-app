@@ -2,6 +2,26 @@
 
 const sections = [
   {
+    id: "settings",
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+      </svg>
+    ),
+    color: "var(--gold)",
+    tintBg: "rgba(212,168,50,.08)",
+    tintBorder: "rgba(212,168,50,.25)",
+    title: "Paramètres — commence ici",
+    subtitle: "Configure ton compte avant tout le reste",
+    steps: [
+      { label: "Ton capital et ta devise", desc: "Renseigne la taille de ton compte et ta devise (EUR, USD, CHF, etc.). Cela permet d'afficher tes P&L en pourcentage du capital partout dans l'app." },
+      { label: "Ton marché principal", desc: "Forex, Indices, Crypto, Actions... Ce choix adapte l'app à ton trading. Les traders crypto ont accès au check-in 7j/7 — les marchés crypto ne ferment jamais." },
+      { label: "Tes limites de risque", desc: "Perte journalière maximum et risque par trade. MindTrade te prévient automatiquement quand tu approches ou dépasses ces seuils pendant ta session." },
+      { label: "Ton objectif mensuel", desc: "Définis un objectif en % de ton capital. Une barre de progression sur le dashboard te montre où tu en es chaque jour du mois." },
+    ],
+    tip: "Sans capital configuré, les P&L s'affichent uniquement en valeur absolue. Avec capital, tu vois aussi le % — bien plus utile pour évaluer tes performances réelles.",
+  },
+  {
     id: "checkin",
     icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -14,67 +34,11 @@ const sections = [
     title: "Check-in mental",
     subtitle: "À faire chaque matin avant d'ouvrir tes charts",
     steps: [
-      { label: "Réponds aux questions", desc: "6 questions sur ton état émotionnel, ton sommeil, ton stress et ta concentration. Sois honnête — personne d'autre ne voit tes réponses." },
-      { label: "Reçois ton score (0–100)", desc: "MindTrade calcule ton état mental du jour. ≥75 = optimal, 60–74 = attention, <60 = évite de trader." },
-      { label: "Lis le signal de session", desc: "En fonction de ton score, tu reçois une recommandation concrète : trade normal, réduis ton risque, ou pause totale." },
+      { label: "Réponds aux 5 questions", desc: "Sommeil, énergie, concentration, stress, confiance. Sois honnête — personne d'autre ne voit tes réponses. 2 minutes suffisent." },
+      { label: "Reçois ton score (0–100)", desc: "MindTrade calcule ton état mental du jour. ≥75 = optimal, 60–74 = attention requise, <60 = évite de trader." },
+      { label: "Lis le signal de session", desc: "Feu tricolore basé sur ton score et tes pertes récentes : GO (trade normalement), CAUTION (réduis le risque), STOP (ne trade pas aujourd'hui)." },
     ],
-    tip: "Le check-in n'est pas optionnel. Les traders qui sautent cette étape prennent 2× plus de trades impulsifs.",
-  },
-  {
-    id: "trades",
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
-      </svg>
-    ),
-    color: "var(--g)",
-    tintBg: "var(--tint-g-bg)",
-    tintBorder: "var(--tint-g-border)",
-    title: "Log de trades",
-    subtitle: "Enregistre chaque trade dès qu'il est clôturé",
-    steps: [
-      { label: "Remplis les champs clés", desc: "Paire, direction (Long/Short), résultat (Gagnant/Perdant/Breakeven), P&L en %, et une note optionnelle sur ton état d'esprit." },
-      { label: "Ajoute une note honnête", desc: "Décris pourquoi tu as pris ce trade, si tu as respecté ton plan, et ce que tu ressens après. C'est là que la vraie progression se construit." },
-      { label: "Consulte tes statistiques", desc: "Win rate, P&L moyen, pertes consécutives — toutes les métriques se calculent automatiquement au fil de tes entrées." },
-    ],
-    tip: "Logge même les trades que tu regrettes. Les mauvais trades bien analysés sont plus précieux que les bons trades ignorés.",
-  },
-  {
-    id: "rapport",
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-      </svg>
-    ),
-    color: "var(--a)",
-    tintBg: "var(--tint-a-bg)",
-    tintBorder: "var(--tint-a-border)",
-    title: "Rapport hebdomadaire",
-    subtitle: "Analyse ta semaine chaque dimanche",
-    steps: [
-      { label: "Vois ta progression sur 7 jours", desc: "P&L total, win rate, score mental moyen, jours tradés vs reposés. Une vue synthétique de ta semaine en un coup d'œil." },
-      { label: "Identifie tes patterns", desc: "MindTrade détecte automatiquement tes jours les plus rentables, tes paires les plus performantes, et les corrélations entre ton état mental et tes résultats." },
-      { label: "Lis les insights personnalisés", desc: "3 à 5 observations générées à partir de tes propres données — pas de conseils génériques, juste ton trading analysé." },
-    ],
-    tip: "Compare ton P&L selon ton score mental. La plupart des traders découvrent qu'ils perdent de l'argent quand leur score est sous 65.",
-  },
-  {
-    id: "journal",
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
-      </svg>
-    ),
-    color: "var(--navy)",
-    tintBg: "var(--tint-n-bg)",
-    tintBorder: "var(--tint-n-border)",
-    title: "Journal",
-    subtitle: "Tes réflexions libres, privées et indexées",
-    steps: [
-      { label: "Écris librement", desc: "Pas de format imposé. Parle de ta séance, d'une erreur, d'une victoire, d'une prise de conscience. Le journal n'est pas un rapport — c'est un espace de pensée." },
-      { label: "Relis tes entrées passées", desc: "Retrouve des patterns dans ta façon de penser. Souvent, les erreurs récurrentes se voient dans le journal bien avant qu'elles apparaissent dans les stats." },
-    ],
-    tip: "3 lignes après chaque séance suffisent. La régularité compte plus que la longueur.",
+    tip: "Le week-end, le check-in est désactivé pour les marchés fermés (Forex, Indices, etc.). Le dashboard affiche un message pour réviser la semaine et préparer la suivante.",
   },
   {
     id: "confluences",
@@ -89,11 +53,87 @@ const sections = [
     title: "Confluences",
     subtitle: "Valide ton setup avant d'entrer en position",
     steps: [
-      { label: "Coche tes critères d'entrée", desc: "Structure de marché, zone de valeur, momentum, catalyseur. Chaque critère validé augmente ton score de confluence." },
-      { label: "Lis le verdict", desc: "Setup solide, partiel, ou invalide — le score te donne une réponse claire avant que l'émotion ne décide à ta place." },
-      { label: "Ne trade que si le score est suffisant", desc: "Un setup à 40% n'est pas un trade. C'est une intuition. Attends la confirmation ou passe à autre chose." },
+      { label: "Configure tes confluences", desc: "Ajoute tes critères d'entrée personnels : structure de marché, zone de valeur, confirmation de timeframe, volume... Chaque trader a les siens." },
+      { label: "Définis ton minimum pour trader", desc: "Règle le seuil avec le stepper +/−. Par défaut à 4 — tu peux l'ajuster selon ton style. Ce réglage est sauvegardé sur ton compte." },
+      { label: "Coche avant chaque entrée", desc: "Le score monte au fur et à mesure que tu coches. Vert = minimum atteint, tu peux entrer. Rouge = pas assez de confluences, attends." },
     ],
-    tip: "Utilise cet outil avant chaque entrée, pas après. L'objectif est de te forcer à rationaliser avant d'agir.",
+    tip: "Utilise cet outil avant chaque entrée, pas après. L'objectif est de te forcer à rationaliser avant que l'émotion ne décide à ta place.",
+  },
+  {
+    id: "trades",
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+      </svg>
+    ),
+    color: "var(--g)",
+    tintBg: "var(--tint-g-bg)",
+    tintBorder: "var(--tint-g-border)",
+    title: "Log de trades",
+    subtitle: "Enregistre chaque trade dès qu'il est clôturé",
+    steps: [
+      { label: "Remplis les champs essentiels", desc: "Paire, direction (LONG/SHORT), P&L dans ta devise, émotion dominante, règles respectées. Chaque champ alimente les analyses." },
+      { label: "Suis ton P&L en % du capital", desc: "Si ton capital est configuré dans les paramètres, tu vois automatiquement le % à côté du montant. Les KPIs en haut de page se mettent à jour en temps réel." },
+      { label: "Consulte l'analyse par émotion", desc: "En bas de page, MindTrade décompose tes performances par état émotionnel. Tu vois exactement quelles émotions te coûtent le plus." },
+    ],
+    tip: "Logge même les trades que tu regrettes. Les mauvais trades bien analysés sont plus précieux que les bons trades ignorés.",
+  },
+  {
+    id: "rapport",
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+      </svg>
+    ),
+    color: "var(--a)",
+    tintBg: "var(--tint-a-bg)",
+    tintBorder: "var(--tint-a-border)",
+    title: "Rapport hebdomadaire",
+    subtitle: "Analyse ta semaine — idéalement chaque dimanche",
+    steps: [
+      { label: "KPIs de la semaine", desc: "P&L net (+ % si capital configuré), win rate, discipline, score mental moyen — tout en un coup d'œil." },
+      { label: "Graphique P&L par jour", desc: "Vois quels jours sont rentables et lesquels ne le sont pas. Le graphique est proportionnel — les grandes semaines ne mordent pas sur le bord." },
+      { label: "Meilleur trade, pire trade, insights", desc: "MindTrade identifie tes trades extrêmes de la semaine et génère des observations personnalisées basées sur tes données réelles." },
+    ],
+    tip: "Compare ton P&L selon ton score mental. La plupart des traders découvrent qu'ils perdent quand leur score est sous 65.",
+  },
+  {
+    id: "rapport-mensuel",
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+      </svg>
+    ),
+    color: "var(--navy)",
+    tintBg: "var(--tint-n-bg)",
+    tintBorder: "var(--tint-n-border)",
+    title: "Rapport mensuel",
+    subtitle: "Vue macro de ton mois complet",
+    steps: [
+      { label: "5 KPIs mensuels", desc: "P&L net, win rate, profit factor, discipline et score mental — calculés sur l'intégralité du mois en cours." },
+      { label: "Analyse émotionnelle du mois", desc: "Quelles émotions ont dominé ? Lesquelles t'ont coûté le plus ? Le rapport décompose chaque état et son impact sur tes résultats." },
+      { label: "Corrélation score mental / P&L", desc: "Graphique qui met en relation ton état mental moyen et tes résultats par semaine. La corrélation entre psychologie et performance se voit ici." },
+    ],
+    tip: "Utilise le rapport mensuel en fin de mois pour définir ton objectif du mois suivant. Les patterns se voient mieux sur 30 jours que sur 7.",
+  },
+  {
+    id: "journal",
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+      </svg>
+    ),
+    color: "var(--navy)",
+    tintBg: "var(--tint-n-bg)",
+    tintBorder: "var(--tint-n-border)",
+    title: "Journal",
+    subtitle: "Tes réflexions de séance, privées et indexées",
+    steps: [
+      { label: "Note ton humeur et ta session", desc: "Humeur, note de séance, ce qui a bien marché, ce qui n'a pas marché. Rapide à remplir, précieux à relire." },
+      { label: "Réponds au quiz de réflexion", desc: "5 questions structurées sur ta discipline, tes entrées, ton état émotionnel. Tu peux personnaliser les questions selon tes propres biais identifiés." },
+      { label: "Relis tes entrées passées", desc: "Retrouve des patterns dans ta façon de penser. Les erreurs récurrentes apparaissent dans le journal bien avant qu'elles se voient dans les stats." },
+    ],
+    tip: "3 lignes après chaque séance suffisent. La régularité compte plus que la longueur.",
   },
 ];
 
@@ -102,7 +142,7 @@ export default function GuidePage() {
     <div style={{ maxWidth: 720, margin: "0 auto" }}>
 
       {/* Header */}
-      <div style={{ marginBottom: 32 }}>
+      <div style={{ marginBottom: 24 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: "var(--navy)", textTransform: "uppercase", letterSpacing: ".12em", marginBottom: 8 }}>Guide</div>
         <h1 style={{ fontFamily: "var(--font-fraunces)", fontSize: 28, fontWeight: 700, color: "var(--ink)", margin: 0, lineHeight: 1.2 }}>Comment utiliser MindTrade</h1>
         <p style={{ fontSize: 14, color: "var(--ink3)", marginTop: 10, lineHeight: 1.6 }}>
@@ -110,7 +150,21 @@ export default function GuidePage() {
         </p>
       </div>
 
-      {/* Workflow rapide */}
+      {/* Commence ici — Paramètres CTA */}
+      <div style={{ background: "linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%)", borderRadius: 14, padding: "20px 24px", marginBottom: 28, display: "flex", alignItems: "center", gap: 20 }}>
+        <div style={{ fontSize: 32, flexShrink: 0 }}>⚙️</div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 13, fontWeight: 800, color: "#fff", marginBottom: 4 }}>Commence par les Paramètres</div>
+          <div style={{ fontSize: 13, color: "rgba(255,255,255,.65)", lineHeight: 1.6 }}>
+            Configure ton capital, ta devise, ton marché et tes limites de risque. Sans ça, une partie des analyses ne fonctionnent pas correctement.
+          </div>
+        </div>
+        <a href="/dashboard/settings" style={{ flexShrink: 0, background: "#fff", color: "var(--navy)", padding: "9px 20px", borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+          Configurer →
+        </a>
+      </div>
+
+      {/* Routine recommandée */}
       <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 14, padding: "20px 24px", marginBottom: 28 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 14 }}>Routine recommandée</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
@@ -119,7 +173,8 @@ export default function GuidePage() {
             { step: "2", time: "Avant chaque trade", action: "Vérifie tes confluences", href: "/dashboard/confluences", color: "var(--g)" },
             { step: "3", time: "Après chaque trade", action: "Logge dans le journal de trades", href: "/dashboard/trades", color: "var(--g)" },
             { step: "4", time: "En fin de séance", action: "Écris une note dans le journal", href: "/dashboard/journal", color: "var(--navy)" },
-            { step: "5", time: "Chaque dimanche", action: "Analyse ton rapport hebdo", href: "/dashboard/rapport", color: "var(--a)" },
+            { step: "5", time: "Chaque week-end", action: "Analyse ton rapport hebdo", href: "/dashboard/rapport", color: "var(--a)" },
+            { step: "6", time: "Fin de mois", action: "Consulte le rapport mensuel", href: "/dashboard/rapport-mensuel", color: "var(--navy)" },
           ].map((r, i, arr) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 14, paddingBottom: i < arr.length - 1 ? 12 : 0, marginBottom: i < arr.length - 1 ? 12 : 0, borderBottom: i < arr.length - 1 ? "1px solid var(--border)" : "none" }}>
               <div style={{ width: 26, height: 26, borderRadius: "50%", background: "var(--bg2)", border: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, color: "var(--ink3)", flexShrink: 0 }}>{r.step}</div>
@@ -139,7 +194,6 @@ export default function GuidePage() {
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         {sections.map((s) => (
           <div key={s.id} style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 14, overflow: "hidden" }}>
-            {/* Header section */}
             <div style={{ padding: "18px 24px 16px", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "flex-start", gap: 14 }}>
               <div style={{ width: 38, height: 38, borderRadius: 10, background: s.tintBg, border: `1px solid ${s.tintBorder}`, display: "flex", alignItems: "center", justifyContent: "center", color: s.color, flexShrink: 0 }}>
                 {s.icon}
@@ -149,8 +203,6 @@ export default function GuidePage() {
                 <div style={{ fontSize: 12, color: "var(--ink3)", marginTop: 2 }}>{s.subtitle}</div>
               </div>
             </div>
-
-            {/* Steps */}
             <div style={{ padding: "16px 24px" }}>
               <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                 {s.steps.map((step, i) => (
@@ -163,8 +215,6 @@ export default function GuidePage() {
                   </div>
                 ))}
               </div>
-
-              {/* Tip */}
               <div style={{ marginTop: 16, background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 8, padding: "10px 14px", display: "flex", gap: 10, alignItems: "flex-start" }}>
                 <span style={{ fontSize: 14, flexShrink: 0 }}>💡</span>
                 <div style={{ fontSize: 12, color: "var(--ink2)", lineHeight: 1.55 }}>{s.tip}</div>
@@ -176,11 +226,16 @@ export default function GuidePage() {
 
       {/* Footer CTA */}
       <div style={{ marginTop: 28, background: "var(--tint-n-bg)", border: "1px solid var(--tint-n-border)", borderRadius: 14, padding: "20px 24px", textAlign: "center" }}>
-        <div style={{ fontSize: 15, fontWeight: 700, color: "var(--ink)", marginBottom: 6 }}>Prêt à commencer ?</div>
-        <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 16 }}>Commence par ton check-in du jour. Toutes les analyses se débloquent au fur et à mesure.</div>
-        <a href="/dashboard/checkin" style={{ display: "inline-block", background: "var(--navy)", color: "#fff", padding: "10px 24px", borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
-          Faire mon check-in →
-        </a>
+        <div style={{ fontSize: 15, fontWeight: 700, color: "var(--ink)", marginBottom: 6 }}>Tout est prêt ?</div>
+        <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 16 }}>Commence par configurer tes paramètres, puis fais ton premier check-in. Le reste se débloque naturellement.</div>
+        <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+          <a href="/dashboard/settings" style={{ display: "inline-block", background: "var(--navy)", color: "#fff", padding: "10px 24px", borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+            Paramètres →
+          </a>
+          <a href="/dashboard/checkin" style={{ display: "inline-block", background: "var(--bg2)", color: "var(--ink)", border: "1px solid var(--border)", padding: "10px 24px", borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+            Check-in →
+          </a>
+        </div>
       </div>
 
     </div>
