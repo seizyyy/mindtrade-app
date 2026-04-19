@@ -3,30 +3,22 @@
 
 const planFeatures = {
   monthly: [
-    "Check-in mental quotidien — score de 0 à 100 avant chaque session",
-    "Signal de session : vert / orange / rouge — sais si tu dois trader",
-    "Log de trades avec émotion, confluences et résultat",
-    "Score de discipline — régularité, règles respectées, maîtrise émotionnelle",
-    "Rapport hebdomadaire — P&L, win rate, profit factor, patterns détectés",
-    "Journal post-session guidé — réflexion structurée après chaque journée",
-    "Confluences personnalisées — tes critères d'entrée en un coup d'œil",
-    "Guide de trading mental intégré",
+    "Score mental quotidien + signal vert/orange/rouge",
+    "Log de trades avec émotions et confluences",
+    "Rapport hebdo — P&L, win rate, discipline",
+    "Journal post-session guidé",
     "Sans engagement · Résilie en 1 clic",
   ],
   annual: [
-    "Tout le plan mensuel, sans exception",
-    "2 mois offerts — 178€ économisés vs mensuel",
-    "Nouvelles features en avant-première",
-    "Support prioritaire — réponse sous 48h",
-    "Le choix du trader sérieux sur le long terme",
+    "Tout le mensuel, sans exception",
+    "2 mois offerts — 178€ économisés",
+    "Support prioritaire sous 48h",
   ],
   lifetime: [
-    "Tout le plan annuel, pour toujours",
-    "★ Alpha — corrélations mental/P&L, patterns par jour, émotions en chiffres",
-    "Toutes les futures fonctionnalités — à vie, sans supplément",
-    "Support direct — tu passes avant tout le monde, réponse sous 24h",
-    "Prix bloqué à vie · Aucune hausse possible, jamais",
-    "Un paiement. C'est tout. Amorti dès le 1er trade émotionnel évité.",
+    "Tout MindTrade, à vie — un seul paiement",
+    "★ Alpha — corrélations mental/P&L, patterns, émotions en chiffres",
+    "Toutes les futures fonctionnalités incluses",
+    "Support direct sous 24h · Prix bloqué à vie",
   ],
 };
 
