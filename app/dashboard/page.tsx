@@ -377,7 +377,7 @@ export default function DashboardPage() {
           <div style={{ fontSize: 10, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8 }}>P&L net</div>
           <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
             <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 38, fontWeight: 700, color: weekTrades.length > 0 ? pnlNet >= 0 ? "var(--g)" : "var(--r)" : "var(--ink3)", lineHeight: 1 }}>
-              {weekTrades.length > 0 ? `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}€` : "—"}
+              {weekTrades.length > 0 ? `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${currency}` : "—"}
             </div>
             {weekTrades.length > 0 && accountSize && (
               <div style={{ fontSize: 12, fontWeight: 700, color: pnlNet >= 0 ? "var(--g)" : "var(--r)", background: pnlNet >= 0 ? "rgba(22,101,52,.08)" : "rgba(155,28,28,.08)", border: `1px solid ${pnlNet >= 0 ? "rgba(22,101,52,.2)" : "rgba(155,28,28,.2)"}`, borderRadius: 6, padding: "3px 8px", lineHeight: 1.2 }}>
@@ -496,7 +496,7 @@ export default function DashboardPage() {
                 </div>
                 <div style={{ fontSize: 12, color: "var(--ink2)", lineHeight: 1.65 }}>
                   Cet état t{"'"}a coûté{" "}
-                  <strong style={{ color: "var(--r)" }}>−{lf.loss.toFixed(0)}€</strong>{" "}
+                  <strong style={{ color: "var(--r)" }}>−{lf.loss.toFixed(0)}{currency}</strong>{" "}
                   sur tes {lf.count} trades en mode {lf.emotion.toLowerCase()}.
                 </div>
               </>
@@ -549,14 +549,14 @@ export default function DashboardPage() {
                       padding: "2px 8px", borderRadius: 8,
                     }}>{t.emotion}</span>
                     <span style={{ fontSize: 12, fontWeight: 700, color: t.pnl >= 0 ? "var(--g)" : "var(--r)", minWidth: 50, textAlign: "right" }}>
-                      {t.pnl >= 0 ? "+" : ""}{t.pnl.toFixed(0)}€
+                      {t.pnl >= 0 ? "+" : ""}{t.pnl.toFixed(0)}{currency}
                     </span>
                   </div>
                 );
               })}
               {lf && (
                 <div style={{ marginTop: 12, padding: "8px 10px", background: "var(--tint-r-bg)", border: "1px solid var(--tint-r-border)", borderRadius: 7, fontSize: 11, color: "var(--r)" }}>
-                  Le <strong>{lf.emotion}</strong> t{"'"}a coûté <strong>−{lf.loss.toFixed(0)}€</strong> ce mois
+                  Le <strong>{lf.emotion}</strong> t{"'"}a coûté <strong>−{lf.loss.toFixed(0)}{currency}</strong> ce mois
                 </div>
               )}
             </div>
