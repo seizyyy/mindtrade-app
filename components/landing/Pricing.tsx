@@ -11,13 +11,9 @@ const planFeatures = {
     "Sans engagement · Résiliable à tout moment",
   ],
   annual: [
-    "Check-in quotidien + score mental",
-    "Dashboard complet + signal mental",
-    "Log de trades + checklist de confluences",
-    "Rapport hebdomadaire",
-    "Journal structuré + quiz de réflexion",
+    "Tout ce qui est inclus dans le plan Mensuel",
     "2 mois offerts — économie de 178€ vs mensuel",
-    "Support réponse sous 48h",
+    "Support prioritaire",
   ],
   lifetime: [
     "Tout le plan annuel inclus, à vie",
