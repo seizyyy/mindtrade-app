@@ -172,7 +172,7 @@ export default function RapportMensuelPage() {
             <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 16 }}>P&L par semaine</div>
             <div style={{ display: "flex", gap: 12, alignItems: "flex-end", height: 100 }}>
               {weeks.map((w, i) => {
-                const barH = w.pnl !== 0 ? Math.max(8, (Math.abs(w.pnl) / maxAbsPnl) * 88) : 3;
+                const barH = w.pnl !== 0 ? Math.max(8, (Math.abs(w.pnl) / maxAbsPnl) * 68) : 3;
                 const isPos = w.pnl >= 0;
                 return (
                   <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
