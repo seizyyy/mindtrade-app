@@ -407,18 +407,43 @@ export default function AlphaPage() {
 
           </div>
 
-          {/* ── Alerte prédictive ── */}
-          {todayCheckin && dayAvg !== null && dayPnls.length >= 3 && todayDow >= 1 && todayDow <= 5 && (
-            <div style={{ ...card, background: dayAvg < 0 ? "var(--tint-r-bg)" : "var(--tint-g-bg)", border: `1.5px solid ${dayAvg < 0 ? "var(--tint-r-border)" : "var(--tint-g-border)"}` }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: dayAvg < 0 ? "var(--r)" : "var(--g)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8 }}>⚡ Signal prédictif — {DAY_LABELS[todayDow]}</div>
-              <div style={{ fontSize: 14, color: "var(--ink2)", lineHeight: 1.7 }}>
-                Historiquement le <strong style={{ color: "var(--ink)" }}>{DAY_LABELS[todayDow]}</strong>, tu réalises en moyenne{" "}
-                <strong style={{ color: dayAvg >= 0 ? "var(--g)" : "var(--r)" }}>{dayAvg >= 0 ? "+" : ""}{dayAvg.toFixed(0)}{sym(currency)}</strong> avec un win rate de{" "}
-                <strong style={{ color: "var(--ink)" }}>{dayWr}%</strong> ({dayPnls.length} trades analysés).
-                {recentLosses >= 2 && <span style={{ color: "var(--r)" }}> ⚠ {recentLosses} pertes dans tes 5 derniers trades — risque de revenge trading élevé.</span>}
-              </div>
+          {/* ── Signal prédictif du jour ── */}
+          <div style={card}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Signal prédictif du jour</div>
+            <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20 }}>
+              Basé sur ton historique, ce que ce jour de la semaine prédit sur ta performance.
             </div>
-          )}
+            {dayPnls.length < 3 || todayDow === 0 || todayDow === 6 ? (
+              <div style={{ fontSize: 13, color: "var(--ink3)", padding: "14px 0" }}>
+                {todayDow === 0 || todayDow === 6
+                  ? "Nous sommes le week-end — les marchés sont fermés. Consulte ce signal en semaine."
+                  : `Pas encore assez de trades un ${DAY_LABELS[todayDow]} (minimum 3 requis — ${dayPnls.length} pour l'instant).`}
+              </div>
+            ) : (
+              <div style={{ background: dayAvg! < 0 ? "var(--tint-r-bg)" : dayAvg! >= 0 && dayWr! >= 60 ? "var(--tint-g-bg)" : "var(--tint-a-bg)", border: `1.5px solid ${dayAvg! < 0 ? "var(--tint-r-border)" : dayAvg! >= 0 && dayWr! >= 60 ? "var(--tint-g-border)" : "var(--tint-a-border)"}`, borderRadius: 10, padding: "18px 20px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                  <span style={{ fontSize: 20 }}>{dayAvg! < 0 ? "🔴" : dayWr! >= 60 ? "🟢" : "🟡"}</span>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: "var(--ink)" }}>
+                    {dayAvg! < 0 ? "Journée historiquement défavorable" : dayWr! >= 60 ? "Journée historiquement favorable" : "Journée mitigée"}
+                    {" — "}{DAY_LABELS[todayDow]}
+                  </div>
+                </div>
+                <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.75 }}>
+                  Sur <strong style={{ color: "var(--ink)" }}>{dayPnls.length} trades</strong> enregistrés un {DAY_LABELS[todayDow]}, tu réalises en moyenne{" "}
+                  <strong style={{ color: dayAvg! >= 0 ? "var(--g)" : "var(--r)" }}>{dayAvg! >= 0 ? "+" : ""}{dayAvg!.toFixed(0)}{sym(currency)}</strong> avec un win rate de{" "}
+                  <strong style={{ color: "var(--ink)" }}>{dayWr}%</strong>.
+                  {dayAvg! < 0 && <span style={{ color: "var(--r)" }}> Réduis ta taille de position ou évite de trader aujourd'hui.</span>}
+                  {dayAvg! >= 0 && dayWr! >= 60 && <span style={{ color: "var(--g)" }}> C'est l'un de tes meilleurs jours — trade avec confiance en respectant tes règles.</span>}
+                  {dayAvg! >= 0 && dayWr! < 60 && <span style={{ color: "var(--a)" }}> Résultats variables — reste discipliné et ne sur-trade pas.</span>}
+                </div>
+                {recentLosses >= 2 && (
+                  <div style={{ marginTop: 12, padding: "8px 12px", background: "rgba(239,68,68,.08)", borderRadius: 7, fontSize: 12, color: "var(--r)", fontWeight: 600 }}>
+                    ⚠ {recentLosses} pertes dans tes 5 derniers trades — risque de revenge trading élevé aujourd'hui.
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
 
         </div>
       )}
