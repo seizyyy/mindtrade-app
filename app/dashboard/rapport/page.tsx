@@ -224,9 +224,9 @@ export default function RapportPage() {
           {/* Day chart */}
           <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "20px 24px", marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 16 }}>P&L par jour</div>
-            <div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
+            <div style={{ display: "flex", gap: 8, alignItems: "flex-end", height: 110, paddingTop: 20 }}>
               {dayData.map((d, i) => {
-                const barH = d.pnl !== 0 ? Math.max(8, (Math.abs(d.pnl) / maxAbsPnl) * 80) : 3;
+                const barH = d.pnl !== 0 ? Math.max(8, (Math.abs(d.pnl) / maxAbsPnl) * 68) : 3;
                 const isPos = d.pnl >= 0;
                 return (
                   <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
