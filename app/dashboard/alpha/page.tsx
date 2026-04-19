@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { sym } from "@/lib/currency";
 
 type Checkin = { score: number; date: string };
 type Trade = { pnl: number; pair: string; emotion: string; date: string; respected_rules: boolean };
@@ -103,6 +104,7 @@ export default function AlphaPage() {
   const [userPlan, setUserPlan] = useState<string>("monthly");
   const [userId, setUserId] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [currency, setCurrency] = useState("EUR");
 
   useEffect(() => {
     async function load() {
@@ -110,8 +112,9 @@ export default function AlphaPage() {
       if (!user) { router.replace("/login"); return; }
       setUserId(user.id);
       setUserEmail(user.email ?? "");
-      const { data: profile } = await supabase.from("profiles").select("plan").eq("id", user.id).single();
+      const { data: profile } = await supabase.from("profiles").select("plan,currency").eq("id", user.id).single();
       const plan = profile?.plan ?? "monthly";
+      if (profile?.currency) setCurrency(profile.currency);
       setUserPlan(plan);
 
       if (plan === "lifetime") {
@@ -312,7 +315,7 @@ export default function AlphaPage() {
                     {a !== null ? (
                       <>
                         <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 26, fontWeight: 700, color: a >= 0 ? "var(--g)" : "var(--r)", lineHeight: 1, marginBottom: 4 }}>
-                          {a >= 0 ? "+" : ""}{a.toFixed(0)}€
+                          {a >= 0 ? "+" : ""}{a.toFixed(0)}{sym(currency)}
                         </div>
                         <div style={{ fontSize: 12, color: "var(--ink3)" }}>moy. par trade · {wr}% win</div>
                       </>
@@ -340,7 +343,7 @@ export default function AlphaPage() {
                   <div key={d} style={{ textAlign: "center", background: "var(--bg2)", borderRadius: 10, padding: "14px 8px", border: `1.5px solid ${isGood ? "rgba(34,197,94,.2)" : isBad ? "rgba(239,68,68,.2)" : "var(--border)"}` }}>
                     <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", marginBottom: 8 }}>{DAY_LABELS[d]}</div>
                     <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 18, fontWeight: 700, color: isGood ? "var(--g)" : isBad ? "var(--r)" : "var(--ink3)", marginBottom: 4 }}>
-                      {a !== null ? `${a >= 0 ? "+" : ""}${a.toFixed(0)}€` : "—"}
+                      {a !== null ? `${a >= 0 ? "+" : ""}${a.toFixed(0)}${sym(currency)}` : "—"}
                     </div>
                     <div style={{ fontSize: 10, color: "var(--ink3)" }}>{wr !== null ? `${wr}% win` : `${arr.length} trades`}</div>
                   </div>
@@ -366,7 +369,7 @@ export default function AlphaPage() {
                         <div style={{ height: "100%", width: `${Math.min(100, Math.abs(e.winRate))}%`, background: e.avg >= 0 ? "var(--g)" : "var(--r)", borderRadius: 3 }} />
                       </div>
                       <div style={{ fontSize: 12, fontWeight: 700, color: e.avg >= 0 ? "var(--g)" : "var(--r)", width: 70, textAlign: "right" }}>
-                        {e.avg >= 0 ? "+" : ""}{e.avg.toFixed(0)}€ moy.
+                        {e.avg >= 0 ? "+" : ""}{e.avg.toFixed(0)}{sym(currency)} moy.
                       </div>
                       <div style={{ fontSize: 11, color: "var(--ink3)", width: 45, textAlign: "right" }}>{e.winRate}% W</div>
                     </div>
@@ -410,7 +413,7 @@ export default function AlphaPage() {
               <div style={{ fontSize: 11, fontWeight: 700, color: dayAvg < 0 ? "var(--r)" : "var(--g)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8 }}>⚡ Signal prédictif — {DAY_LABELS[todayDow]}</div>
               <div style={{ fontSize: 14, color: "var(--ink2)", lineHeight: 1.7 }}>
                 Historiquement le <strong style={{ color: "var(--ink)" }}>{DAY_LABELS[todayDow]}</strong>, tu réalises en moyenne{" "}
-                <strong style={{ color: dayAvg >= 0 ? "var(--g)" : "var(--r)" }}>{dayAvg >= 0 ? "+" : ""}{dayAvg.toFixed(0)}€</strong> avec un win rate de{" "}
+                <strong style={{ color: dayAvg >= 0 ? "var(--g)" : "var(--r)" }}>{dayAvg >= 0 ? "+" : ""}{dayAvg.toFixed(0)}{sym(currency)}</strong> avec un win rate de{" "}
                 <strong style={{ color: "var(--ink)" }}>{dayWr}%</strong> ({dayPnls.length} trades analysés).
                 {recentLosses >= 2 && <span style={{ color: "var(--r)" }}> ⚠ {recentLosses} pertes dans tes 5 derniers trades — risque de revenge trading élevé.</span>}
               </div>
