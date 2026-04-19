@@ -99,11 +99,12 @@ export default function CheckinPage() {
   const [maxDailyLossAmount, setMaxDailyLossAmount] = useState<number | null>(null);
   const [accountSize, setAccountSize] = useState<number | null>(null);
   const [currency, setCurrency] = useState<string>("EUR");
+  const [market, setMarket] = useState<string | null>(null);
   const [todayPnl, setTodayPnl] = useState<number>(0);
 
   const today = new Date().toISOString().split("T")[0];
-  const dayOfWeek = new Date().getDay(); // 0 = dimanche, 6 = samedi
-  const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+  const dayOfWeek = new Date().getDay();
+  const isWeekend = market !== null && (dayOfWeek === 0 || dayOfWeek === 6) && market !== "Crypto";
 
   useEffect(() => {
     async function check() {
@@ -112,7 +113,7 @@ export default function CheckinPage() {
       const [{ data: todayData }, { data: histData }, { data: profile }, { data: todayTrades }] = await Promise.all([
         supabase.from("checkins").select("score").eq("user_id", user.id).eq("date", today).single(),
         supabase.from("checkins").select("score,date").eq("user_id", user.id).order("date", { ascending: false }).limit(30),
-        supabase.from("profiles").select("display_name,max_risk_per_trade,max_daily_loss,account_size,currency").eq("id", user.id).single(),
+        supabase.from("profiles").select("display_name,max_risk_per_trade,max_daily_loss,account_size,currency,market").eq("id", user.id).single(),
         supabase.from("trades").select("pnl").eq("user_id", user.id).eq("date", today),
       ]);
       if (todayData) { setAlreadyDone(true); setExistingScore(todayData.score); setStep(5); }
@@ -122,6 +123,7 @@ export default function CheckinPage() {
       if (profile?.max_daily_loss) setMaxDailyLossAmount(profile.max_daily_loss);
       if (profile?.account_size) setAccountSize(profile.account_size);
       if (profile?.currency) setCurrency(profile.currency);
+      if (profile?.market) setMarket(profile.market);
       const pnl = (todayTrades || []).reduce((s: number, t: { pnl: number }) => s + t.pnl, 0);
       setTodayPnl(pnl);
     }
