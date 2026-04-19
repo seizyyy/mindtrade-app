@@ -113,7 +113,7 @@ export default function ProductTour() {
                   <div style={{ display:"flex", alignItems:"flex-end", gap:6, height:80 }}>
                     {[
                       { day:"DI", score:60, color:"#f59e0b" },
-                      { day:"LU", score:100, color:"#22c55e" },
+                      { day:"LU", score:73, color:"#22c55e" },
                       { day:"MA", score:84, color:"#22c55e" },
                       { day:"ME", score:40, color:"#ef4444" },
                       { day:"JE", score:76, color:"#22c55e" },
