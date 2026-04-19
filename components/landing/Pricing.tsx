@@ -13,7 +13,7 @@ const planFeatures = {
   annual: [
     "Tout ce qui est inclus dans le plan Mensuel",
     "2 mois offerts — économie de 178€ vs mensuel",
-    "Support prioritaire",
+    "Support — réponse sous 48h",
   ],
   lifetime: [
     "Tout le plan annuel inclus, à vie",
