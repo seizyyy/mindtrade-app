@@ -358,116 +358,7 @@ export default function AlphaPage() {
       {isLifetime && hasTrades && hasCheckins && (
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
-          {/* ── Corrélation Score / P&L ── */}
-          <div style={card}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Corrélation état mental → performance</div>
-            <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20, lineHeight: 1.5 }}>
-              Ce que ton score mental prédit réellement sur tes trades.
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
-              {Object.values(buckets).map((b) => {
-                const a = avg(b.trades);
-                const wr = winRate(b.trades);
-                return (
-                  <div key={b.label} style={{ background: "var(--bg2)", borderRadius: 10, padding: "16px 18px", borderLeft: `3px solid ${b.color}` }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: b.color, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>{b.range}</div>
-                    <div style={{ fontSize: 11, color: "var(--ink3)", marginBottom: 12 }}>{b.label} · {b.trades.length} trade{b.trades.length !== 1 ? "s" : ""}</div>
-                    {a !== null ? (
-                      <>
-                        <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 26, fontWeight: 700, color: a >= 0 ? "var(--g)" : "var(--r)", lineHeight: 1, marginBottom: 4 }}>
-                          {a >= 0 ? "+" : ""}{a.toFixed(0)}{sym(currency)}
-                        </div>
-                        <div style={{ fontSize: 12, color: "var(--ink3)" }}>moy. par trade · {wr}% win</div>
-                      </>
-                    ) : (
-                      <div style={{ fontSize: 13, color: "var(--ink3)" }}>—</div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* ── Performance par jour ── */}
-          <div style={card}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Performance par jour de semaine</div>
-            <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20 }}>Tes meilleurs et pires jours selon tes données réelles.</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
-              {[1, 2, 3, 4, 5].map(d => {
-                const arr = byDay[d];
-                const a = avg(arr);
-                const wr = winRate(arr);
-                const isGood = a !== null && a > 0;
-                const isBad = a !== null && a < 0;
-                return (
-                  <div key={d} style={{ textAlign: "center", background: "var(--bg2)", borderRadius: 10, padding: "14px 8px", border: `1.5px solid ${isGood ? "rgba(34,197,94,.2)" : isBad ? "rgba(239,68,68,.2)" : "var(--border)"}` }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", marginBottom: 8 }}>{DAY_LABELS[d]}</div>
-                    <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 18, fontWeight: 700, color: isGood ? "var(--g)" : isBad ? "var(--r)" : "var(--ink3)", marginBottom: 4 }}>
-                      {a !== null ? `${a >= 0 ? "+" : ""}${a.toFixed(0)}${sym(currency)}` : "—"}
-                    </div>
-                    <div style={{ fontSize: 10, color: "var(--ink3)" }}>{wr !== null ? `${wr}% win` : `${arr.length} trades`}</div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* ── Émotion / Performance + Score Evolution ── */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-
-            <div style={card}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Tes émotions en chiffres</div>
-              <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 16 }}>Impact réel de chaque état sur tes résultats.</div>
-              {emotionStats.length === 0 ? (
-                <div style={{ fontSize: 13, color: "var(--ink3)" }}>Pas assez de données.</div>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  {emotionStats.map(e => (
-                    <div key={e.emotion} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <div style={{ fontSize: 13, color: "var(--ink2)", width: 100, flexShrink: 0 }}>{e.emotion}</div>
-                      <div style={{ flex: 1, height: 5, background: "var(--bg3)", borderRadius: 3, overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: `${Math.min(100, Math.abs(e.winRate))}%`, background: e.avg >= 0 ? "var(--g)" : "var(--r)", borderRadius: 3 }} />
-                      </div>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: e.avg >= 0 ? "var(--g)" : "var(--r)", width: 70, textAlign: "right" }}>
-                        {e.avg >= 0 ? "+" : ""}{e.avg.toFixed(0)}{sym(currency)} moy.
-                      </div>
-                      <div style={{ fontSize: 11, color: "var(--ink3)", width: 45, textAlign: "right" }}>{e.winRate}% W</div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div style={card}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Évolution du score mental</div>
-              <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20 }}>Ta progression psychologique dans le temps.</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                {[{ label: "30 derniers jours", val: s30 }, { label: "60 derniers jours", val: s60 }, { label: "90 derniers jours", val: s90 }].map(({ label, val }) => (
-                  <div key={label}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                      <span style={{ fontSize: 12, color: "var(--ink3)" }}>{label}</span>
-                      <span style={{ fontSize: 13, fontWeight: 700, color: val ? val >= 75 ? "var(--g)" : val >= 60 ? "var(--a)" : "var(--r)" : "var(--ink3)" }}>
-                        {val ? `${val}/100` : "—"}
-                      </span>
-                    </div>
-                    {val && (
-                      <div style={{ height: 5, background: "var(--bg3)", borderRadius: 3, overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: `${val}%`, background: val >= 75 ? "var(--g)" : val >= 60 ? "var(--a)" : "var(--r)", borderRadius: 3, transition: "width .4s" }} />
-                      </div>
-                    )}
-                  </div>
-                ))}
-                {trend !== null && (
-                  <div style={{ marginTop: 4, fontSize: 12, color: trend > 0 ? "var(--g)" : trend < 0 ? "var(--r)" : "var(--ink3)", fontWeight: 600 }}>
-                    {trend > 0 ? `↑ +${trend} pts` : trend < 0 ? `↓ ${trend} pts` : "→ Stable"} vs mois précédent
-                  </div>
-                )}
-              </div>
-            </div>
-
-          </div>
-
-          {/* ── Signal prédictif du jour ── */}
+          {/* 1 ── Signal prédictif du jour ── */}
           <div style={card}>
             <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Signal prédictif du jour</div>
             <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20 }}>
@@ -505,10 +396,8 @@ export default function AlphaPage() {
             )}
           </div>
 
-          {/* ── Profil trader + Insights ── */}
+          {/* 2 ── Profil trader + Insights ── */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-
-            {/* Profil */}
             <div style={{ background: "linear-gradient(160deg, #0c1e38 0%, #152d4a 100%)", border: "1px solid rgba(212,168,50,.3)", borderRadius: 14, padding: "22px 24px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18 }}>
                 <span style={{ fontSize: 15 }}>⭐</span>
@@ -554,8 +443,6 @@ export default function AlphaPage() {
                 )}
               </div>
             </div>
-
-            {/* Insights */}
             {insights.length > 0 && (
               <div style={card}>
                 <div style={{ fontSize: 11, fontWeight: 800, color: "var(--ink)", marginBottom: 4 }}>Insights personnalisés</div>
@@ -570,43 +457,38 @@ export default function AlphaPage() {
                 </div>
               </div>
             )}
-
           </div>
 
-          {/* ── Paires + Discipline ── */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-
-            {/* Performance par paire */}
-            {pairStats.length > 0 && (
-              <div style={card}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Performance par paire</div>
-                <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20 }}>P&L moyen sur tes {pairStats.reduce((s, p) => s + p.count, 0)} trades loggés.</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  {(() => {
-                    const maxAbs = Math.max(...pairStats.map(x => Math.abs(x.avg)));
-                    return pairStats.slice(0, 7).map(p => {
-                      const pct = maxAbs > 0 ? (Math.abs(p.avg) / maxAbs) * 100 : 0;
-                      return (
-                        <div key={p.pair}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
-                            <span style={{ fontSize: 13, color: "var(--ink)", fontWeight: 600 }}>{p.pair}</span>
-                            <div style={{ display: "flex", gap: 10, alignItems: "baseline" }}>
-                              <span style={{ fontSize: 11, color: "var(--ink3)" }}>{p.wr}% · {p.count}t</span>
-                              <span style={{ fontSize: 13, fontWeight: 800, color: p.avg >= 0 ? "var(--g)" : "var(--r)" }}>{p.avg >= 0 ? "+" : ""}{p.avg.toFixed(0)}{sym(currency)}</span>
-                            </div>
-                          </div>
-                          <div style={{ height: 5, background: "var(--bg3)", borderRadius: 3, overflow: "hidden" }}>
-                            <div style={{ height: "100%", width: `${pct}%`, background: p.avg >= 0 ? "var(--g)" : "var(--r)", borderRadius: 3 }} />
-                          </div>
+          {/* 3 ── Corrélation Score / P&L ── */}
+          <div style={card}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Corrélation état mental → performance</div>
+            <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20, lineHeight: 1.5 }}>Ce que ton score mental prédit réellement sur tes trades.</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+              {Object.values(buckets).map((b) => {
+                const a = avg(b.trades);
+                const wr = winRate(b.trades);
+                return (
+                  <div key={b.label} style={{ background: "var(--bg2)", borderRadius: 10, padding: "16px 18px", borderLeft: `3px solid ${b.color}` }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: b.color, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>{b.range}</div>
+                    <div style={{ fontSize: 11, color: "var(--ink3)", marginBottom: 12 }}>{b.label} · {b.trades.length} trade{b.trades.length !== 1 ? "s" : ""}</div>
+                    {a !== null ? (
+                      <>
+                        <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 26, fontWeight: 700, color: a >= 0 ? "var(--g)" : "var(--r)", lineHeight: 1, marginBottom: 4 }}>
+                          {a >= 0 ? "+" : ""}{a.toFixed(0)}{sym(currency)}
                         </div>
-                      );
-                    });
-                  })()}
-                </div>
-              </div>
-            )}
+                        <div style={{ fontSize: 12, color: "var(--ink3)" }}>moy. par trade · {wr}% win</div>
+                      </>
+                    ) : (
+                      <div style={{ fontSize: 13, color: "var(--ink3)" }}>—</div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
 
-            {/* Impact discipline */}
+          {/* 4 ── Impact discipline + Émotions ── */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
             {disciplineAvg !== null && undisciplineAvg !== null && undisciplinedPnls.length >= 2 && (
               <div style={card}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Impact discipline</div>
@@ -627,14 +509,113 @@ export default function AlphaPage() {
                     </div>
                   </div>
                   <div style={{ fontSize: 13, fontWeight: 700, color: disciplineAvg > undisciplineAvg ? "var(--g)" : "var(--ink3)", textAlign: "center", paddingTop: 2 }}>
-                    {disciplineAvg > undisciplineAvg
-                      ? `+${(disciplineAvg - undisciplineAvg).toFixed(0)}${sym(currency)}/trade en respectant tes règles`
-                      : "Écart faible — réévalue tes critères"}
+                    {disciplineAvg > undisciplineAvg ? `+${(disciplineAvg - undisciplineAvg).toFixed(0)}${sym(currency)}/trade en respectant tes règles` : "Écart faible — réévalue tes critères"}
                   </div>
                 </div>
               </div>
             )}
+            <div style={card}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Tes émotions en chiffres</div>
+              <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 16 }}>Impact réel de chaque état sur tes résultats.</div>
+              {emotionStats.length === 0 ? (
+                <div style={{ fontSize: 13, color: "var(--ink3)" }}>Pas assez de données.</div>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {emotionStats.map(e => (
+                    <div key={e.emotion} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <div style={{ fontSize: 13, color: "var(--ink2)", width: 100, flexShrink: 0 }}>{e.emotion}</div>
+                      <div style={{ flex: 1, height: 5, background: "var(--bg3)", borderRadius: 3, overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: `${Math.min(100, Math.abs(e.winRate))}%`, background: e.avg >= 0 ? "var(--g)" : "var(--r)", borderRadius: 3 }} />
+                      </div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: e.avg >= 0 ? "var(--g)" : "var(--r)", width: 70, textAlign: "right" }}>
+                        {e.avg >= 0 ? "+" : ""}{e.avg.toFixed(0)}{sym(currency)} moy.
+                      </div>
+                      <div style={{ fontSize: 11, color: "var(--ink3)", width: 45, textAlign: "right" }}>{e.winRate}% W</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
 
+          {/* 5 ── Performance par paire ── */}
+          {pairStats.length > 0 && (
+            <div style={card}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Performance par paire</div>
+              <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20 }}>P&L moyen sur tes {pairStats.reduce((s, p) => s + p.count, 0)} trades loggés.</div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 16 }}>
+                {(() => {
+                  const maxAbs = Math.max(...pairStats.map(x => Math.abs(x.avg)));
+                  return pairStats.slice(0, 8).map(p => {
+                    const pct = maxAbs > 0 ? (Math.abs(p.avg) / maxAbs) * 100 : 0;
+                    return (
+                      <div key={p.pair} style={{ background: "var(--bg2)", borderRadius: 10, padding: "14px 16px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
+                          <span style={{ fontSize: 13, color: "var(--ink)", fontWeight: 700 }}>{p.pair}</span>
+                          <span style={{ fontSize: 13, fontWeight: 800, color: p.avg >= 0 ? "var(--g)" : "var(--r)" }}>{p.avg >= 0 ? "+" : ""}{p.avg.toFixed(0)}{sym(currency)}</span>
+                        </div>
+                        <div style={{ height: 4, background: "var(--bg3)", borderRadius: 3, overflow: "hidden", marginBottom: 6 }}>
+                          <div style={{ height: "100%", width: `${pct}%`, background: p.avg >= 0 ? "var(--g)" : "var(--r)", borderRadius: 3 }} />
+                        </div>
+                        <div style={{ fontSize: 11, color: "var(--ink3)" }}>{p.wr}% win · {p.count} trades</div>
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
+            </div>
+          )}
+
+          {/* 6 ── Performance par jour + Évolution score ── */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+            <div style={card}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Performance par jour de semaine</div>
+              <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20 }}>Tes meilleurs et pires jours selon tes données réelles.</div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
+                {[1, 2, 3, 4, 5].map(d => {
+                  const arr = byDay[d];
+                  const a = avg(arr);
+                  const wr = winRate(arr);
+                  const isGood = a !== null && a > 0;
+                  const isBad = a !== null && a < 0;
+                  return (
+                    <div key={d} style={{ textAlign: "center", background: "var(--bg2)", borderRadius: 10, padding: "14px 8px", border: `1.5px solid ${isGood ? "rgba(34,197,94,.2)" : isBad ? "rgba(239,68,68,.2)" : "var(--border)"}` }}>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", marginBottom: 8 }}>{DAY_LABELS[d]}</div>
+                      <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 18, fontWeight: 700, color: isGood ? "var(--g)" : isBad ? "var(--r)" : "var(--ink3)", marginBottom: 4 }}>
+                        {a !== null ? `${a >= 0 ? "+" : ""}${a.toFixed(0)}${sym(currency)}` : "—"}
+                      </div>
+                      <div style={{ fontSize: 10, color: "var(--ink3)" }}>{wr !== null ? `${wr}% win` : `${arr.length} trades`}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div style={card}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Évolution du score mental</div>
+              <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20 }}>Ta progression psychologique dans le temps.</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                {[{ label: "30 derniers jours", val: s30 }, { label: "60 derniers jours", val: s60 }, { label: "90 derniers jours", val: s90 }].map(({ label, val }) => (
+                  <div key={label}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+                      <span style={{ fontSize: 12, color: "var(--ink3)" }}>{label}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: val ? val >= 75 ? "var(--g)" : val >= 60 ? "var(--a)" : "var(--r)" : "var(--ink3)" }}>
+                        {val ? `${val}/100` : "—"}
+                      </span>
+                    </div>
+                    {val && (
+                      <div style={{ height: 5, background: "var(--bg3)", borderRadius: 3, overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: `${val}%`, background: val >= 75 ? "var(--g)" : val >= 60 ? "var(--a)" : "var(--r)", borderRadius: 3, transition: "width .4s" }} />
+                      </div>
+                    )}
+                  </div>
+                ))}
+                {trend !== null && (
+                  <div style={{ marginTop: 4, fontSize: 12, color: trend > 0 ? "var(--g)" : trend < 0 ? "var(--r)" : "var(--ink3)", fontWeight: 600 }}>
+                    {trend > 0 ? `↑ +${trend} pts` : trend < 0 ? `↓ ${trend} pts` : "→ Stable"} vs mois précédent
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
         </div>
