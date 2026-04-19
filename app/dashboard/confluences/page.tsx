@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createClient } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
@@ -55,6 +55,7 @@ export default function ConfluencesPage() {
 
   // Pre-trade quiz
   const [currentUserId, setCurrentUserId] = useState<string>("");
+  const userIdRef = useRef<string>("");
   const [ptQuestions, setPtQuestions] = useState<PreTradeQ[]>([]);
   const [ptStep, setPtStep] = useState<number | null>(null); // null = not started
   const [ptAnswers, setPtAnswers] = useState<Record<string, "oui" | "non">>({});
@@ -72,6 +73,7 @@ export default function ConfluencesPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.replace("/login"); return; }
     setCurrentUserId(user.id);
+    userIdRef.current = user.id;
     setPtQuestions(loadQuestions(user.id));
     const saved = localStorage.getItem(`mt-min-confluences-${user.id}`);
     if (saved) setMinConfluences(parseInt(saved));
@@ -83,7 +85,7 @@ export default function ConfluencesPage() {
   function updateMin(val: number) {
     const clamped = Math.max(1, Math.min(20, val));
     setMinConfluences(clamped);
-    if (currentUserId) localStorage.setItem(`mt-min-confluences-${currentUserId}`, String(clamped));
+    if (userIdRef.current) localStorage.setItem(`mt-min-confluences-${userIdRef.current}`, String(clamped));
   }
 
   async function addConfluence() {
