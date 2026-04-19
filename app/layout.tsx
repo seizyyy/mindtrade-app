@@ -22,7 +22,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "MindTrade — Le copilote mental du trader sérieux",
+  title: "MindTrade",
   description:
     "Identifiez vos biais cognitifs, trackez votre état mental avant chaque trade, et devenez un trader plus discipliné.",
 };
