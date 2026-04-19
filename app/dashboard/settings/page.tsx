@@ -19,6 +19,7 @@ export default function SettingsPage() {
   const [sessionStart, setSessionStart] = useState("");
   const [sessionEnd,   setSessionEnd]   = useState("");
   const [biases,       setBiases]       = useState<string[]>([]);
+  const [plan,         setPlan]         = useState<string | null>(null);
   const [saving,       setSaving]       = useState(false);
   const [saved,        setSaved]        = useState(false);
   const [loading,      setLoading]      = useState(true);
@@ -29,7 +30,7 @@ export default function SettingsPage() {
       if (!user) return;
       const { data } = await supabase
         .from("profiles")
-        .select("display_name,market,account_size,currency,max_risk_per_trade,max_daily_loss,monthly_goal,session_start,session_end,trading_biases")
+        .select("display_name,market,account_size,currency,max_risk_per_trade,max_daily_loss,monthly_goal,session_start,session_end,trading_biases,plan")
         .eq("id", user.id)
         .single();
       if (data) {
@@ -43,6 +44,7 @@ export default function SettingsPage() {
         setSessionStart(data.session_start ?? "");
         setSessionEnd(data.session_end ?? "");
         setBiases(data.trading_biases ?? []);
+        setPlan(data.plan ?? null);
       }
       setLoading(false);
     }
@@ -232,6 +234,56 @@ export default function SettingsPage() {
             })}
           </div>
         </div>
+
+        {/* ── Abonnement ── */}
+        {plan && (() => {
+          const isLifetime = plan === "lifetime";
+          const isAnnual   = plan === "annual";
+          const label      = isLifetime ? "Lifetime" : isAnnual ? "Annuel" : "Mensuel";
+          const badgeColor = isLifetime ? "#c9a84c" : isAnnual ? "var(--navy)" : "var(--ink3)";
+          const badgeBg    = isLifetime ? "rgba(201,168,76,.13)" : isAnnual ? "rgba(15,39,68,.08)" : "rgba(0,0,0,.05)";
+          return (
+            <div style={card}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Abonnement actif</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <span style={{
+                      fontSize: 12, fontWeight: 700, padding: "3px 12px", borderRadius: 20,
+                      background: badgeBg, color: badgeColor,
+                      border: `1.5px solid ${badgeColor}`,
+                      letterSpacing: ".05em",
+                    }}>{label}</span>
+                    {isLifetime && (
+                      <span style={{ fontSize: 12, color: "var(--ink3)" }}>Accès complet · MindTrade Alpha inclus</span>
+                    )}
+                    {!isLifetime && (
+                      <span style={{ fontSize: 12, color: "var(--ink3)" }}>
+                        {isAnnual ? "Facturation annuelle" : "Facturation mensuelle"}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                {!isLifetime && (
+                  <a href="/dashboard/alpha" style={{
+                    padding: "9px 18px", borderRadius: 8, fontSize: 13, fontWeight: 700,
+                    background: "var(--navy)", color: "#fff", textDecoration: "none",
+                    fontFamily: "var(--font-outfit)",
+                  }}>
+                    Passer à Lifetime →
+                  </a>
+                )}
+              </div>
+              {!isLifetime && (
+                <div style={{ fontSize: 12, color: "var(--ink3)", marginTop: 12, lineHeight: 1.6, borderTop: "1px solid var(--border)", paddingTop: 12 }}>
+                  {isAnnual
+                    ? "Abonné annuel — ton montant déjà payé est déduit du prix Lifetime. Profite de MindTrade Alpha au tarif préférentiel."
+                    : "Abonné mensuel — le montant déjà payé est déduit du Lifetime. Accède à MindTrade Alpha avec un rabais immédiat."}
+                </div>
+              )}
+            </div>
+          );
+        })()}
 
         {/* ── Save ── */}
         <div>
