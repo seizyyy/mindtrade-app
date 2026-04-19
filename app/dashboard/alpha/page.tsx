@@ -325,7 +325,7 @@ export default function AlphaPage() {
   );
 
   return (
-    <div style={{ maxWidth: 900 }}>
+    <div>
 
       {/* Header */}
       <div style={{ marginBottom: 28, display: "flex", alignItems: "center", gap: 14 }}>
