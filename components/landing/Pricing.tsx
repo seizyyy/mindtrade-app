@@ -17,9 +17,8 @@ const planFeatures = {
   ],
   lifetime: [
     "Tout le plan annuel inclus, à vie",
-    "★ Alpha — signal prédictif du jour, profil trader, corrélations mental/P&L, impact discipline, émotions en chiffres, performance par paire & par jour",
-    "Toutes les futures fonctionnalités incluses",
-    "Accès prioritaire aux nouvelles features",
+    "★ Alpha — tableau de bord comportemental exclusif (6 analyses personnalisées)",
+    "Toutes les futures fonctionnalités incluses à vie",
     "Support direct — réponse sous 24h",
   ],
 };
