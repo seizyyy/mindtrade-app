@@ -66,6 +66,8 @@ export default function TradesPage() {
   const [trades, setTrades] = useState<Trade[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
+  const [accountSize, setAccountSize] = useState<number | null>(null);
+  const [currency, setCurrency] = useState("EUR");
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
   const [todayScore, setTodayScore] = useState<number | null>(null);
@@ -92,16 +94,14 @@ export default function TradesPage() {
     if (!user) { router.replace("/login"); return; }
 
     const today = new Date().toISOString().split("T")[0];
-    const { data: ci } = await supabase.from("checkins").select("score").eq("user_id", user.id).eq("date", today).single();
+    const [{ data: ci }, { data }, { data: profile }] = await Promise.all([
+      supabase.from("checkins").select("score").eq("user_id", user.id).eq("date", today).single(),
+      supabase.from("trades").select("*").eq("user_id", user.id).order("date", { ascending: false }).order("created_at", { ascending: false }),
+      supabase.from("profiles").select("account_size,currency").eq("id", user.id).single(),
+    ]);
     if (ci) setTodayScore(ci.score);
-
-    const { data } = await supabase
-      .from("trades")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("date", { ascending: false })
-      .order("created_at", { ascending: false });
-
+    if (profile?.account_size) setAccountSize(profile.account_size);
+    if (profile?.currency) setCurrency(profile.currency);
     setTrades(data || []);
     setLoading(false);
   }
@@ -186,7 +186,7 @@ export default function TradesPage() {
         {[
           { label: "Trades", value: total, sub: `${wins}W / ${losses}L` },
           { label: "Win Rate", value: `${winRate}%`, sub: total > 0 ? (winRate >= 55 ? "Bon" : winRate >= 45 ? "Correct" : "À améliorer") : "—" },
-          { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}€`, color: pnlColor },
+          { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${currency === "USD" ? "$" : currency === "GBP" ? "£" : "€"}`, sub: accountSize ? `${pnlNet >= 0 ? "+" : ""}${((pnlNet / accountSize) * 100).toFixed(2)}%` : null, color: pnlColor },
           { label: "Règles", value: `${rulesOk}%`, sub: "respectées", color: rulesOk >= 80 ? "var(--g)" : rulesOk >= 60 ? "var(--a)" : "var(--r)" },
           { label: "Score moyen", value: avgScore ?? "—", sub: avgScore ? (avgScore >= 75 ? "Optimal" : avgScore >= 60 ? "Correct" : "Bas") : "Pas de données" },
         ].map((s, i) => (
