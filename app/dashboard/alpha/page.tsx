@@ -489,7 +489,7 @@ export default function AlphaPage() {
 
           {/* 4 ── Impact discipline + Émotions ── */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-            {disciplineAvg !== null && undisciplineAvg !== null && undisciplinedPnls.length >= 2 && (
+            {disciplineAvg !== null && undisciplineAvg !== null && undisciplinedPnls.length >= 2 ? (
               <div style={card}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Impact discipline</div>
                 <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20 }}>Ce que respecter tes règles change concrètement.</div>
@@ -511,6 +511,13 @@ export default function AlphaPage() {
                   <div style={{ fontSize: 13, fontWeight: 700, color: disciplineAvg > undisciplineAvg ? "var(--g)" : "var(--ink3)", textAlign: "center", paddingTop: 2 }}>
                     {disciplineAvg > undisciplineAvg ? `+${(disciplineAvg - undisciplineAvg).toFixed(0)}${sym(currency)}/trade en respectant tes règles` : "Écart faible — réévalue tes critères"}
                   </div>
+                </div>
+              </div>
+            ) : (
+              <div style={card}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 4 }}>Impact discipline</div>
+                <div style={{ fontSize: 13, color: "var(--ink3)", lineHeight: 1.6, marginTop: 12 }}>
+                  Logge au moins 2 trades où tu n'as pas respecté tes règles pour débloquer cette comparaison.
                 </div>
               </div>
             )}
