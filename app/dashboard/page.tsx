@@ -227,6 +227,7 @@ export default function DashboardPage() {
   const verdictLabel = !score ? "Pas de check-in" : score >= 75 ? "État optimal" : score >= 60 ? "Attention requise" : "Évite de trader";
 
   const isOnboarding = checkins.length < 3;
+  const isWeekend = [0, 6].includes(new Date().getDay());
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -256,7 +257,7 @@ export default function DashboardPage() {
       )}
 
       {/* ── Banner check-in manquant ── */}
-      {!todayCheckin && (
+      {!todayCheckin && !isWeekend && (
         <div style={{ background: "var(--tint-a-bg)", border: "1px solid var(--tint-a-border)", borderRadius: 10, padding: "11px 16px", display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--a)", flexShrink: 0 }} />
           <div style={{ fontSize: 13, color: "var(--a)", flex: 1 }}>
@@ -282,8 +283,27 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* ── Signal du jour ── */}
-      {signal ? (
+      {/* ── Signal du jour / Weekend ── */}
+      {isWeekend ? (
+        <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 14, padding: "22px 28px", display: "flex", alignItems: "center", gap: 24 }}>
+          <div style={{ fontSize: 36, flexShrink: 0 }}>🌙</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".12em", marginBottom: 6 }}>Week-end</div>
+            <div style={{ fontSize: 20, fontWeight: 700, color: "var(--ink)", marginBottom: 8 }}>Marché fermé — pas de check-in</div>
+            <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.65 }}>
+              Profite du week-end pour revoir ta semaine et préparer celle qui arrive. Analyse tes trades, identifie tes patterns, et définis tes niveaux clés.
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, flexShrink: 0 }}>
+            <a href="/dashboard/rapport" style={{ background: "var(--tint-n-bg)", border: "1px solid var(--border)", color: "var(--navy)", padding: "9px 18px", borderRadius: 8, fontSize: 12, fontWeight: 700, textDecoration: "none", textAlign: "center" }}>
+              Rapport hebdo →
+            </a>
+            <a href="/dashboard/rapport-mensuel" style={{ background: "var(--tint-n-bg)", border: "1px solid var(--border)", color: "var(--navy)", padding: "9px 18px", borderRadius: 8, fontSize: 12, fontWeight: 700, textDecoration: "none", textAlign: "center" }}>
+              Rapport mensuel →
+            </a>
+          </div>
+        </div>
+      ) : signal ? (
         <div style={{ background: signal.bg, border: `1.5px solid ${signal.border}`, borderRadius: 14, padding: "20px 24px", display: "flex", alignItems: "center", gap: 24 }}>
           {/* Feux tricolores */}
           <div style={{ display: "flex", flexDirection: "column", gap: 7, flexShrink: 0 }}>
