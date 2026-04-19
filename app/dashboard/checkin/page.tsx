@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { sym } from "@/lib/currency";
 
 const questions = [
   {
@@ -243,7 +244,7 @@ export default function CheckinPage() {
               <div style={{ background: "var(--tint-r-bg)", border: "1px solid var(--tint-r-border)", borderRadius: 10, padding: "14px 16px", marginBottom: 16 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: "var(--r)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 6 }}>⛔ Limite journalière atteinte</div>
                 <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.7 }}>
-                  Tu as perdu <strong style={{ color: "var(--r)" }}>{Math.abs(todayPnl).toFixed(0)} {currency}</strong> aujourd'hui — ta limite est fixée à <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {currency}</strong>. <strong>Arrête de trader maintenant.</strong> Revenir demain avec un état d'esprit frais est toujours plus rentable que de tenter de récupérer.
+                  Tu as perdu <strong style={{ color: "var(--r)" }}>{Math.abs(todayPnl).toFixed(0)} {sym(currency)}</strong> aujourd'hui — ta limite est fixée à <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {sym(currency)}</strong>. <strong>Arrête de trader maintenant.</strong> Revenir demain avec un état d'esprit frais est toujours plus rentable que de tenter de récupérer.
                 </div>
               </div>
             )}
@@ -251,7 +252,7 @@ export default function CheckinPage() {
               <div style={{ background: "var(--tint-a-bg)", border: "1px solid var(--tint-a-border)", borderRadius: 10, padding: "14px 16px", marginBottom: 16 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: "var(--a)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 6 }}>⚠ Limite journalière proche</div>
                 <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.7 }}>
-                  Tu as perdu <strong style={{ color: "var(--a)" }}>{Math.abs(todayPnl).toFixed(0)} {currency}</strong> sur ta limite de <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {currency}</strong>. Il te reste <strong style={{ color: "var(--ink)" }}>{(maxDailyLossAmount! - Math.abs(todayPnl)).toFixed(0)} {currency}</strong> avant la limite — trade uniquement tes meilleurs setups.
+                  Tu as perdu <strong style={{ color: "var(--a)" }}>{Math.abs(todayPnl).toFixed(0)} {sym(currency)}</strong> sur ta limite de <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {sym(currency)}</strong>. Il te reste <strong style={{ color: "var(--ink)" }}>{(maxDailyLossAmount! - Math.abs(todayPnl)).toFixed(0)} {sym(currency)}</strong> avant la limite — trade uniquement tes meilleurs setups.
                 </div>
               </div>
             )}
@@ -259,7 +260,7 @@ export default function CheckinPage() {
               <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 10, padding: "12px 16px", marginBottom: 16 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>Rappel risque</div>
                 <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.6 }}>
-                  Risque max par trade : <strong style={{ color: "var(--ink)" }}>{maxRiskAmount.toFixed(0)} {currency}</strong>
+                  Risque max par trade : <strong style={{ color: "var(--ink)" }}>{maxRiskAmount.toFixed(0)} {sym(currency)}</strong>
                 </div>
               </div>
             )}

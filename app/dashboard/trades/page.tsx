@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { sym } from "@/lib/currency";
 
 type Trade = {
   id: string;
@@ -186,7 +187,7 @@ export default function TradesPage() {
         {[
           { label: "Trades", value: total, sub: `${wins}W / ${losses}L` },
           { label: "Win Rate", value: `${winRate}%`, sub: total > 0 ? (winRate >= 55 ? "Bon" : winRate >= 45 ? "Correct" : "À améliorer") : "—" },
-          { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${currency}`, sub: accountSize ? `${pnlNet >= 0 ? "+" : ""}${((pnlNet / accountSize) * 100).toFixed(2)}%` : null, color: pnlColor },
+          { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${sym(currency)}`, sub: accountSize ? `${pnlNet >= 0 ? "+" : ""}${((pnlNet / accountSize) * 100).toFixed(2)}%` : null, color: pnlColor },
           { label: "Règles", value: `${rulesOk}%`, sub: "respectées", color: rulesOk >= 80 ? "var(--g)" : rulesOk >= 60 ? "var(--a)" : "var(--r)" },
           { label: "Score moyen", value: avgScore ?? "—", sub: avgScore ? (avgScore >= 75 ? "Optimal" : avgScore >= 60 ? "Correct" : "Bas") : "Pas de données" },
         ].map((s, i) => (
@@ -235,7 +236,7 @@ export default function TradesPage() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 12 }}>
             <div>
-              <label style={{ fontSize: 11, fontWeight: 600, color: "var(--ink3)", display: "block", marginBottom: 5 }}>P&L ({currency})</label>
+              <label style={{ fontSize: 11, fontWeight: 600, color: "var(--ink3)", display: "block", marginBottom: 5 }}>P&L ({sym(currency)})</label>
               <input type="number" step="0.01" placeholder="+150 ou -75" value={form.pnl} onChange={e => setForm({ ...form, pnl: e.target.value })}
                 style={{ width: "100%", background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 7, padding: "9px 12px", fontSize: 13, color: "var(--ink)", fontFamily: "var(--font-outfit)", boxSizing: "border-box" }} />
             </div>
@@ -348,7 +349,7 @@ export default function TradesPage() {
                       </span>
                     </td>
                     <td style={{ padding: "12px 14px", textAlign: "center", fontFamily: "var(--font-fraunces)", fontSize: 14, fontWeight: 700, color: pnlPos ? "var(--g)" : pnlNeg ? "var(--r)" : "var(--ink3)" }}>
-                      {t.pnl > 0 ? "+" : ""}{t.pnl.toFixed(0)}{currency}
+                      {t.pnl > 0 ? "+" : ""}{t.pnl.toFixed(0)}{sym(currency)}
                     </td>
                     <td style={{ padding: "12px 14px", textAlign: "center" }}>
                       {t.mental_score ? (
@@ -429,7 +430,7 @@ export default function TradesPage() {
                   <div key={emotion} style={{ background: bg, border: `1px solid ${border}`, borderRadius: 10, padding: "14px 16px" }}>
                     <div style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)", marginBottom: 8 }}>{emotion}</div>
                     <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 26, color, fontWeight: 700, lineHeight: 1 }}>{wr}%</div>
-                    <div style={{ fontSize: 11, color: "var(--ink3)", marginTop: 5 }}>{stats.count} trade{stats.count > 1 ? "s" : ""} · {stats.pnl >= 0 ? "+" : ""}{stats.pnl.toFixed(0)}{currency}</div>
+                    <div style={{ fontSize: 11, color: "var(--ink3)", marginTop: 5 }}>{stats.count} trade{stats.count > 1 ? "s" : ""} · {stats.pnl >= 0 ? "+" : ""}{stats.pnl.toFixed(0)}{sym(currency)}</div>
                   </div>
                 );
               })}

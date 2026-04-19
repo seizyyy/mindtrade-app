@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { sym } from "@/lib/currency";
 
 type Entry = {
   id: string;
@@ -232,7 +233,7 @@ export default function JournalPage() {
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   {!t.respected_rules && <span style={{ fontSize: 11, color: "var(--r)", fontWeight: 600 }}>Règles non respectées</span>}
                   <span style={{ fontSize: 13, fontWeight: 700, color: t.pnl >= 0 ? "var(--g)" : "var(--r)" }}>
-                    {t.pnl >= 0 ? "+" : ""}{t.pnl.toFixed(0)}{currency}
+                    {t.pnl >= 0 ? "+" : ""}{t.pnl.toFixed(0)}{sym(currency)}
                   </span>
                 </div>
               </div>
@@ -241,7 +242,7 @@ export default function JournalPage() {
           <div style={{ display: "flex", gap: 16, paddingTop: 8, borderTop: "1px solid var(--border)" }}>
             <span style={{ fontSize: 12, color: "var(--ink3)" }}>{todayWins}W / {todayTrades.length - todayWins}L</span>
             <span style={{ fontSize: 12, fontWeight: 700, color: todayPnl >= 0 ? "var(--g)" : "var(--r)" }}>
-              P&L : {todayPnl >= 0 ? "+" : ""}{todayPnl.toFixed(0)}{currency}
+              P&L : {todayPnl >= 0 ? "+" : ""}{todayPnl.toFixed(0)}{sym(currency)}
             </span>
           </div>
         </div>

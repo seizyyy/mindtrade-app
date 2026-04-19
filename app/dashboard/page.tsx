@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { sym } from "@/lib/currency";
 
 type Checkin = { score: number; date: string };
 type Trade = { pnl: number; direction: string; pair: string; emotion: string; date: string; respected_rules: boolean };
@@ -241,7 +242,7 @@ export default function DashboardPage() {
           <div>
             <div style={{ fontSize: 13, fontWeight: 800, color: "var(--r)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>Limite journalière atteinte — Ferme le terminal</div>
             <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.65 }}>
-              Tu as perdu <strong style={{ color: "var(--r)" }}>{Math.abs(todayPnl).toFixed(0)} {currency}</strong> aujourd'hui — ta limite est <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {currency}</strong>. Revenir demain est toujours plus rentable que tenter de récupérer.
+              Tu as perdu <strong style={{ color: "var(--r)" }}>{Math.abs(todayPnl).toFixed(0)} {sym(currency)}</strong> aujourd'hui — ta limite est <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {sym(currency)}</strong>. Revenir demain est toujours plus rentable que tenter de récupérer.
             </div>
           </div>
         </div>
@@ -252,7 +253,7 @@ export default function DashboardPage() {
           <div>
             <div style={{ fontSize: 13, fontWeight: 800, color: "var(--a)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 4 }}>Limite journalière proche</div>
             <div style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.65 }}>
-              Tu as perdu <strong style={{ color: "var(--a)" }}>{Math.abs(todayPnl).toFixed(0)} {currency}</strong> sur ta limite de <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {currency}</strong>. Il te reste <strong style={{ color: "var(--ink)" }}>{(maxDailyLossAmount! - Math.abs(todayPnl)).toFixed(0)} {currency}</strong> — trade uniquement tes meilleurs setups.
+              Tu as perdu <strong style={{ color: "var(--a)" }}>{Math.abs(todayPnl).toFixed(0)} {sym(currency)}</strong> sur ta limite de <strong style={{ color: "var(--ink)" }}>{maxDailyLossAmount!.toFixed(0)} {sym(currency)}</strong>. Il te reste <strong style={{ color: "var(--ink)" }}>{(maxDailyLossAmount! - Math.abs(todayPnl)).toFixed(0)} {sym(currency)}</strong> — trade uniquement tes meilleurs setups.
             </div>
           </div>
         </div>
@@ -377,7 +378,7 @@ export default function DashboardPage() {
           <div style={{ fontSize: 10, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8 }}>P&L net</div>
           <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
             <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 38, fontWeight: 700, color: weekTrades.length > 0 ? pnlNet >= 0 ? "var(--g)" : "var(--r)" : "var(--ink3)", lineHeight: 1 }}>
-              {weekTrades.length > 0 ? `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${currency}` : "—"}
+              {weekTrades.length > 0 ? `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${sym(currency)}` : "—"}
             </div>
             {weekTrades.length > 0 && accountSize && (
               <div style={{ fontSize: 12, fontWeight: 700, color: pnlNet >= 0 ? "var(--g)" : "var(--r)", background: pnlNet >= 0 ? "rgba(22,101,52,.08)" : "rgba(155,28,28,.08)", border: `1px solid ${pnlNet >= 0 ? "rgba(22,101,52,.2)" : "rgba(155,28,28,.2)"}`, borderRadius: 6, padding: "3px 8px", lineHeight: 1.2 }}>
@@ -496,7 +497,7 @@ export default function DashboardPage() {
                 </div>
                 <div style={{ fontSize: 12, color: "var(--ink2)", lineHeight: 1.65 }}>
                   Cet état t{"'"}a coûté{" "}
-                  <strong style={{ color: "var(--r)" }}>−{lf.loss.toFixed(0)}{currency}</strong>{" "}
+                  <strong style={{ color: "var(--r)" }}>−{lf.loss.toFixed(0)}{sym(currency)}</strong>{" "}
                   sur tes {lf.count} trades en mode {lf.emotion.toLowerCase()}.
                 </div>
               </>
@@ -549,14 +550,14 @@ export default function DashboardPage() {
                       padding: "2px 8px", borderRadius: 8,
                     }}>{t.emotion}</span>
                     <span style={{ fontSize: 12, fontWeight: 700, color: t.pnl >= 0 ? "var(--g)" : "var(--r)", minWidth: 50, textAlign: "right" }}>
-                      {t.pnl >= 0 ? "+" : ""}{t.pnl.toFixed(0)}{currency}
+                      {t.pnl >= 0 ? "+" : ""}{t.pnl.toFixed(0)}{sym(currency)}
                     </span>
                   </div>
                 );
               })}
               {lf && (
                 <div style={{ marginTop: 12, padding: "8px 10px", background: "var(--tint-r-bg)", border: "1px solid var(--tint-r-border)", borderRadius: 7, fontSize: 11, color: "var(--r)" }}>
-                  Le <strong>{lf.emotion}</strong> t{"'"}a coûté <strong>−{lf.loss.toFixed(0)}{currency}</strong> ce mois
+                  Le <strong>{lf.emotion}</strong> t{"'"}a coûté <strong>−{lf.loss.toFixed(0)}{sym(currency)}</strong> ce mois
                 </div>
               )}
             </div>
