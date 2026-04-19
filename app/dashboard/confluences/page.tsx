@@ -234,7 +234,7 @@ export default function ConfluencesPage() {
                   style={{ width: 28, height: 28, background: "var(--bg2)", border: "none", color: "var(--ink2)", fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "var(--font-outfit)", lineHeight: 1 }}>+</button>
               </div>
               <span style={{ fontSize: 11, color: minReached ? "var(--g)" : "var(--r)", fontWeight: 600 }}>
-                {totalChecked}/{minConfluences} {minReached ? "✓" : ""}
+                {checkedCount}/{minConfluences} {minReached ? "✓" : ""}
               </span>
             </div>
             <button onClick={() => setCheckedIds(new Set())}
