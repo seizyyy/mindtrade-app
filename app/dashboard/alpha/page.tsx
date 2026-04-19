@@ -350,8 +350,8 @@ export default function AlphaPage() {
       {isLifetime && (!hasTrades || !hasCheckins) && (
         <div style={{ ...card, textAlign: "center", padding: "40px 24px", color: "var(--ink3)" }}>
           <div style={{ fontSize: 32, marginBottom: 12 }}>📊</div>
-          <div style={{ fontSize: 15, fontWeight: 600, color: "var(--ink)", marginBottom: 8 }}>Pas encore assez de données</div>
-          <div style={{ fontSize: 13, lineHeight: 1.6 }}>Fais au moins 5 check-ins et 3 trades pour débloquer ton analyse comportementale.</div>
+          <div style={{ fontSize: 15, fontWeight: 600, color: "var(--ink)", marginBottom: 8 }}>Tes analyses arrivent bientôt</div>
+          <div style={{ fontSize: 13, lineHeight: 1.6 }}>Tu as l'accès complet Alpha. Continue à logger tes trades et check-ins — dès 5 check-ins et 3 trades, tes analyses comportementales personnalisées se débloquent automatiquement.</div>
         </div>
       )}
 
