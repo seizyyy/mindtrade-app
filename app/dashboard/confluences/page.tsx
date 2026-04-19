@@ -81,7 +81,7 @@ export default function ConfluencesPage() {
   }
 
   function updateMin(val: number) {
-    const clamped = Math.max(1, Math.min(confluences.length || 10, val));
+    const clamped = Math.max(1, Math.min(20, val));
     setMinConfluences(clamped);
     if (currentUserId) localStorage.setItem(`mt-min-confluences-${currentUserId}`, String(clamped));
   }
