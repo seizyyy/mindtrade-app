@@ -53,6 +53,9 @@ export default function ProductTour() {
                     {item.label}
                   </div>
                 ))}
+                <div style={{ padding:"7px 10px", borderRadius:7, background:"rgba(251,191,36,.08)", border:"1px solid rgba(251,191,36,.2)", color:"#fbbf24", fontSize:12, fontWeight:600 }}>
+                  ★ Alpha
+                </div>
               </div>
               <div style={{ marginTop:"auto", background:"rgba(255,255,255,.05)", border:"1px solid rgba(255,255,255,.08)", borderRadius:10, padding:"12px" }}>
                 <div style={{ fontSize:9, fontWeight:700, color:"rgba(255,255,255,.3)", textTransform:"uppercase", letterSpacing:".1em", marginBottom:4 }}>Score mental</div>
