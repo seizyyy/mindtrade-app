@@ -51,7 +51,7 @@ export default function ConfluencesPage() {
   const [showForm, setShowForm] = useState(false);
   const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
   const [minConfluences, setMinConfluences] = useState<number>(1);
-  const [form, setForm] = useState({ titre: "", description: "", type: "required" as "required" | "bonus" });
+  const [form, setForm] = useState({ titre: "", description: "" });
 
   // Pre-trade quiz
   const [currentUserId, setCurrentUserId] = useState<string>("");
@@ -95,9 +95,9 @@ export default function ConfluencesPage() {
       user_id: user.id,
       titre: form.titre.trim(),
       description: form.description.trim() || null,
-      type: form.type,
+      type: "required",
     });
-    setForm({ titre: "", description: "", type: "required" });
+    setForm({ titre: "", description: "" });
     setShowForm(false);
     setSaving(false);
     load();
@@ -117,20 +117,17 @@ export default function ConfluencesPage() {
     });
   }
 
-  const required = confluences.filter(c => c.type === "required");
-  const bonus = confluences.filter(c => c.type === "bonus");
-  const checkedRequired = required.filter(c => checkedIds.has(c.id)).length;
-  const checkedBonus = bonus.filter(c => checkedIds.has(c.id)).length;
+  const checkedCount = confluences.filter(c => checkedIds.has(c.id)).length;
   const setupScore = confluences.length > 0
-    ? Math.round(((checkedRequired * 2 + checkedBonus) / (required.length * 2 + bonus.length)) * 100)
+    ? Math.round((checkedCount / confluences.length) * 100)
     : null;
-  const totalChecked = checkedRequired + checkedBonus;
-  const minReached = totalChecked >= minConfluences;
+  const minReached = checkedCount >= minConfluences;
   const setupVerdict = setupScore === null ? null
-    : !minReached ? { label: `Minimum non atteint — ${totalChecked}/${minConfluences} confluences cochées`, color: "var(--r)", bg: "var(--tint-r-bg)", border: "var(--tint-r-border)" }
-    : setupScore >= 80 ? { label: "Setup valide — tu peux entrer", color: "var(--g)", bg: "var(--tint-g-bg)", border: "var(--tint-g-border)" }
-    : setupScore >= 50 ? { label: "Setup partiel — attends confirmation", color: "var(--a)", bg: "var(--tint-a-bg)", border: "var(--tint-a-border)" }
-    : { label: "Setup invalide — ne trade pas", color: "var(--r)", bg: "var(--tint-r-bg)", border: "var(--tint-r-border)" };
+    : !minReached
+      ? { label: `Minimum non atteint — ${checkedCount}/${minConfluences} confluences cochées`, color: "var(--r)", bg: "var(--tint-r-bg)", border: "var(--tint-r-border)" }
+      : setupScore === 100
+        ? { label: "Setup valide — tu peux entrer", color: "var(--g)", bg: "var(--tint-g-bg)", border: "var(--tint-g-border)" }
+        : { label: `Setup partiel — ${checkedCount}/${confluences.length} confluences cochées`, color: "var(--a)", bg: "var(--tint-a-bg)", border: "var(--tint-a-border)" };
 
   function ptDeleteQuestion(id: string) {
     const updated = ptQuestions.filter(q => q.id !== id);
@@ -248,21 +245,19 @@ export default function ConfluencesPage() {
         </div>
       )}
 
-      {/* Confluences obligatoires */}
+      {/* Confluences */}
       <div style={{ marginBottom: 20 }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-          <div>
-            <span style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)", textTransform: "uppercase", letterSpacing: ".06em" }}>Obligatoires</span>
-            <span style={{ fontSize: 11, color: "var(--ink3)", marginLeft: 8 }}>{checkedRequired}/{required.length} cochées</span>
-          </div>
+        <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)", textTransform: "uppercase", letterSpacing: ".06em" }}>Mes confluences</span>
+          <span style={{ fontSize: 11, color: "var(--ink3)", marginLeft: 8 }}>{checkedCount}/{confluences.length} cochées</span>
         </div>
-        {required.length === 0 ? (
+        {confluences.length === 0 ? (
           <div style={{ background: "var(--card)", border: "1px dashed var(--border)", borderRadius: 10, padding: "20px", textAlign: "center", fontSize: 13, color: "var(--ink3)" }}>
-            Ajoute tes confluences obligatoires — elles doivent toutes être présentes pour entrer en trade.
+            Ajoute tes confluences — elles doivent toutes être présentes pour entrer en trade.
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            {required.map(c => {
+            {confluences.map(c => {
               const checked = checkedIds.has(c.id);
               return (
                 <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 12, background: checked ? "var(--tint-g-bg)" : "var(--card)", border: `1px solid ${checked ? "var(--tint-g-border)" : "var(--border)"}`, borderRadius: 10, padding: "12px 16px", transition: "all .15s" }}>
@@ -271,46 +266,7 @@ export default function ConfluencesPage() {
                     {checked && <span style={{ color: "#fff", fontSize: 11, fontWeight: 900, lineHeight: 1 }}>✓</span>}
                   </button>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: checked ? "var(--g)" : "var(--ink)", textDecoration: checked ? "none" : "none" }}>{c.titre}</div>
-                    {c.description && <div style={{ fontSize: 12, color: "var(--ink3)", marginTop: 2 }}>{c.description}</div>}
-                  </div>
-                  <button onClick={() => deleteConfluence(c.id)}
-                    style={{ background: "none", border: "none", color: "var(--ink3)", cursor: "pointer", padding: "4px", fontSize: 14, lineHeight: 1, opacity: 0.4 }}
-                    onMouseOver={e => (e.currentTarget.style.opacity = "1")}
-                    onMouseOut={e => (e.currentTarget.style.opacity = "0.4")}>
-                    ×
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-
-      {/* Confluences bonus */}
-      <div style={{ marginBottom: 20 }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-          <div>
-            <span style={{ fontSize: 12, fontWeight: 700, color: "var(--ink)", textTransform: "uppercase", letterSpacing: ".06em" }}>Bonus</span>
-            <span style={{ fontSize: 11, color: "var(--ink3)", marginLeft: 8 }}>{checkedBonus}/{bonus.length} cochées</span>
-          </div>
-        </div>
-        {bonus.length === 0 ? (
-          <div style={{ background: "var(--card)", border: "1px dashed var(--border)", borderRadius: 10, padding: "20px", textAlign: "center", fontSize: 13, color: "var(--ink3)" }}>
-            Ajoute des confluences bonus — elles renforcent le setup mais ne sont pas bloquantes.
-          </div>
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            {bonus.map(c => {
-              const checked = checkedIds.has(c.id);
-              return (
-                <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 12, background: checked ? "rgba(184,134,11,.04)" : "var(--card)", border: `1px solid ${checked ? "rgba(184,134,11,.25)" : "var(--border)"}`, borderRadius: 10, padding: "12px 16px", transition: "all .15s" }}>
-                  <button onClick={() => toggleCheck(c.id)}
-                    style={{ width: 20, height: 20, borderRadius: 5, border: `2px solid ${checked ? "var(--a)" : "var(--border)"}`, background: checked ? "var(--a)" : "transparent", cursor: "pointer", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    {checked && <span style={{ color: "#fff", fontSize: 11, fontWeight: 900, lineHeight: 1 }}>✓</span>}
-                  </button>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 13, fontWeight: 600, color: checked ? "var(--a)" : "var(--ink)" }}>{c.titre}</div>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: checked ? "var(--g)" : "var(--ink)" }}>{c.titre}</div>
                     {c.description && <div style={{ fontSize: 12, color: "var(--ink3)", marginTop: 2 }}>{c.description}</div>}
                   </div>
                   <button onClick={() => deleteConfluence(c.id)}
@@ -347,17 +303,6 @@ export default function ConfluencesPage() {
               placeholder="Précision supplémentaire..."
               style={{ width: "100%", background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 7, padding: "9px 12px", fontSize: 13, color: "var(--ink)", fontFamily: "var(--font-outfit)", boxSizing: "border-box" }}
             />
-          </div>
-          <div style={{ marginBottom: 16 }}>
-            <label style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".08em", display: "block", marginBottom: 8 }}>Type</label>
-            <div style={{ display: "flex", gap: 8 }}>
-              {(["required", "bonus"] as const).map(t => (
-                <button key={t} onClick={() => setForm({ ...form, type: t })}
-                  style={{ padding: "7px 18px", borderRadius: 7, border: `1.5px solid ${form.type === t ? "var(--navy)" : "var(--border)"}`, background: form.type === t ? "var(--tint-n-bg)" : "var(--bg2)", color: form.type === t ? "var(--navy)" : "var(--ink2)", fontSize: 13, fontWeight: form.type === t ? 700 : 500, cursor: "pointer", fontFamily: "var(--font-outfit)" }}>
-                  {t === "required" ? "Obligatoire" : "Bonus"}
-                </button>
-              ))}
-            </div>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
             <button onClick={() => setShowForm(false)}
