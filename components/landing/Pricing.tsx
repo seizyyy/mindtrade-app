@@ -3,20 +3,19 @@
 
 const planFeatures = {
   monthly: [
-    "Score mental quotidien + signal vert/orange/rouge",
-    "Log de trades avec émotions et confluences",
+    "Score mental avant chaque session — sais si tu dois trader",
+    "Log de tes trades avec l'état émotionnel associé",
     "Rapport hebdo — P&L, win rate, discipline",
     "Journal post-session guidé",
-    "Sans engagement · Résilie en 1 clic",
   ],
   annual: [
-    "Tout le mensuel, sans exception",
+    "Tout le mensuel inclus",
     "2 mois offerts — 178€ économisés",
     "Support prioritaire sous 48h",
   ],
   lifetime: [
-    "Tout MindTrade, à vie — un seul paiement",
-    "★ Alpha — corrélations mental/P&L, patterns, émotions en chiffres",
+    "Accès à vie — un seul paiement, plus jamais rien",
+    "★ Alpha — tes corrélations mental/performance en chiffres",
     "Toutes les futures fonctionnalités incluses",
     "Support direct sous 24h · Prix bloqué à vie",
   ],
