@@ -3,27 +3,27 @@
 
 const planFeatures = {
   monthly: [
-    "Check-in quotidien + score mental",
-    "Dashboard complet + signal mental",
-    "Log de trades + confluences",
-    "Rapport hebdomadaire",
-    "Journal structuré + quiz de réflexion",
-    "Sans engagement · Résiliable à tout moment",
+    "Score mental avant chaque session — trade dans le bon état",
+    "Signal du jour : vert / orange / rouge en 10 min chrono",
+    "Log émotionnel de tes trades — comprends tes pertes, pas juste tes gains",
+    "Rapport hebdo — tes patterns identifiés avant qu'ils coûtent",
+    "Journal guidé post-session — ancre ce qui fonctionne",
+    "Sans engagement · Résilie en 1 clic",
   ],
   annual: [
-    "Toutes les fonctionnalités incluses",
-    "2 mois offerts — économie de 178€ vs mensuel",
-    "Accès prioritaire aux nouvelles fonctionnalités",
-    "Support réponse sous 48h",
-    "Accès aux futures évolutions du produit",
+    "Tout le plan mensuel — optimisé sur 12 mois complets",
+    "178€ économisés vs mensuel · 2 mois offerts",
+    "Nouvelles fonctionnalités en accès anticipé",
+    "Support sous 48h — questions répondues, problèmes réglés",
+    "Engagement annuel = discipline annuelle · Le vrai game changer",
   ],
   lifetime: [
-    "Tout le plan annuel inclus, à vie",
+    "MindTrade à vie — plus jamais de renouvellement",
     "★ Alpha — corrélations mental/P&L, patterns par jour, émotions en chiffres",
-    "Toutes les futures fonctionnalités incluses",
-    "Accès prioritaire aux nouvelles features",
-    "Support direct — réponse sous 24h",
-    "Prix garanti à vie · Aucune hausse possible",
+    "Toutes les futures fonctionnalités — à vie, sans supplément",
+    "Support direct sous 24h — traitement prioritaire",
+    "Prix garanti · Même si on double nos tarifs, tu paies 597€ une fois",
+    "Paiement unique · Zéro prélèvement · Pour toujours",
   ],
 };
 
