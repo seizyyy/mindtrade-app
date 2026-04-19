@@ -97,6 +97,7 @@ export default function JournalPage() {
   const [quizDone, setQuizDone] = useState(false);
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [userBiases, setUserBiases] = useState<string[]>([]);
+  const [currency, setCurrency] = useState<string>("EUR");
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -118,8 +119,9 @@ export default function JournalPage() {
     const [{ data: journalData }, { data: tradesData }, { data: profileData }] = await Promise.all([
       supabase.from("journal_entries").select("*").eq("user_id", user.id).order("date", { ascending: false }).limit(30),
       supabase.from("trades").select("id,pair,direction,pnl,emotion,respected_rules").eq("user_id", user.id).eq("date", today),
-      supabase.from("profiles").select("trading_biases").eq("id", user.id).single(),
+      supabase.from("profiles").select("trading_biases,currency").eq("id", user.id).single(),
     ]);
+    if (profileData?.currency) setCurrency(profileData.currency);
     const loadedBiases: string[] = profileData?.trading_biases || [];
     setUserBiases(loadedBiases);
     const biasPromptCount = loadedBiases.filter(b => BIAS_QUESTIONS[b]).length;
@@ -230,7 +232,7 @@ export default function JournalPage() {
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   {!t.respected_rules && <span style={{ fontSize: 11, color: "var(--r)", fontWeight: 600 }}>Règles non respectées</span>}
                   <span style={{ fontSize: 13, fontWeight: 700, color: t.pnl >= 0 ? "var(--g)" : "var(--r)" }}>
-                    {t.pnl >= 0 ? "+" : ""}{t.pnl.toFixed(0)}€
+                    {t.pnl >= 0 ? "+" : ""}{t.pnl.toFixed(0)}{currency}
                   </span>
                 </div>
               </div>
@@ -239,7 +241,7 @@ export default function JournalPage() {
           <div style={{ display: "flex", gap: 16, paddingTop: 8, borderTop: "1px solid var(--border)" }}>
             <span style={{ fontSize: 12, color: "var(--ink3)" }}>{todayWins}W / {todayTrades.length - todayWins}L</span>
             <span style={{ fontSize: 12, fontWeight: 700, color: todayPnl >= 0 ? "var(--g)" : "var(--r)" }}>
-              P&L : {todayPnl >= 0 ? "+" : ""}{todayPnl.toFixed(0)}€
+              P&L : {todayPnl >= 0 ? "+" : ""}{todayPnl.toFixed(0)}{currency}
             </span>
           </div>
         </div>

@@ -161,7 +161,7 @@ export default function RapportPage() {
           {/* KPIs */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 20 }}>
             {[
-              { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${currency === "USD" ? "$" : currency === "GBP" ? "£" : "€"}`, color: pnlNet > 0 ? "var(--g)" : pnlNet < 0 ? "var(--r)" : "var(--ink3)", sub: accountSize ? `${pnlNet >= 0 ? "+" : ""}${((pnlNet / accountSize) * 100).toFixed(2)}%` : `${wins}W / ${losses}L` },
+              { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${currency}`, color: pnlNet > 0 ? "var(--g)" : pnlNet < 0 ? "var(--r)" : "var(--ink3)", sub: accountSize ? `${pnlNet >= 0 ? "+" : ""}${((pnlNet / accountSize) * 100).toFixed(2)}%` : `${wins}W / ${losses}L` },
               { label: "Win Rate", value: winRate !== null ? `${winRate}%` : "—", color: winRate !== null ? (winRate >= 55 ? "var(--g)" : winRate >= 45 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: `${total} trade${total > 1 ? "s" : ""}` },
               { label: "Discipline", value: rulesOk !== null ? `${rulesOk}%` : "—", color: rulesOk !== null ? (rulesOk >= 80 ? "var(--g)" : rulesOk >= 60 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: "règles ok" },
               { label: "Score mental", value: avgScore ?? "—", color: avgScore ? (avgScore >= 75 ? "var(--g)" : avgScore >= 60 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: `${checkins.length} check-in${checkins.length > 1 ? "s" : ""}` },
@@ -211,7 +211,7 @@ export default function RapportPage() {
                           border: `1px solid ${row.val >= 0 ? row.color : "var(--r)"}20`,
                         }} />
                         <span style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%,-50%)", fontSize: 12, fontWeight: 700, color: row.val >= 0 ? row.color : "var(--r)", whiteSpace: "nowrap" }}>
-                          {row.val >= 0 ? "+" : ""}{row.val.toFixed(0)}€ / jour
+                          {row.val >= 0 ? "+" : ""}{row.val.toFixed(0)}{currency} / jour
                         </span>
                       </div>
                     </div>
@@ -268,14 +268,14 @@ export default function RapportPage() {
               {bestDay && (
                 <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "16px 18px" }}>
                   <div style={{ fontSize: 10, fontWeight: 700, color: "var(--g)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>Meilleur trade</div>
-                  <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 22, color: "var(--g)", fontWeight: 700 }}>+{bestDay.pnl.toFixed(0)}€</div>
+                  <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 22, color: "var(--g)", fontWeight: 700 }}>+{bestDay.pnl.toFixed(0)}{currency}</div>
                   <div style={{ fontSize: 12, color: "var(--ink3)", marginTop: 4 }}>{bestDay.pair} · {bestDay.direction} · {new Date(bestDay.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</div>
                 </div>
               )}
               {worstDay && worstDay.pnl < 0 && (
                 <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "16px 18px" }}>
                   <div style={{ fontSize: 10, fontWeight: 700, color: "var(--r)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>Pire trade</div>
-                  <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 22, color: "var(--r)", fontWeight: 700 }}>{worstDay.pnl.toFixed(0)}€</div>
+                  <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 22, color: "var(--r)", fontWeight: 700 }}>{worstDay.pnl.toFixed(0)}{currency}</div>
                   <div style={{ fontSize: 12, color: "var(--ink3)", marginTop: 4 }}>{worstDay.pair} · {worstDay.direction} · {new Date(worstDay.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</div>
                 </div>
               )}

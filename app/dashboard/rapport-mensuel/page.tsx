@@ -153,7 +153,7 @@ export default function RapportMensuelPage() {
           {/* KPIs */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10, marginBottom: 20 }}>
             {[
-              { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${currency === "USD" ? "$" : currency === "GBP" ? "£" : "€"}`, color: pnlNet > 0 ? "var(--g)" : pnlNet < 0 ? "var(--r)" : "var(--ink3)", sub: accountSize ? `${pnlNet >= 0 ? "+" : ""}${((pnlNet / accountSize) * 100).toFixed(2)}%` : `${wins}W / ${losses}L` },
+              { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${currency}`, color: pnlNet > 0 ? "var(--g)" : pnlNet < 0 ? "var(--r)" : "var(--ink3)", sub: accountSize ? `${pnlNet >= 0 ? "+" : ""}${((pnlNet / accountSize) * 100).toFixed(2)}%` : `${wins}W / ${losses}L` },
               { label: "Win Rate", value: winRate !== null ? `${winRate}%` : "—", color: winRate !== null ? (winRate >= 55 ? "var(--g)" : winRate >= 45 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: `${total} trades` },
               { label: "Profit Factor", value: profitFactor ?? "—", color: pfNum !== null ? (pfNum >= 1.5 ? "var(--g)" : pfNum >= 1 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: "gains / pertes" },
               { label: "Discipline", value: rulesOk !== null ? `${rulesOk}%` : "—", color: rulesOk !== null ? (rulesOk >= 80 ? "var(--g)" : rulesOk >= 60 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: "règles ok" },
@@ -215,7 +215,7 @@ export default function RapportMensuelPage() {
                       <div style={{ flex: 1, height: 28, background: "var(--bg2)", borderRadius: 6, overflow: "hidden", position: "relative" }}>
                         <div style={{ position: "absolute", top: 0, bottom: 0, width: `${Math.max(4, (Math.abs(row.val) / maxAbs) * 100)}%`, left: row.val >= 0 ? 0 : "auto", right: row.val < 0 ? 0 : "auto", background: row.val >= 0 ? `${row.color}22` : "rgba(155,28,28,.15)", borderRadius: 6, border: `1px solid ${row.val >= 0 ? row.color : "var(--r)"}33` }} />
                         <span style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%,-50%)", fontSize: 12, fontWeight: 700, color: row.val >= 0 ? row.color : "var(--r)", whiteSpace: "nowrap" }}>
-                          {row.val >= 0 ? "+" : ""}{row.val.toFixed(0)}€ / jour
+                          {row.val >= 0 ? "+" : ""}{row.val.toFixed(0)}{currency} / jour
                         </span>
                       </div>
                     </div>
@@ -241,7 +241,7 @@ export default function RapportMensuelPage() {
                       <div key={i}>
                         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
                           <span style={{ fontSize: 12, fontWeight: 600, color: isToxic ? "var(--r)" : "var(--ink2)" }}>{emotion}</span>
-                          <span style={{ fontSize: 11, color: "var(--ink3)" }}>{stats.count} trade{stats.count > 1 ? "s" : ""} · {pct}% · <span style={{ color: stats.pnl >= 0 ? "var(--g)" : "var(--r)", fontWeight: 700 }}>{stats.pnl >= 0 ? "+" : ""}{stats.pnl.toFixed(0)}€</span></span>
+                          <span style={{ fontSize: 11, color: "var(--ink3)" }}>{stats.count} trade{stats.count > 1 ? "s" : ""} · {pct}% · <span style={{ color: stats.pnl >= 0 ? "var(--g)" : "var(--r)", fontWeight: 700 }}>{stats.pnl >= 0 ? "+" : ""}{stats.pnl.toFixed(0)}{currency}</span></span>
                         </div>
                         <div style={{ height: 4, background: "var(--bg3)", borderRadius: 2 }}>
                           <div style={{ height: "100%", width: `${pct}%`, background: isToxic ? "var(--r)" : "var(--navy)", borderRadius: 2 }} />
@@ -258,14 +258,14 @@ export default function RapportMensuelPage() {
               {bestTrade && bestTrade.pnl > 0 && (
                 <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "16px 18px", flex: 1 }}>
                   <div style={{ fontSize: 10, fontWeight: 700, color: "var(--g)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>Meilleur trade</div>
-                  <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 24, color: "var(--g)", fontWeight: 700 }}>+{bestTrade.pnl.toFixed(0)}€</div>
+                  <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 24, color: "var(--g)", fontWeight: 700 }}>+{bestTrade.pnl.toFixed(0)}{currency}</div>
                   <div style={{ fontSize: 12, color: "var(--ink3)", marginTop: 4 }}>{bestTrade.pair} · {bestTrade.direction} · {new Date(bestTrade.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</div>
                 </div>
               )}
               {worstTrade && worstTrade.pnl < 0 && (
                 <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "16px 18px", flex: 1 }}>
                   <div style={{ fontSize: 10, fontWeight: 700, color: "var(--r)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8 }}>Pire trade</div>
-                  <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 24, color: "var(--r)", fontWeight: 700 }}>{worstTrade.pnl.toFixed(0)}€</div>
+                  <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 24, color: "var(--r)", fontWeight: 700 }}>{worstTrade.pnl.toFixed(0)}{currency}</div>
                   <div style={{ fontSize: 12, color: "var(--ink3)", marginTop: 4 }}>{worstTrade.pair} · {worstTrade.direction} · {new Date(worstTrade.date).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</div>
                 </div>
               )}
