@@ -255,7 +255,7 @@ export default function SettingsPage() {
                       letterSpacing: ".05em",
                     }}>{label}</span>
                     {isLifetime && (
-                      <span style={{ fontSize: 12, color: "var(--ink3)" }}>1 seul paiement · Accès à vie · MindTrade Alpha inclus</span>
+                      <span style={{ fontSize: 12, color: "var(--ink3)" }}>Vous avez accès à MindTrade dans son intégralité, à vie.</span>
                     )}
                     {!isLifetime && (
                       <span style={{ fontSize: 12, color: "var(--ink3)" }}>
