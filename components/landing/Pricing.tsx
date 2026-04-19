@@ -19,7 +19,7 @@ const planFeatures = {
   ],
   lifetime: [
     "Tout le plan annuel inclus, à vie",
-    "Accès Alpha — Intelligence comportementale exclusive",
+    "★ Alpha — corrélations mental/P&L, patterns par jour, émotions en chiffres",
     "Toutes les futures fonctionnalités incluses",
     "Accès prioritaire aux nouvelles features",
     "Support direct — réponse sous 24h",
@@ -138,16 +138,17 @@ export default function Pricing() {
               </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 11, marginBottom: 16, flex: 1 }}>
-              {planFeatures.lifetime.map(f => <FeatureItem key={f} text={f} dark={true} />)}
-            </div>
-
-            {/* Alpha callout */}
-            <div style={{ marginBottom: 20, background: "rgba(184,134,11,.1)", border: "1px solid rgba(184,134,11,.3)", borderRadius: 10, padding: "14px 16px" }}>
-              <div style={{ fontSize: 11, fontWeight: 800, color: "var(--gold)", letterSpacing: ".06em", marginBottom: 6 }}>★ QU'EST-CE QU'ALPHA ?</div>
-              <div style={{ fontSize: 12, color: "rgba(255,255,255,.55)", lineHeight: 1.6 }}>
-                Ton tableau de bord comportemental personnel — corrélations état mental / P&L, tes patterns par jour de semaine, tes émotions en chiffres. Ce que tes données révèlent sur toi, invisible à l'œil nu.
-              </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 11, marginBottom: 28, flex: 1 }}>
+              {planFeatures.lifetime.map((f, i) => (
+                <div key={f}>
+                  <FeatureItem text={f} dark={true} />
+                  {i === 1 && (
+                    <div style={{ fontSize: 11, color: "rgba(184,134,11,.7)", marginLeft: 25, marginTop: 3, fontStyle: "italic" }}>
+                      Exclusif Lifetime — tableau de bord comportemental
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
 
             <a href="/register?plan=lifetime" style={{ display: "block", textAlign: "center", padding: "13px", borderRadius: 8, fontSize: 14, fontWeight: 700, textDecoration: "none", fontFamily: "var(--font-outfit)", background: "linear-gradient(135deg, var(--gold), var(--gold2))", color: "#fff", boxShadow: "0 4px 20px rgba(184,134,11,.3)" }}>
