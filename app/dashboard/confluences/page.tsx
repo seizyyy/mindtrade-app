@@ -75,9 +75,11 @@ export default function ConfluencesPage() {
     setCurrentUserId(user.id);
     userIdRef.current = user.id;
     setPtQuestions(loadQuestions(user.id));
-    const saved = localStorage.getItem(`mt-min-confluences-${user.id}`);
-    if (saved) setMinConfluences(parseInt(saved));
-    const { data } = await supabase.from("confluences").select("*").eq("user_id", user.id).order("type").order("created_at");
+    const [{ data: profileData }, { data }] = await Promise.all([
+      supabase.from("profiles").select("min_confluences").eq("id", user.id).single(),
+      supabase.from("confluences").select("*").eq("user_id", user.id).order("type").order("created_at"),
+    ]);
+    if (profileData?.min_confluences) setMinConfluences(profileData.min_confluences);
     setConfluences(data || []);
     setLoading(false);
   }
@@ -85,7 +87,9 @@ export default function ConfluencesPage() {
   function updateMin(val: number) {
     const clamped = Math.max(1, Math.min(20, val));
     setMinConfluences(clamped);
-    if (userIdRef.current) localStorage.setItem(`mt-min-confluences-${userIdRef.current}`, String(clamped));
+    if (userIdRef.current) {
+      supabase.from("profiles").update({ min_confluences: clamped }).eq("id", userIdRef.current);
+    }
   }
 
   async function addConfluence() {
