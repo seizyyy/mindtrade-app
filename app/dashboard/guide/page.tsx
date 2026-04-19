@@ -270,11 +270,7 @@ export default function GuidePage() {
                     </div>
                   </div>
                 )}
-                {isLifetime ? (
-                  <a href="/dashboard/alpha" style={{ display: "block", textAlign: "center", background: "var(--gold)", color: "#0f2744", padding: "11px", borderRadius: 9, fontSize: 13, fontWeight: 800, textDecoration: "none", letterSpacing: ".01em" }}>
-                    Accéder à MindTrade Alpha →
-                  </a>
-                ) : (
+                {!isLifetime && (
                   <a href="/dashboard/alpha" style={{ display: "block", textAlign: "center", background: "var(--gold)", color: "#0f2744", padding: "11px", borderRadius: 9, fontSize: 13, fontWeight: 800, textDecoration: "none", letterSpacing: ".01em" }}>
                     Upgrader vers Lifetime et accéder à Alpha →
                   </a>
