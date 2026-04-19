@@ -3,21 +3,27 @@
 
 const planFeatures = {
   monthly: [
-    "Score mental avant chaque session — sais si tu dois trader",
-    "Log de tes trades avec l'état émotionnel associé",
-    "Rapport hebdo — P&L, win rate, discipline",
-    "Journal post-session guidé",
+    "Check-in quotidien + score mental",
+    "Dashboard complet + signal mental",
+    "Log de trades + confluences",
+    "Rapport hebdomadaire",
+    "Journal structuré + quiz de réflexion",
+    "Sans engagement · Résiliable à tout moment",
   ],
   annual: [
-    "Tout le mensuel inclus",
-    "2 mois offerts — 178€ économisés",
-    "Support prioritaire sous 48h",
+    "Toutes les fonctionnalités incluses",
+    "2 mois offerts — économie de 178€ vs mensuel",
+    "Accès prioritaire aux nouvelles fonctionnalités",
+    "Support réponse sous 48h",
+    "Accès aux futures évolutions du produit",
   ],
   lifetime: [
-    "Accès à vie — un seul paiement, plus jamais rien",
-    "★ Alpha — tes corrélations mental/performance en chiffres",
+    "Tout le plan annuel inclus, à vie",
+    "★ Alpha — corrélations mental/P&L, patterns par jour, émotions en chiffres",
     "Toutes les futures fonctionnalités incluses",
-    "Support direct sous 24h · Prix bloqué à vie",
+    "Accès prioritaire aux nouvelles features",
+    "Support direct — réponse sous 24h",
+    "Prix garanti à vie · Aucune hausse possible",
   ],
 };
 
