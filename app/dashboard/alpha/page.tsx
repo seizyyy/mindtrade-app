@@ -105,6 +105,7 @@ export default function AlphaPage() {
   const [userId, setUserId] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [currency, setCurrency] = useState("EUR");
+  const [market, setMarket] = useState("");
 
   useEffect(() => {
     async function load() {
@@ -112,9 +113,10 @@ export default function AlphaPage() {
       if (!user) { router.replace("/login"); return; }
       setUserId(user.id);
       setUserEmail(user.email ?? "");
-      const { data: profile } = await supabase.from("profiles").select("plan,currency").eq("id", user.id).single();
+      const { data: profile } = await supabase.from("profiles").select("plan,currency,market").eq("id", user.id).single();
       const plan = profile?.plan ?? "monthly";
       if (profile?.currency) setCurrency(profile.currency);
+      if (profile?.market) setMarket(profile.market);
       setUserPlan(plan);
 
       if (plan === "lifetime") {
@@ -364,12 +366,16 @@ export default function AlphaPage() {
             <div style={{ fontSize: 13, color: "var(--ink3)", marginBottom: 20 }}>
               Basé sur ton historique, ce que ce jour de la semaine prédit sur ta performance.
             </div>
-            {dayPnls.length < 3 || todayDow === 0 || todayDow === 6 ? (
-              <div style={{ fontSize: 13, color: "var(--ink3)", padding: "14px 0" }}>
-                {todayDow === 0 || todayDow === 6
-                  ? "Nous sommes le week-end — les marchés sont fermés. Consulte ce signal en semaine."
-                  : `Pas encore assez de trades un ${DAY_LABELS[todayDow]} (minimum 3 requis — ${dayPnls.length} pour l'instant).`}
-              </div>
+            {(() => {
+              const isWeekend = todayDow === 0 || todayDow === 6;
+              const isCrypto = market === "Crypto";
+              const blockedByWeekend = isWeekend && !isCrypto;
+              return dayPnls.length < 3 || blockedByWeekend ? (
+                <div style={{ fontSize: 13, color: "var(--ink3)", padding: "14px 0" }}>
+                  {blockedByWeekend
+                    ? "Nous sommes le week-end — les marchés sont fermés. Consulte ce signal en semaine."
+                    : `Pas encore assez de trades un ${DAY_LABELS[todayDow]} (minimum 3 requis — ${dayPnls.length} pour l'instant).`}
+                </div>
             ) : (
               <div style={{ background: dayAvg! < 0 ? "var(--tint-r-bg)" : dayAvg! >= 0 && dayWr! >= 60 ? "var(--tint-g-bg)" : "var(--tint-a-bg)", border: `1.5px solid ${dayAvg! < 0 ? "var(--tint-r-border)" : dayAvg! >= 0 && dayWr! >= 60 ? "var(--tint-g-border)" : "var(--tint-a-border)"}`, borderRadius: 10, padding: "18px 20px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
@@ -393,7 +399,8 @@ export default function AlphaPage() {
                   </div>
                 )}
               </div>
-            )}
+            );
+            })()}
           </div>
 
           {/* 2 ── Profil trader + Insights ── */}
