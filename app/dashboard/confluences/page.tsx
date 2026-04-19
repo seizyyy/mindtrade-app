@@ -26,19 +26,19 @@ const DEFAULT_PRETRADE: PreTradeQ[] = [
   { id: "d5", q: "Mon état mental aujourd'hui est-il compatible avec ce trade ?", detail: "Un bon setup pris dans un mauvais état mental reste un mauvais trade. Consulte ton score." },
 ];
 
-const LS_KEY = "mt-pretrade-questions";
+function lsKey(userId: string) { return `mt-pretrade-questions-${userId}`; }
 
-function loadQuestions(): PreTradeQ[] {
+function loadQuestions(userId: string): PreTradeQ[] {
   if (typeof window === "undefined") return DEFAULT_PRETRADE;
   try {
-    const raw = localStorage.getItem(LS_KEY);
+    const raw = localStorage.getItem(lsKey(userId));
     if (raw) return JSON.parse(raw);
   } catch {}
   return DEFAULT_PRETRADE;
 }
 
-function saveQuestions(qs: PreTradeQ[]) {
-  localStorage.setItem(LS_KEY, JSON.stringify(qs));
+function saveQuestions(userId: string, qs: PreTradeQ[]) {
+  localStorage.setItem(lsKey(userId), JSON.stringify(qs));
 }
 
 export default function ConfluencesPage() {
@@ -53,6 +53,7 @@ export default function ConfluencesPage() {
   const [form, setForm] = useState({ titre: "", description: "", type: "required" as "required" | "bonus" });
 
   // Pre-trade quiz
+  const [currentUserId, setCurrentUserId] = useState<string>("");
   const [ptQuestions, setPtQuestions] = useState<PreTradeQ[]>([]);
   const [ptStep, setPtStep] = useState<number | null>(null); // null = not started
   const [ptAnswers, setPtAnswers] = useState<Record<string, "oui" | "non">>({});
@@ -64,12 +65,13 @@ export default function ConfluencesPage() {
 
   useEffect(() => {
     load();
-    setPtQuestions(loadQuestions());
   }, []);
 
   async function load() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.replace("/login"); return; }
+    setCurrentUserId(user.id);
+    setPtQuestions(loadQuestions(user.id));
     const { data } = await supabase.from("confluences").select("*").eq("user_id", user.id).order("type").order("created_at");
     setConfluences(data || []);
     setLoading(false);
@@ -121,7 +123,7 @@ export default function ConfluencesPage() {
   function ptDeleteQuestion(id: string) {
     const updated = ptQuestions.filter(q => q.id !== id);
     setPtQuestions(updated);
-    saveQuestions(updated);
+    saveQuestions(currentUserId, updated);
   }
 
   function ptAddQuestion() {
@@ -129,7 +131,7 @@ export default function ConfluencesPage() {
     const newQ: PreTradeQ = { id: `custom-${Date.now()}`, q: ptNewQ.trim(), detail: ptNewDetail.trim() };
     const updated = [...ptQuestions, newQ];
     setPtQuestions(updated);
-    saveQuestions(updated);
+    saveQuestions(currentUserId, updated);
     setPtNewQ("");
     setPtNewDetail("");
     setPtAddingQ(false);

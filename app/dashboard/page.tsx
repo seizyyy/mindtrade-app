@@ -108,6 +108,7 @@ export default function DashboardPage() {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.replace("/login"); return; }
+      setUserId(user.id);
       const [{ data: ci }, { data: tr }, { data: cis }, { data: profile }] = await Promise.all([
         supabase.from("checkins").select("score,date").eq("user_id", user.id).eq("date", today).single(),
         supabase.from("trades").select("pnl,direction,pair,emotion,date,respected_rules")
@@ -126,7 +127,7 @@ export default function DashboardPage() {
       if (profile?.max_daily_loss) setMaxDailyLossAmount(profile.max_daily_loss);
       if (profile?.currency) setCurrency(profile.currency);
       // Affiche la carte unlock une seule fois
-      const alreadySeen = localStorage.getItem("mt-unlocked");
+      const alreadySeen = localStorage.getItem(`mt-unlocked-${user.id}`);
       if (!alreadySeen && (cis || []).length >= 3 && (tr || []).length >= 1) {
         setShowUnlocked(true);
       }
@@ -135,8 +136,10 @@ export default function DashboardPage() {
     load();
   }, []);
 
+  const [userId, setUserId] = useState<string>("");
+
   function dismissUnlocked() {
-    localStorage.setItem("mt-unlocked", "1");
+    if (userId) localStorage.setItem(`mt-unlocked-${userId}`, "1");
     setShowUnlocked(false);
   }
 
