@@ -50,7 +50,7 @@ export default function ConfluencesPage() {
   const [saving, setSaving] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
-  const [minConfluences, setMinConfluences] = useState<number>(1);
+  const [minConfluences, setMinConfluences] = useState<number>(4);
   const [form, setForm] = useState({ titre: "", description: "" });
 
   // Pre-trade quiz
