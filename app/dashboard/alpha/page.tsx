@@ -193,13 +193,73 @@ export default function AlphaPage() {
   const s90 = avgScore(d90);
   const trend = s30 && s60 ? s30 - s60 : null;
 
-  // ── 5. Alerte prédictive ────────────────────────────────────────────────────
+  // ── 5. Signal prédictif ──────────────────────────────────────────────────────
   const todayCheckin = checkins.find(c => c.date === today);
   const recentLosses = trades.slice(0, 5).filter(t => t.pnl < 0).length;
   const todayDow = new Date().getDay();
   const dayPnls = byDay[todayDow];
   const dayAvg = avg(dayPnls);
   const dayWr = winRate(dayPnls);
+
+  // ── 6. Paires ────────────────────────────────────────────────────────────────
+  const byPair: Record<string, number[]> = {};
+  trades.forEach(t => {
+    const p = (t.pair || "").trim().toUpperCase();
+    if (!p) return;
+    if (!byPair[p]) byPair[p] = [];
+    byPair[p].push(t.pnl);
+  });
+  const pairStats = Object.entries(byPair)
+    .filter(([, arr]) => arr.length >= 2)
+    .map(([pair, arr]) => ({ pair, avg: avg(arr)!, count: arr.length, wr: winRate(arr)! }))
+    .sort((a, b) => b.avg - a.avg);
+
+  // ── 7. Discipline ─────────────────────────────────────────────────────────────
+  const disciplinedPnls   = trades.filter(t => t.respected_rules).map(t => t.pnl);
+  const undisciplinedPnls = trades.filter(t => !t.respected_rules).map(t => t.pnl);
+  const disciplineRate    = trades.length ? Math.round((disciplinedPnls.length / trades.length) * 100) : null;
+  const disciplineAvg     = avg(disciplinedPnls);
+  const undisciplineAvg   = avg(undisciplinedPnls);
+
+  // ── 8. Insights auto-générés ──────────────────────────────────────────────────
+  const weekdayPerf = [1,2,3,4,5]
+    .map(d => ({ day: d, a: avg(byDay[d]), count: byDay[d].length, wr: winRate(byDay[d]) }))
+    .filter(d => d.count >= 2 && d.a !== null)
+    .sort((a, b) => b.a! - a.a!);
+  const bestDay   = weekdayPerf[0] ?? null;
+  const worstDay  = weekdayPerf[weekdayPerf.length - 1] ?? null;
+  const bestEmo   = emotionStats[0] ?? null;
+  const worstEmo  = emotionStats[emotionStats.length - 1] ?? null;
+  const globalWr  = winRate(trades.map(t => t.pnl));
+  const globalAvg = avg(trades.map(t => t.pnl));
+
+  const insights: { type: "pos" | "neg" | "neu"; text: string }[] = [];
+  if (bestDay && bestDay.a! > 0)
+    insights.push({ type: "pos", text: `Le ${DAY_LABELS[bestDay.day]} est ton meilleur jour — ${bestDay.a! >= 0 ? "+" : ""}${bestDay.a!.toFixed(0)}${sym(currency)} moy. sur ${bestDay.count} trades (${bestDay.wr}% win).` });
+  if (worstDay && worstDay.a! < 0)
+    insights.push({ type: "neg", text: `Évite le ${DAY_LABELS[worstDay.day]} — tu perds en moyenne ${worstDay.a!.toFixed(0)}${sym(currency)} (${worstDay.wr}% win sur ${worstDay.count} trades).` });
+  if (bestEmo && bestEmo.avg > 0)
+    insights.push({ type: "pos", text: `État "${bestEmo.emotion}" = ton pic : +${bestEmo.avg.toFixed(0)}${sym(currency)}/trade, ${bestEmo.winRate}% win sur ${bestEmo.count} trades.` });
+  if (worstEmo && worstEmo.avg < 0)
+    insights.push({ type: "neg", text: `"${worstEmo.emotion}" te coûte ${worstEmo.avg.toFixed(0)}${sym(currency)} par trade (${worstEmo.winRate}% win) — identifie le déclencheur.` });
+  if (disciplineAvg !== null && undisciplineAvg !== null && undisciplinedPnls.length >= 2) {
+    const diff = disciplineAvg - undisciplineAvg;
+    if (diff > 0) insights.push({ type: "pos", text: `Respecter tes règles te rapporte +${diff.toFixed(0)}${sym(currency)}/trade vs quand tu dévies.` });
+    else if (diff < -20) insights.push({ type: "neu", text: `Tu performes mieux sans tes règles — réévalue-les, elles freinent peut-être ton edge.` });
+  }
+  if (pairStats.length > 0 && pairStats[0].avg > 0)
+    insights.push({ type: "pos", text: `Meilleure paire : ${pairStats[0].pair} (+${pairStats[0].avg.toFixed(0)}${sym(currency)} moy., ${pairStats[0].wr}% win sur ${pairStats[0].count} trades).` });
+  if (pairStats.length > 1 && pairStats[pairStats.length - 1].avg < 0)
+    insights.push({ type: "neg", text: `Pire paire : ${pairStats[pairStats.length - 1].pair} (${pairStats[pairStats.length - 1].avg.toFixed(0)}${sym(currency)} moy.) — envisage de l'exclure.` });
+  if (recentLosses >= 3)
+    insights.push({ type: "neg", text: `${recentLosses} pertes dans tes 5 derniers trades — risque de revenge trading élevé.` });
+
+  // ── Profil trader ─────────────────────────────────────────────────────────────
+  const profileLines: string[] = [];
+  if (globalWr !== null) profileLines.push(`Win rate global : ${globalWr}%${globalAvg !== null ? ` · Moyenne par trade : ${globalAvg >= 0 ? "+" : ""}${globalAvg.toFixed(0)}${sym(currency)}` : ""}.`);
+  if (bestEmo) profileLines.push(`Tu performes le mieux en état "${bestEmo.emotion}"${bestDay ? ` et le ${DAY_LABELS[bestDay.day]}` : ""}.`);
+  if (worstEmo && worstEmo.avg < 0) profileLines.push(`Ton point faible principal : trader en état "${worstEmo.emotion}".`);
+  if (disciplineRate !== null) profileLines.push(`Tu respectes tes règles sur ${disciplineRate}% de tes trades${disciplineRate >= 75 ? " — bonne discipline" : disciplineRate >= 50 ? " — marge de progression" : " — discipline à travailler"}.`);
 
   const card: React.CSSProperties = {
     background: "var(--card)", border: "1px solid var(--border)", borderRadius: 14, padding: "22px 24px",
@@ -265,7 +325,7 @@ export default function AlphaPage() {
   );
 
   return (
-    <div style={{ maxWidth: 860 }}>
+    <div style={{ maxWidth: 1200 }}>
 
       {/* Header */}
       <div style={{ marginBottom: 28, display: "flex", alignItems: "center", gap: 14 }}>
@@ -296,6 +356,7 @@ export default function AlphaPage() {
       )}
 
       {isLifetime && hasTrades && hasCheckins && (
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 20, alignItems: "start" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
           {/* ── Corrélation Score / P&L ── */}
@@ -444,6 +505,91 @@ export default function AlphaPage() {
               </div>
             )}
           </div>
+
+        </div>{/* end left column */}
+
+        {/* ── Panneau droit ── */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 14, position: "sticky", top: 20 }}>
+
+          {/* Profil trader */}
+          {profileLines.length > 0 && (
+            <div style={{ background: "linear-gradient(145deg, #0f2744, #1a3a5c)", border: "1px solid rgba(212,168,50,.25)", borderRadius: 14, padding: "20px 22px" }}>
+              <div style={{ fontSize: 10, fontWeight: 800, color: "var(--gold)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10 }}>Ton profil de trader</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {profileLines.map((line, i) => (
+                  <div key={i} style={{ fontSize: 13, color: "rgba(255,255,255,.75)", lineHeight: 1.6 }}>{line}</div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Insights auto-détectés */}
+          {insights.length > 0 && (
+            <div style={card}>
+              <div style={{ fontSize: 10, fontWeight: 800, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 }}>Insights personnalisés</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {insights.map((ins, i) => (
+                  <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "10px 12px", borderRadius: 8, background: ins.type === "pos" ? "rgba(34,197,94,.06)" : ins.type === "neg" ? "rgba(239,68,68,.06)" : "rgba(255,255,255,.03)", border: `1px solid ${ins.type === "pos" ? "rgba(34,197,94,.15)" : ins.type === "neg" ? "rgba(239,68,68,.15)" : "var(--border)"}` }}>
+                    <span style={{ fontSize: 12, flexShrink: 0, marginTop: 1 }}>{ins.type === "pos" ? "↑" : ins.type === "neg" ? "↓" : "→"}</span>
+                    <div style={{ fontSize: 12, color: "var(--ink2)", lineHeight: 1.55 }}>{ins.text}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Tes paires */}
+          {pairStats.length > 0 && (
+            <div style={card}>
+              <div style={{ fontSize: 10, fontWeight: 800, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 }}>Performance par paire</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {pairStats.slice(0, 6).map((p, i) => {
+                  const maxAbs = Math.max(...pairStats.map(x => Math.abs(x.avg)));
+                  const pct = maxAbs > 0 ? (Math.abs(p.avg) / maxAbs) * 100 : 0;
+                  return (
+                    <div key={p.pair}>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                        <span style={{ fontSize: 12, color: "var(--ink2)", fontWeight: 600 }}>{p.pair}</span>
+                        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                          <span style={{ fontSize: 11, color: "var(--ink3)" }}>{p.wr}% win · {p.count}t</span>
+                          <span style={{ fontSize: 12, fontWeight: 700, color: p.avg >= 0 ? "var(--g)" : "var(--r)" }}>{p.avg >= 0 ? "+" : ""}{p.avg.toFixed(0)}{sym(currency)}</span>
+                        </div>
+                      </div>
+                      <div style={{ height: 4, background: "var(--bg3)", borderRadius: 3, overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: `${pct}%`, background: p.avg >= 0 ? "var(--g)" : "var(--r)", borderRadius: 3 }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Impact discipline */}
+          {disciplineAvg !== null && undisciplineAvg !== null && undisciplinedPnls.length >= 2 && (
+            <div style={card}>
+              <div style={{ fontSize: 10, fontWeight: 800, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12 }}>Impact discipline</div>
+              <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 14 }}>P&L moyen selon que tu respectes tes règles ou non.</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderRadius: 8, background: "rgba(34,197,94,.06)", border: "1px solid rgba(34,197,94,.15)" }}>
+                  <div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "var(--g)", marginBottom: 2 }}>Règles respectées</div>
+                    <div style={{ fontSize: 11, color: "var(--ink3)" }}>{disciplinedPnls.length} trades · {disciplineRate}%</div>
+                  </div>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: disciplineAvg >= 0 ? "var(--g)" : "var(--r)" }}>{disciplineAvg >= 0 ? "+" : ""}{disciplineAvg.toFixed(0)}{sym(currency)}</div>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", borderRadius: 8, background: "rgba(239,68,68,.06)", border: "1px solid rgba(239,68,68,.15)" }}>
+                  <div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "var(--r)", marginBottom: 2 }}>Règles non respectées</div>
+                    <div style={{ fontSize: 11, color: "var(--ink3)" }}>{undisciplinedPnls.length} trades · {100 - (disciplineRate ?? 0)}%</div>
+                  </div>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: undisciplineAvg >= 0 ? "var(--g)" : "var(--r)" }}>{undisciplineAvg >= 0 ? "+" : ""}{undisciplineAvg.toFixed(0)}{sym(currency)}</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>{/* end right column */}
 
         </div>
       )}
