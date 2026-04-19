@@ -11,7 +11,7 @@ const planFeatures = {
     "Sans engagement · Résiliable à tout moment",
   ],
   annual: [
-    "Toutes les fonctionnalités incluses",
+    "Toutes les fonctionnalités incluses (hors Alpha)",
     "2 mois offerts — économie de 178€ vs mensuel",
     "Accès prioritaire aux nouvelles fonctionnalités",
     "Support réponse sous 48h",
