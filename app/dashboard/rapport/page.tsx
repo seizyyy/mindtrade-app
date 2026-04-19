@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { sym } from "@/lib/currency";
 
 type Trade = { date: string; pnl: number; direction: string; respected_rules: boolean; mental_score: number | null; emotion: string; pair: string; };
-type Checkin = { date: string; score: number; energie: number; focus: number; stress: number; confiance: number; };
+type Checkin = { date: string; score: number; };
 
 function getWeekStart(offset = 0) {
   const d = new Date();
@@ -42,8 +42,8 @@ export default function RapportPage() {
     if (!user) { router.replace("/login"); return; }
 
     const [{ data: t }, { data: c }, { data: profile }] = await Promise.all([
-      supabase.from("trades").select("*").eq("user_id", user.id).gte("date", fmt(weekStart)).lte("date", fmt(weekEnd)),
-      supabase.from("checkins").select("*").eq("user_id", user.id).gte("date", fmt(weekStart)).lte("date", fmt(weekEnd)),
+      supabase.from("trades").select("date,pnl,direction,respected_rules,mental_score,emotion,pair").eq("user_id", user.id).gte("date", fmt(weekStart)).lte("date", fmt(weekEnd)),
+      supabase.from("checkins").select("date,score").eq("user_id", user.id).gte("date", fmt(weekStart)).lte("date", fmt(weekEnd)),
       supabase.from("profiles").select("account_size,currency").eq("id", user.id).single(),
     ]);
 

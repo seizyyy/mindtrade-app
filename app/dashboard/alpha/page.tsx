@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { sym } from "@/lib/currency";
 
 type Checkin = { score: number; date: string };
-type Trade = { pnl: number; pair: string; emotion: string; date: string; respected_rules: boolean };
+type Trade = { pnl: number; pair: string; direction: string; emotion: string; date: string; respected_rules: boolean; mental_score: number | null };
 
 const DAY_LABELS = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
@@ -120,7 +120,7 @@ export default function AlphaPage() {
       if (plan === "lifetime") {
         const [{ data: ci }, { data: tr }] = await Promise.all([
           supabase.from("checkins").select("score,date").eq("user_id", user.id).order("date", { ascending: false }).limit(90),
-          supabase.from("trades").select("pnl,pair,emotion,date,respected_rules").eq("user_id", user.id).order("date", { ascending: false }).limit(200),
+          supabase.from("trades").select("pnl,pair,direction,emotion,date,respected_rules,mental_score").eq("user_id", user.id).order("date", { ascending: false }).limit(200),
         ]);
         setCheckins(ci || []);
         setTrades(tr || []);
