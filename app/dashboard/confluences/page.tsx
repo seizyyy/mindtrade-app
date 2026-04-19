@@ -84,11 +84,11 @@ export default function ConfluencesPage() {
     setLoading(false);
   }
 
-  function updateMin(val: number) {
+  async function updateMin(val: number) {
     const clamped = Math.max(1, Math.min(20, val));
     setMinConfluences(clamped);
     if (userIdRef.current) {
-      supabase.from("profiles").update({ min_confluences: clamped }).eq("id", userIdRef.current);
+      await supabase.from("profiles").update({ min_confluences: clamped }).eq("id", userIdRef.current);
     }
   }
 
