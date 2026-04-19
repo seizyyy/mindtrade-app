@@ -260,25 +260,24 @@ export default function GuidePage() {
                     </div>
                   ))}
                 </div>
-                <div style={{ marginBottom: 16, background: "rgba(212,168,50,.06)", border: "1px solid rgba(212,168,50,.2)", borderRadius: 8, padding: "10px 14px", display: "flex", gap: 10, alignItems: "flex-start" }}>
-                  <span style={{ fontSize: 14, flexShrink: 0 }}>💡</span>
-                  <div style={{ fontSize: 12, color: "rgba(255,255,255,.6)", lineHeight: 1.55 }}>{s.tip}</div>
-                </div>
+                {!isLifetime && (
+                  <div style={{ marginBottom: 16, background: "rgba(212,168,50,.06)", border: "1px solid rgba(212,168,50,.2)", borderRadius: 8, padding: "10px 14px", display: "flex", gap: 10, alignItems: "flex-start" }}>
+                    <span style={{ fontSize: 14, flexShrink: 0 }}>💡</span>
+                    <div style={{ fontSize: 12, color: "rgba(255,255,255,.6)", lineHeight: 1.55 }}>
+                      {isAnnual
+                        ? "Abonné annuel — ton montant déjà payé est déduit du prix Lifetime. Accès immédiat à Alpha."
+                        : "Abonné mensuel — le montant déjà payé est déduit du Lifetime. Un seul paiement, accès à vie."}
+                    </div>
+                  </div>
+                )}
                 {isLifetime ? (
                   <a href="/dashboard/alpha" style={{ display: "block", textAlign: "center", background: "var(--gold)", color: "#0f2744", padding: "11px", borderRadius: 9, fontSize: 13, fontWeight: 800, textDecoration: "none", letterSpacing: ".01em" }}>
                     Accéder à MindTrade Alpha →
                   </a>
                 ) : (
-                  <>
-                    <div style={{ textAlign: "center", marginBottom: 10 }}>
-                      <span style={{ fontSize: 12, color: "rgba(255,255,255,.4)" }}>
-                        {isAnnual ? "Abonné annuel — rabais appliqué sur le Lifetime" : "Abonné mensuel — montant déjà payé déduit"} · Accès immédiat
-                      </span>
-                    </div>
-                    <a href="/dashboard/alpha" style={{ display: "block", textAlign: "center", background: "var(--gold)", color: "#0f2744", padding: "11px", borderRadius: 9, fontSize: 13, fontWeight: 800, textDecoration: "none", letterSpacing: ".01em" }}>
-                      Upgrader vers Lifetime et accéder à Alpha →
-                    </a>
-                  </>
+                  <a href="/dashboard/alpha" style={{ display: "block", textAlign: "center", background: "var(--gold)", color: "#0f2744", padding: "11px", borderRadius: 9, fontSize: 13, fontWeight: 800, textDecoration: "none", letterSpacing: ".01em" }}>
+                    Upgrader vers Lifetime et accéder à Alpha →
+                  </a>
                 )}
               </div>
             </div>
