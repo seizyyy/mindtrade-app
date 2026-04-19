@@ -152,7 +152,7 @@ const sections = [
       { label: "Performance par jour de la semaine", desc: "Tes lundis sont-ils rentables ? Tes vendredis catastrophiques ? Alpha détecte tes jours forts et faibles sur l'historique complet de tes trades." },
       { label: "Signal prédictif du jour", desc: "Basé sur ton historique, Alpha prédit ta performance probable du jour. Si tes jeudis sont structurellement mauvais, tu le sais avant d'ouvrir un seul chart." },
     ],
-    tip: "Alpha est inclus dans le plan Lifetime — un seul paiement, accès à vie à toutes les fonctionnalités actuelles et futures.",
+    tip: "Déjà abonné mensuel ? Tu peux upgrader vers Lifetime à prix réduit — le montant déjà payé est déduit. Un seul paiement, accès à vie.",
     isAlpha: true,
   },
 ];
@@ -245,8 +245,11 @@ export default function GuidePage() {
                   <span style={{ fontSize: 14, flexShrink: 0 }}>💡</span>
                   <div style={{ fontSize: 12, color: "rgba(255,255,255,.6)", lineHeight: 1.55 }}>{s.tip}</div>
                 </div>
+                <div style={{ textAlign: "center", marginBottom: 10 }}>
+                  <span style={{ fontSize: 12, color: "rgba(255,255,255,.4)" }}>Accès immédiat après upgrade · Rabais abonné appliqué automatiquement</span>
+                </div>
                 <a href="/dashboard/alpha" style={{ display: "block", textAlign: "center", background: "var(--gold)", color: "#0f2744", padding: "11px", borderRadius: 9, fontSize: 13, fontWeight: 800, textDecoration: "none", letterSpacing: ".01em" }}>
-                  Découvrir MindTrade Alpha →
+                  Upgrader vers Lifetime et accéder à Alpha →
                 </a>
               </div>
             </div>
