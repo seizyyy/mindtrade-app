@@ -24,6 +24,8 @@ export default function RapportMensuelPage() {
   const [monthOffset, setMonthOffset] = useState(0);
   const [trades, setTrades] = useState<Trade[]>([]);
   const [checkins, setCheckins] = useState<Checkin[]>([]);
+  const [accountSize, setAccountSize] = useState<number | null>(null);
+  const [currency, setCurrency] = useState("EUR");
   const [loading, setLoading] = useState(true);
 
   const { start, end, year, month } = getMonthBounds(monthOffset);
@@ -34,12 +36,15 @@ export default function RapportMensuelPage() {
     setLoading(true);
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.replace("/login"); return; }
-    const [{ data: t }, { data: c }] = await Promise.all([
+    const [{ data: t }, { data: c }, { data: profile }] = await Promise.all([
       supabase.from("trades").select("date,pnl,direction,respected_rules,emotion,pair").eq("user_id", user.id).gte("date", fmt(start)).lte("date", fmt(end)),
       supabase.from("checkins").select("date,score").eq("user_id", user.id).gte("date", fmt(start)).lte("date", fmt(end)),
+      supabase.from("profiles").select("account_size,currency").eq("id", user.id).single(),
     ]);
     setTrades(t || []);
     setCheckins(c || []);
+    if (profile?.account_size) setAccountSize(profile.account_size);
+    if (profile?.currency) setCurrency(profile.currency);
     setLoading(false);
   }
 
@@ -148,7 +153,7 @@ export default function RapportMensuelPage() {
           {/* KPIs */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10, marginBottom: 20 }}>
             {[
-              { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}€`, color: pnlNet > 0 ? "var(--g)" : pnlNet < 0 ? "var(--r)" : "var(--ink3)", sub: `${wins}W / ${losses}L` },
+              { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${currency === "USD" ? "$" : currency === "GBP" ? "£" : "€"}`, color: pnlNet > 0 ? "var(--g)" : pnlNet < 0 ? "var(--r)" : "var(--ink3)", sub: accountSize ? `${pnlNet >= 0 ? "+" : ""}${((pnlNet / accountSize) * 100).toFixed(2)}% du capital` : `${wins}W / ${losses}L` },
               { label: "Win Rate", value: winRate !== null ? `${winRate}%` : "—", color: winRate !== null ? (winRate >= 55 ? "var(--g)" : winRate >= 45 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: `${total} trades` },
               { label: "Profit Factor", value: profitFactor ?? "—", color: pfNum !== null ? (pfNum >= 1.5 ? "var(--g)" : pfNum >= 1 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: "gains / pertes" },
               { label: "Discipline", value: rulesOk !== null ? `${rulesOk}%` : "—", color: rulesOk !== null ? (rulesOk >= 80 ? "var(--g)" : rulesOk >= 60 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: "règles ok" },
