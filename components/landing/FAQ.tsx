@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     q: "Et si MindTrade ne me convient pas ?",
-    a: "Garantie remboursement intégral sous 14 jours, sans question. Un email à contact@mindtrade.app suffit. Tu ne prends aucun risque.",
+    a: "Garantie remboursement intégral sous 14 jours, sans question. Un email à support@mindtrade.co suffit. Tu ne prends aucun risque.",
   },
 ];
 

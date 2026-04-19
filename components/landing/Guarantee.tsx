@@ -39,7 +39,7 @@ export default function Guarantee() {
           {[
             { icon: "🔒", title: "Paiement 100% sécurisé", desc: "Transactions chiffrées via Stripe. Aucune donnée bancaire stockée." },
             { icon: "⚡", title: "Accès immédiat", desc: "Ton compte est actif dans les secondes qui suivent le paiement." },
-            { icon: "📧", title: "Support réactif", desc: "Une question ? contact@mindtrade.app — réponse sous 24h ouvrées." },
+            { icon: "📧", title: "Support réactif", desc: "Une question ? support@mindtrade.co — réponse sous 24h ouvrées." },
           ].map((g, i) => (
             <div key={i} style={{ background: "var(--bg2)", borderRadius: 10, padding: "20px 22px", display: "flex", gap: 14 }}>
               <span style={{ fontSize: 20 }}>{g.icon}</span>

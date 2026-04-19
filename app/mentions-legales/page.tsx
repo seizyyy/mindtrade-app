@@ -8,7 +8,7 @@ export default function MentionsLegales() {
       {[
         {
           title: "Éditeur du site",
-          content: `MindTrade est édité par une entreprise individuelle.\nContact : contact@mindtrade.app`,
+          content: `MindTrade est édité par une entreprise individuelle.\nContact : support@mindtrade.co`,
         },
         {
           title: "Hébergement",
@@ -24,7 +24,7 @@ export default function MentionsLegales() {
         },
         {
           title: "Contact",
-          content: `Pour toute question : contact@mindtrade.app`,
+          content: `Pour toute question : support@mindtrade.co`,
         },
       ].map(s => (
         <div key={s.title} style={{ marginBottom: 40 }}>

@@ -52,7 +52,7 @@ const FAQS: FAQ[] = [
   },
   {
     keywords: ["rembours", "satisfait", "garantie", "risque", "annuler", "14 jours", "14j"],
-    answer: "Garantie remboursement intégral sous 14 jours, sans question. Un email à contact@mindtrade.app suffit. Tu ne prends aucun risque financier.",
+    answer: "Garantie remboursement intégral sous 14 jours, sans question. Un email à support@mindtrade.co suffit. Tu ne prends aucun risque financier.",
   },
   {
     keywords: ["annuler", "résilier", "arrêter", "stopper", "sans engagement"],
@@ -64,7 +64,7 @@ const FAQS: FAQ[] = [
   },
   {
     keywords: ["changer plan", "upgrader", "passer", "changer abonnement", "upgrade"],
-    answer: "Oui, tu peux changer de plan à tout moment. Contacte-nous à contact@mindtrade.app et on s'occupe de la migration.",
+    answer: "Oui, tu peux changer de plan à tout moment. Contacte-nous à support@mindtrade.co et on s'occupe de la migration.",
   },
   {
     keywords: ["score mental", "score", "calculé", "calcul", "comment calculé"],
@@ -88,7 +88,7 @@ const FAQS: FAQ[] = [
   },
   {
     keywords: ["contact", "support", "aide", "email", "joindre", "parler"],
-    answer: "Tu peux nous contacter à contact@mindtrade.app — réponse sous 24h. Pour les abonnés lifetime, réponse garantie sous 24h.",
+    answer: "Tu peux nous contacter à support@mindtrade.co — réponse sous 24h. Pour les abonnés lifetime, réponse garantie sous 24h.",
   },
   {
     keywords: ["prix", "coût", "tarif", "combien", "cher", "€"],
@@ -107,7 +107,7 @@ function findAnswer(input: string): string {
       return faq.answer;
     }
   }
-  return "Bonne question ! Je n'ai pas la réponse directement, mais tu peux nous écrire à contact@mindtrade.app — on répond sous 24h. Tu peux aussi consulter la FAQ en bas de la page.";
+  return "Bonne question ! Je n'ai pas la réponse directement, mais tu peux nous écrire à support@mindtrade.co — on répond sous 24h. Tu peux aussi consulter la FAQ en bas de la page.";
 }
 
 export default function ChatWidget() {

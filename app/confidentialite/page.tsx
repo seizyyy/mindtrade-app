@@ -20,11 +20,11 @@ export default function Confidentialite() {
         },
         {
           title: "4. Durée de conservation",
-          content: `Les données sont conservées aussi longtemps que le compte est actif. En cas de résiliation, les données sont supprimées dans un délai de 30 jours sur simple demande à contact@mindtrade.app.`,
+          content: `Les données sont conservées aussi longtemps que le compte est actif. En cas de résiliation, les données sont supprimées dans un délai de 30 jours sur simple demande à support@mindtrade.co.`,
         },
         {
           title: "5. Vos droits (RGPD)",
-          content: `Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement et de portabilité de vos données. Pour exercer ces droits : contact@mindtrade.app`,
+          content: `Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement et de portabilité de vos données. Pour exercer ces droits : support@mindtrade.co`,
         },
         {
           title: "6. Cookies",
@@ -32,7 +32,7 @@ export default function Confidentialite() {
         },
         {
           title: "7. Contact",
-          content: `Pour toute question relative à vos données personnelles : contact@mindtrade.app`,
+          content: `Pour toute question relative à vos données personnelles : support@mindtrade.co`,
         },
       ].map(s => (
         <div key={s.title} style={{ marginBottom: 36 }}>

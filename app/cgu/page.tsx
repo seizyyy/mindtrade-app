@@ -24,7 +24,7 @@ export default function CGU() {
         },
         {
           title: "5. Garantie remboursement",
-          content: `Une garantie de remboursement intégral de 14 jours est offerte sur tous les plans, sans condition ni question. Pour en bénéficier, il suffit d'envoyer un email à contact@mindtrade.app dans ce délai.`,
+          content: `Une garantie de remboursement intégral de 14 jours est offerte sur tous les plans, sans condition ni question. Pour en bénéficier, il suffit d'envoyer un email à support@mindtrade.co dans ce délai.`,
         },
         {
           title: "6. Données personnelles",

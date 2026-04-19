@@ -12,8 +12,8 @@ export default function Footer() {
             <p style={{ fontSize: 13, color: "rgba(255,255,255,.4)", lineHeight: 1.7, maxWidth: 280, marginBottom: 20 }}>
               Le copilote mental du trader sérieux. Score mental, signal mental, confluences — avant d{"'"}ouvrir les charts.
             </p>
-            <a href="mailto:contact@mindtrade.app" style={{ fontSize: 13, color: "rgba(255,255,255,.35)", textDecoration: "none" }}>
-              contact@mindtrade.app
+            <a href="mailto:support@mindtrade.co" style={{ fontSize: 13, color: "rgba(255,255,255,.35)", textDecoration: "none" }}>
+              support@mindtrade.co
             </a>
           </div>
 
@@ -39,8 +39,8 @@ export default function Footer() {
             <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,.25)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 16 }}>Aide</div>
             {[
               ["#faq", "FAQ"],
-              ["mailto:contact@mindtrade.app", "Support"],
-              ["mailto:contact@mindtrade.app", "Remboursement"],
+              ["mailto:support@mindtrade.co", "Support"],
+              ["mailto:support@mindtrade.co", "Remboursement"],
             ].map(([href, label]) => (
               <a key={label} href={href} style={{ display: "block", fontSize: 13, color: "rgba(255,255,255,.4)", textDecoration: "none", marginBottom: 10, transition: "color .15s" }}
                 onMouseOver={e => (e.currentTarget.style.color = "rgba(255,255,255,.75)")}

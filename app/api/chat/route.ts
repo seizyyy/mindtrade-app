@@ -13,7 +13,7 @@ const SYSTEM = `Tu es l'assistant de MindTrade, un outil de psychologie du tradi
 - Tarifs : Mensuel 39€/mois, Annuel 290€/an (le plus populaire, −38%), Lifetime 597€ (paiement unique, accès à vie)
 - Garantie remboursement 14 jours sans question
 - Essai gratuit disponible sur /essai-gratuit (check-in mental sans inscription)
-- Contact : contact@mindtrade.app
+- Contact : support@mindtrade.co
 
 Règles :
 - Réponds toujours en français
@@ -25,7 +25,7 @@ Règles :
 export async function POST(req: NextRequest) {
   try {
     if (!process.env.ANTHROPIC_API_KEY) {
-      return NextResponse.json({ reply: "Le chat n'est pas encore configuré. Écris-nous à contact@mindtrade.app !" });
+      return NextResponse.json({ reply: "Le chat n'est pas encore configuré. Écris-nous à support@mindtrade.co !" });
     }
 
     const { messages } = await req.json();
