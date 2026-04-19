@@ -98,6 +98,7 @@ export default function DashboardPage() {
   const [monthlyGoal, setMonthlyGoal] = useState<number | null>(null);
   const [maxDailyLossAmount, setMaxDailyLossAmount] = useState<number | null>(null);
   const [currency, setCurrency] = useState<string>("EUR");
+  const [market, setMarket] = useState<string>("");
 
   const today = new Date().toISOString().split("T")[0];
   const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split("T")[0];
@@ -116,7 +117,7 @@ export default function DashboardPage() {
           .order("date", { ascending: false }).order("created_at", { ascending: false }).limit(60),
         supabase.from("checkins").select("score,date")
           .eq("user_id", user.id).order("date", { ascending: false }).limit(30),
-        supabase.from("profiles").select("account_size,display_name,monthly_goal,max_daily_loss,currency").eq("id", user.id).single(),
+        supabase.from("profiles").select("account_size,display_name,monthly_goal,max_daily_loss,currency,market").eq("id", user.id).single(),
       ]);
       setTodayCheckin(ci || null);
       setTrades(tr || []);
@@ -126,6 +127,7 @@ export default function DashboardPage() {
       if (profile?.monthly_goal) setMonthlyGoal(profile.monthly_goal);
       if (profile?.max_daily_loss) setMaxDailyLossAmount(profile.max_daily_loss);
       if (profile?.currency) setCurrency(profile.currency);
+      if (profile?.market) setMarket(profile.market);
       // Affiche la carte unlock une seule fois
       const alreadySeen = localStorage.getItem(`mt-unlocked-${user.id}`);
       if (!alreadySeen && (cis || []).length >= 3 && (tr || []).length >= 1) {
@@ -227,7 +229,7 @@ export default function DashboardPage() {
   const verdictLabel = !score ? "Pas de check-in" : score >= 75 ? "État optimal" : score >= 60 ? "Attention requise" : "Évite de trader";
 
   const isOnboarding = checkins.length < 3;
-  const isWeekend = [0, 6].includes(new Date().getDay());
+  const isWeekend = [0, 6].includes(new Date().getDay()) && market !== "Crypto";
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
