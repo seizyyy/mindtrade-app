@@ -45,7 +45,7 @@ const reviews = [
     stars: 4,
     initials: "MF", name: "Marc F.", role: "Swing trader · Forex · 5 ans",
     date: "Fév. 2026",
-    text: "Le journal structuré change vraiment les choses. Je vois exactement pourquoi j'ai perdu et dans quel état j'étais. Seul bémol : l'import automatique depuis mon broker manque encore, mais le support m'a dit que c'est prévu.",
+    text: "Le journal structuré change vraiment les choses. Je vois exactement pourquoi j'ai perdu et dans quel état j'étais. Seul bémol : j'aurais aimé un rapport mensuel en plus du rapport hebdo. Mais ça vient d'être ajouté.",
   },
 ];
 
