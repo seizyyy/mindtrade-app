@@ -15,7 +15,6 @@ const planFeatures = {
     "2 mois offerts — économie de 178€ vs mensuel",
     "Accès prioritaire aux nouvelles fonctionnalités",
     "Support réponse sous 48h",
-    "Accès aux futures évolutions du produit",
   ],
   lifetime: [
     "Tout le plan annuel inclus, à vie",
@@ -23,7 +22,6 @@ const planFeatures = {
     "Toutes les futures fonctionnalités incluses",
     "Accès prioritaire aux nouvelles features",
     "Support direct — réponse sous 24h",
-    "Prix garanti à vie · Aucune hausse possible",
   ],
 };
 
