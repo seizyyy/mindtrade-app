@@ -11,9 +11,12 @@ const planFeatures = {
     "Sans engagement · Résiliable à tout moment",
   ],
   annual: [
-    "Toutes les fonctionnalités incluses (hors Alpha)",
+    "Check-in quotidien + score mental",
+    "Dashboard complet + signal mental",
+    "Log de trades + checklist de confluences",
+    "Rapport hebdomadaire",
+    "Journal structuré + quiz de réflexion",
     "2 mois offerts — économie de 178€ vs mensuel",
-    "Accès prioritaire aux nouvelles fonctionnalités",
     "Support réponse sous 48h",
   ],
   lifetime: [
