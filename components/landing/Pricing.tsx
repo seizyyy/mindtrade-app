@@ -5,7 +5,7 @@ const planFeatures = {
   monthly: [
     "Check-in quotidien + score mental",
     "Dashboard complet + signal mental",
-    "Log de trades + confluences",
+    "Log de trades + checklist de confluences",
     "Rapport hebdomadaire",
     "Journal structuré + quiz de réflexion",
     "Sans engagement · Résiliable à tout moment",
