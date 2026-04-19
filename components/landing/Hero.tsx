@@ -126,7 +126,7 @@ export default function Hero() {
                   {[
                     { label: 'Score mental', val: '82',      color: '#22c55e' },
                     { label: 'Win rate',     val: '80%',     color: '#22c55e' },
-                    { label: 'P&L net',      val: '+2 916€', color: '#22c55e' },
+                    { label: 'P&L net',      val: '+2 916$', color: '#22c55e' },
                     { label: 'Profit factor',val: '9.38',    color: '#22c55e' },
                   ].map(m => (
                     <div key={m.label} style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px' }}>
@@ -152,10 +152,10 @@ export default function Hero() {
                   <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px' }}>
                     <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Derniers trades</div>
                     {[
-                      { pair: 'NAS100',  pnl: '+896€', color: '#22c55e' },
-                      { pair: 'GBP/USD', pnl: '+544€', color: '#22c55e' },
-                      { pair: 'US30',    pnl: '-348€', color: '#ef4444' },
-                      { pair: 'EUR/USD', pnl: '+704€', color: '#22c55e' },
+                      { pair: 'NAS100',  pnl: '+896$', color: '#22c55e' },
+                      { pair: 'GBP/USD', pnl: '+544$', color: '#22c55e' },
+                      { pair: 'US30',    pnl: '-348$', color: '#ef4444' },
+                      { pair: 'EUR/USD', pnl: '+704$', color: '#22c55e' },
                     ].map(t => (
                       <div key={t.pair} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
                         <div style={{ fontSize: 9, fontWeight: 600, color: 'rgba(255,255,255,.5)' }}>{t.pair}</div>
