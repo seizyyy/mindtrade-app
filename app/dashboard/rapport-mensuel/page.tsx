@@ -170,13 +170,13 @@ export default function RapportMensuelPage() {
           {/* Graphique semaines */}
           <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "20px 24px", marginBottom: 20 }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 16 }}>P&L par semaine</div>
-            <div style={{ display: "flex", gap: 12, alignItems: "flex-end", height: 100 }}>
+            <div style={{ display: "flex", gap: 12, alignItems: "flex-end", height: 110, paddingTop: 20 }}>
               {weeks.map((w, i) => {
                 const barH = w.pnl !== 0 ? Math.max(8, (Math.abs(w.pnl) / maxAbsPnl) * 68) : 3;
                 const isPos = w.pnl >= 0;
                 return (
                   <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                    <span style={{ fontSize: 10, color: w.pnl !== 0 ? (isPos ? "var(--g)" : "var(--r)") : "transparent", fontWeight: 700, minHeight: 14, lineHeight: 1 }}>
+                    <span style={{ fontSize: 10, color: w.pnl !== 0 ? (isPos ? "var(--g)" : "var(--r)") : "transparent", fontWeight: 700, minHeight: 14, lineHeight: 1, whiteSpace: "nowrap" }}>
                       {w.pnl !== 0 ? `${isPos ? "+" : ""}${w.pnl.toFixed(0)}` : ""}
                     </span>
                     <div style={{ width: "100%", height: barH, background: w.pnl === 0 ? "var(--bg3)" : isPos ? "rgba(22,101,52,.7)" : "rgba(155,28,28,.7)", borderRadius: 4 }} />
