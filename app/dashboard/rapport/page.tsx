@@ -25,6 +25,8 @@ export default function RapportPage() {
   const [weekOffset, setWeekOffset] = useState(0);
   const [trades, setTrades] = useState<Trade[]>([]);
   const [checkins, setCheckins] = useState<Checkin[]>([]);
+  const [accountSize, setAccountSize] = useState<number | null>(null);
+  const [currency, setCurrency] = useState("EUR");
   const [loading, setLoading] = useState(true);
 
   const weekStart = getWeekStart(weekOffset);
@@ -38,13 +40,16 @@ export default function RapportPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.replace("/login"); return; }
 
-    const [{ data: t }, { data: c }] = await Promise.all([
+    const [{ data: t }, { data: c }, { data: profile }] = await Promise.all([
       supabase.from("trades").select("*").eq("user_id", user.id).gte("date", fmt(weekStart)).lte("date", fmt(weekEnd)),
       supabase.from("checkins").select("*").eq("user_id", user.id).gte("date", fmt(weekStart)).lte("date", fmt(weekEnd)),
+      supabase.from("profiles").select("account_size,currency").eq("id", user.id).single(),
     ]);
 
     setTrades(t || []);
     setCheckins(c || []);
+    if (profile?.account_size) setAccountSize(profile.account_size);
+    if (profile?.currency) setCurrency(profile.currency);
     setLoading(false);
   }
 
@@ -156,7 +161,7 @@ export default function RapportPage() {
           {/* KPIs */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 20 }}>
             {[
-              { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}€`, color: pnlNet > 0 ? "var(--g)" : pnlNet < 0 ? "var(--r)" : "var(--ink3)", sub: `${wins}W / ${losses}L` },
+              { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${currency === "USD" ? "$" : currency === "GBP" ? "£" : "€"}`, color: pnlNet > 0 ? "var(--g)" : pnlNet < 0 ? "var(--r)" : "var(--ink3)", sub: accountSize ? `${pnlNet >= 0 ? "+" : ""}${((pnlNet / accountSize) * 100).toFixed(2)}%` : `${wins}W / ${losses}L` },
               { label: "Win Rate", value: winRate !== null ? `${winRate}%` : "—", color: winRate !== null ? (winRate >= 55 ? "var(--g)" : winRate >= 45 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: `${total} trade${total > 1 ? "s" : ""}` },
               { label: "Discipline", value: rulesOk !== null ? `${rulesOk}%` : "—", color: rulesOk !== null ? (rulesOk >= 80 ? "var(--g)" : rulesOk >= 60 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: "règles ok" },
               { label: "Score mental", value: avgScore ?? "—", color: avgScore ? (avgScore >= 75 ? "var(--g)" : avgScore >= 60 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: `${checkins.length} check-in${checkins.length > 1 ? "s" : ""}` },

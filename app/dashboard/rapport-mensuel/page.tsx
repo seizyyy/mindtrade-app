@@ -153,7 +153,7 @@ export default function RapportMensuelPage() {
           {/* KPIs */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 10, marginBottom: 20 }}>
             {[
-              { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${currency === "USD" ? "$" : currency === "GBP" ? "£" : "€"}`, color: pnlNet > 0 ? "var(--g)" : pnlNet < 0 ? "var(--r)" : "var(--ink3)", sub: accountSize ? `${pnlNet >= 0 ? "+" : ""}${((pnlNet / accountSize) * 100).toFixed(2)}% du capital` : `${wins}W / ${losses}L` },
+              { label: "P&L Net", value: `${pnlNet >= 0 ? "+" : ""}${pnlNet.toFixed(0)}${currency === "USD" ? "$" : currency === "GBP" ? "£" : "€"}`, color: pnlNet > 0 ? "var(--g)" : pnlNet < 0 ? "var(--r)" : "var(--ink3)", sub: accountSize ? `${pnlNet >= 0 ? "+" : ""}${((pnlNet / accountSize) * 100).toFixed(2)}%` : `${wins}W / ${losses}L` },
               { label: "Win Rate", value: winRate !== null ? `${winRate}%` : "—", color: winRate !== null ? (winRate >= 55 ? "var(--g)" : winRate >= 45 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: `${total} trades` },
               { label: "Profit Factor", value: profitFactor ?? "—", color: pfNum !== null ? (pfNum >= 1.5 ? "var(--g)" : pfNum >= 1 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: "gains / pertes" },
               { label: "Discipline", value: rulesOk !== null ? `${rulesOk}%` : "—", color: rulesOk !== null ? (rulesOk >= 80 ? "var(--g)" : rulesOk >= 60 ? "var(--a)" : "var(--r)") : "var(--ink3)", sub: "règles ok" },
