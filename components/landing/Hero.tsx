@@ -107,10 +107,10 @@ export default function Hero() {
               </div>
 
               {/* Main */}
-              <div style={{ flex: 1, padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8, overflow: 'hidden' }}>
+              <div style={{ flex: 1, padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 7, overflow: 'hidden' }}>
 
                 {/* Signal */}
-                <div style={{ background: 'rgba(34,197,94,.07)', border: '1px solid rgba(34,197,94,.18)', borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ background: 'rgba(34,197,94,.07)', border: '1px solid rgba(34,197,94,.18)', borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                     {[0,1,2].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: i === 0 ? '#22c55e' : 'rgba(255,255,255,.08)' }} />)}
                   </div>
@@ -122,66 +122,86 @@ export default function Hero() {
                 </div>
 
                 {/* 4 métriques */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 6 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 6, flexShrink: 0 }}>
                   {[
-                    { label: 'Score mental', val: '82',      color: '#22c55e' },
-                    { label: 'Win rate',     val: '80%',     color: '#22c55e' },
-                    { label: 'P&L net',      val: '+2 916$', color: '#22c55e' },
-                    { label: 'Profit factor',val: '9.38',    color: '#22c55e' },
+                    { label: 'Score mental', val: '80', sub: 'État optimal', color: '#22c55e' },
+                    { label: 'Win rate',     val: '80%', sub: '4W · 1L · 7 jours', color: '#22c55e' },
+                    { label: 'P&L net',      val: '+2916$', sub: 'Cette semaine · 80% win', color: '#22c55e' },
+                    { label: 'Profit factor',val: '9.38', sub: 'Stratégie rentable', color: '#22c55e' },
                   ].map(m => (
-                    <div key={m.label} style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px' }}>
-                      <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 5 }}>{m.label}</div>
-                      <div style={{ fontSize: 17, fontWeight: 700, color: m.color, lineHeight: 1, fontFamily: 'Georgia, serif' }}>{m.val}</div>
+                    <div key={m.label} style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '8px 10px' }}>
+                      <div style={{ fontSize: 7, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 4 }}>{m.label}</div>
+                      <div style={{ fontSize: 16, fontWeight: 700, color: m.color, lineHeight: 1, fontFamily: 'Georgia, serif' }}>{m.val}</div>
+                      <div style={{ fontSize: 7, color: 'rgba(255,255,255,.25)', marginTop: 3 }}>{m.sub}</div>
                     </div>
                   ))}
                 </div>
 
-                {/* Graphique + (trades + discipline) */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 6, flex: 1 }}>
-                  <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px' }}>
-                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Score mental — 7 jours</div>
-                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 60 }}>
-                      {[{d:'DI',s:60,c:'#f59e0b'},{d:'LU',s:100,c:'#22c55e'},{d:'MA',s:84,c:'#22c55e'},{d:'ME',s:40,c:'#ef4444'},{d:'JE',s:76,c:'#22c55e'},{d:'VE',s:92,c:'#22c55e'},{d:'SA',s:82,c:'#22c55e'}].map(b => (
-                        <div key={b.d} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                          <div style={{ width: '100%', height: `${b.s * 0.55}px`, background: b.c, borderRadius: '2px 2px 0 0', opacity: .8 }} />
-                          <div style={{ fontSize: 7, color: 'rgba(255,255,255,.2)' }}>{b.d}</div>
+                {/* Row 3 : Graphique + Facteur limitant/Objectif */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 6, flex: 1, minHeight: 0 }}>
+                  <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Score mental — 7 jours</div>
+                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, flex: 1 }}>
+                      {[{d:'DI',s:60,c:'#f59e0b'},{d:'LU',s:73,c:'#22c55e'},{d:'MA',s:84,c:'#22c55e'},{d:'ME',s:40,c:'#ef4444'},{d:'JE',s:76,c:'#22c55e'},{d:'VE',s:92,c:'#22c55e'},{d:'SA',s:80,c:'#22c55e'}].map(b => (
+                        <div key={b.d} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, height: '100%', justifyContent: 'flex-end' }}>
+                          <div style={{ width: '100%', height: `${b.s}%`, background: b.c, borderRadius: '2px 2px 0 0', opacity: .85 }} />
+                          <div style={{ fontSize: 6, color: 'rgba(255,255,255,.2)', flexShrink: 0 }}>{b.d}</div>
                         </div>
                       ))}
                     </div>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                     <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px', flex: 1 }}>
-                      <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Derniers trades</div>
+                      <div style={{ fontSize: 7, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Facteur limitant n°1</div>
+                      <div style={{ fontSize: 8, color: 'rgba(255,255,255,.5)', lineHeight: 1.5 }}>Aucun pattern négatif dominant détecté. Continue à logger tes trades.</div>
+                    </div>
+                    <div style={{ background: 'rgba(59,130,246,.08)', border: '1px solid rgba(59,130,246,.2)', borderRadius: 7, padding: '10px 12px', flex: 1 }}>
+                      <div style={{ fontSize: 7, fontWeight: 700, color: '#60a5fa', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Objectif du jour</div>
+                      <div style={{ fontSize: 8, color: 'rgba(255,255,255,.5)', lineHeight: 1.5 }}>Conditions optimales. Reste dans ton plan, applique tes critères d'entrée habituels.</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Row 4 : Derniers trades + Score discipline */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 6, flex: 1, minHeight: 0 }}>
+                  <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>Derniers trades</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1 }}>
                       {[
-                        { pair: 'NAS100',  emo: 'Confiant', pnl: '+896$', color: '#22c55e' },
-                        { pair: 'GBP/USD', emo: 'Calme',    pnl: '+544$', color: '#22c55e' },
-                        { pair: 'US30',    emo: 'Anxieux',  pnl: '-348$', color: '#ef4444' },
-                        { pair: 'EUR/USD', emo: 'Calme',    pnl: '+704$', color: '#22c55e' },
-                        { pair: 'XAU/USD', emo: 'Confiant', pnl: '+1120$',color: '#22c55e' },
+                        { pair: 'NAS100',  emo: 'Confiant', pnl: '+896€',  color: '#22c55e' },
+                        { pair: 'GBP/USD', emo: 'Calme',    pnl: '+544€',  color: '#22c55e' },
+                        { pair: 'US30',    emo: 'Anxieux',  pnl: '-348€',  color: '#ef4444' },
+                        { pair: 'EUR/USD', emo: 'Calme',    pnl: '+704€',  color: '#22c55e' },
+                        { pair: 'XAU/USD', emo: 'Confiant', pnl: '+1120€', color: '#22c55e' },
                       ].map(t => (
-                        <div key={t.pair} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                        <div key={t.pair} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                           <div style={{ fontSize: 8, fontWeight: 600, color: 'rgba(255,255,255,.5)' }}>{t.pair}</div>
                           <div style={{ fontSize: 7, color: 'rgba(255,255,255,.2)' }}>{t.emo}</div>
                           <div style={{ fontSize: 8, fontWeight: 700, color: t.color }}>{t.pnl}</div>
                         </div>
                       ))}
                     </div>
-                    <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                        <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em' }}>Score discipline</div>
-                        <div style={{ fontSize: 13, fontWeight: 800, color: '#f59e0b' }}>72</div>
+                  </div>
+                  <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                      <div style={{ fontSize: 7, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em' }}>Score de discipline</div>
+                      <div>
+                        <span style={{ fontSize: 16, fontWeight: 800, color: '#f59e0b' }}>72</span>
+                        <span style={{ fontSize: 7, color: '#f59e0b', marginLeft: 3 }}>À améliorer</span>
                       </div>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-around', flex: 1 }}>
                       {[
-                        { label: 'Régularité', val: 35, color: '#ef4444' },
-                        { label: 'Règles', val: 80, color: '#22c55e' },
-                        { label: 'Émotions', val: 100, color: '#22c55e' },
+                        { label: 'Régularité check-ins', val: 35, color: '#ef4444' },
+                        { label: 'Règles respectées',    val: 80, color: '#22c55e' },
+                        { label: 'Maîtrise émotionnelle',val: 100, color: '#22c55e' },
                       ].map(r => (
-                        <div key={r.label} style={{ marginBottom: 5 }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+                        <div key={r.label}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
                             <div style={{ fontSize: 7, color: 'rgba(255,255,255,.3)' }}>{r.label}</div>
                             <div style={{ fontSize: 7, fontWeight: 700, color: r.color }}>{r.val}%</div>
                           </div>
-                          <div style={{ height: 3, background: 'rgba(255,255,255,.08)', borderRadius: 2 }}>
+                          <div style={{ height: 4, background: 'rgba(255,255,255,.08)', borderRadius: 2 }}>
                             <div style={{ height: '100%', width: `${r.val}%`, background: r.color, borderRadius: 2 }} />
                           </div>
                         </div>
@@ -189,8 +209,6 @@ export default function Hero() {
                     </div>
                   </div>
                 </div>
-
-
 
               </div>
             </div>
