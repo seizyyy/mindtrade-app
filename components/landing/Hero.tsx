@@ -82,7 +82,7 @@ export default function Hero() {
             </div>
 
             {/* App layout */}
-            <div style={{ display: 'flex', height: 400 }}>
+            <div style={{ display: 'flex', height: 460 }}>
 
               {/* Sidebar */}
               <div style={{ width: 130, background: '#1e293b', borderRight: '1px solid rgba(255,255,255,.07)', padding: '10px 6px', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
@@ -137,13 +137,13 @@ export default function Hero() {
                 </div>
 
                 {/* Graphique + trades */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 6 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 6, flex: 1 }}>
                   <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px' }}>
                     <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Score mental — 7 jours</div>
-                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 50 }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 55 }}>
                       {[{d:'DI',s:60,c:'#f59e0b'},{d:'LU',s:100,c:'#22c55e'},{d:'MA',s:84,c:'#22c55e'},{d:'ME',s:40,c:'#ef4444'},{d:'JE',s:76,c:'#22c55e'},{d:'VE',s:92,c:'#22c55e'},{d:'SA',s:82,c:'#22c55e'}].map(b => (
                         <div key={b.d} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                          <div style={{ width: '100%', height: `${b.s * 0.45}px`, background: b.c, borderRadius: '2px 2px 0 0', opacity: .8 }} />
+                          <div style={{ width: '100%', height: `${b.s * 0.5}px`, background: b.c, borderRadius: '2px 2px 0 0', opacity: .8 }} />
                           <div style={{ fontSize: 7, color: 'rgba(255,255,255,.2)' }}>{b.d}</div>
                         </div>
                       ))}
@@ -152,48 +152,38 @@ export default function Hero() {
                   <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px' }}>
                     <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Derniers trades</div>
                     {[
-                      { pair: 'NAS100',  pnl: '+896$', color: '#22c55e' },
-                      { pair: 'GBP/USD', pnl: '+544$', color: '#22c55e' },
-                      { pair: 'US30',    pnl: '-348$', color: '#ef4444' },
-                      { pair: 'EUR/USD', pnl: '+704$', color: '#22c55e' },
+                      { pair: 'NAS100',  emo: 'Confiant', pnl: '+896$', color: '#22c55e' },
+                      { pair: 'GBP/USD', emo: 'Calme',    pnl: '+544$', color: '#22c55e' },
+                      { pair: 'US30',    emo: 'Anxieux',  pnl: '-348$', color: '#ef4444' },
+                      { pair: 'EUR/USD', emo: 'Calme',    pnl: '+704$', color: '#22c55e' },
+                      { pair: 'XAU/USD', emo: 'Confiant', pnl: '+1120$',color: '#22c55e' },
                     ].map(t => (
                       <div key={t.pair} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
-                        <div style={{ fontSize: 9, fontWeight: 600, color: 'rgba(255,255,255,.5)' }}>{t.pair}</div>
-                        <div style={{ fontSize: 9, fontWeight: 700, color: t.color }}>{t.pnl}</div>
+                        <div style={{ fontSize: 8, fontWeight: 600, color: 'rgba(255,255,255,.5)' }}>{t.pair}</div>
+                        <div style={{ fontSize: 7, color: 'rgba(255,255,255,.2)' }}>{t.emo}</div>
+                        <div style={{ fontSize: 8, fontWeight: 700, color: t.color }}>{t.pnl}</div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Derniers trades + Score discipline */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 6 }}>
-                  <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px' }}>
-                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 8 }}>Derniers trades</div>
-                    {[
-                      { pair: 'NAS100', emo: 'Confiant', pnl: '+896€', color: '#22c55e' },
-                      { pair: 'GBP/USD', emo: 'Calme', pnl: '+544€', color: '#22c55e' },
-                      { pair: 'US30', emo: 'Anxieux', pnl: '-348€', color: '#ef4444' },
-                      { pair: 'EUR/USD', emo: 'Calme', pnl: '+704€', color: '#22c55e' },
-                      { pair: 'XAU/USD', emo: 'Confiant', pnl: '+1120€', color: '#22c55e' },
-                    ].map(t => (
-                      <div key={t.pair} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                        <div style={{ fontSize: 8, fontWeight: 600, color: 'rgba(255,255,255,.5)' }}>{t.pair}</div>
-                        <div style={{ fontSize: 8, color: 'rgba(255,255,255,.25)' }}>{t.emo}</div>
-                        <div style={{ fontSize: 8, fontWeight: 700, color: t.color }}>{t.pnl}</div>
-                      </div>
-                    ))}
+                {/* Score discipline */}
+                <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em' }}>Score de discipline</div>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
+                      <span style={{ fontSize: 16, fontWeight: 800, color: '#f59e0b' }}>72</span>
+                      <span style={{ fontSize: 7, color: '#f59e0b' }}>À améliorer</span>
+                    </div>
                   </div>
-                  <div style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '10px 12px' }}>
-                    <div style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,.25)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 4 }}>Score de discipline</div>
-                    <div style={{ fontSize: 16, fontWeight: 800, color: '#f59e0b', lineHeight: 1, marginBottom: 2 }}>72</div>
-                    <div style={{ fontSize: 7, color: '#f59e0b', marginBottom: 8 }}>À améliorer</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
                     {[
                       { label: 'Régularité check-ins', val: 35, color: '#ef4444' },
                       { label: 'Règles respectées', val: 80, color: '#22c55e' },
                       { label: 'Maîtrise émotionnelle', val: 100, color: '#22c55e' },
                     ].map(r => (
-                      <div key={r.label} style={{ marginBottom: 6 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+                      <div key={r.label}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
                           <div style={{ fontSize: 7, color: 'rgba(255,255,255,.3)' }}>{r.label}</div>
                           <div style={{ fontSize: 7, fontWeight: 700, color: r.color }}>{r.val}%</div>
                         </div>
@@ -204,6 +194,7 @@ export default function Hero() {
                     ))}
                   </div>
                 </div>
+
 
               </div>
             </div>
