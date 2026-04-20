@@ -74,6 +74,7 @@ export default function TradesPage() {
   const [todayScore, setTodayScore] = useState<number | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const [form, setForm] = useState({
     date: new Date().toISOString().split("T")[0],
@@ -107,14 +108,28 @@ export default function TradesPage() {
     setLoading(false);
   }
 
+  function startEdit(t: Trade) {
+    setForm({
+      date: t.date,
+      pair: t.pair,
+      direction: t.direction,
+      pnl: String(t.pnl),
+      mental_score: t.mental_score ? String(t.mental_score) : "",
+      emotion: t.emotion,
+      respected_rules: t.respected_rules,
+      notes: t.notes || "",
+    });
+    setEditingId(t.id);
+    setShowForm(true);
+  }
+
   async function saveTrade() {
     if (!form.pnl) return;
     setSaving(true);
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    await supabase.from("trades").insert({
-      user_id: user.id,
+    const payload = {
       date: form.date,
       pair: form.pair,
       direction: form.direction,
@@ -123,9 +138,16 @@ export default function TradesPage() {
       emotion: form.emotion,
       respected_rules: form.respected_rules,
       notes: form.notes || null,
-    });
+    };
+
+    if (editingId) {
+      await supabase.from("trades").update(payload).eq("id", editingId);
+    } else {
+      await supabase.from("trades").insert({ user_id: user.id, ...payload });
+    }
 
     setForm({ date: new Date().toISOString().split("T")[0], pair: "EUR/USD", direction: "LONG", pnl: "", mental_score: "", emotion: "Calme", respected_rules: true, notes: "" });
+    setEditingId(null);
     setShowForm(false);
     setSaving(false);
     load();
@@ -175,7 +197,7 @@ export default function TradesPage() {
           <div style={{ fontSize: 13, color: "var(--ink2)" }}>Toutes tes positions enregistrées</div>
         </div>
         <button
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => { setEditingId(null); setForm({ date: new Date().toISOString().split("T")[0], pair: "EUR/USD", direction: "LONG", pnl: "", mental_score: "", emotion: "Calme", respected_rules: true, notes: "" }); setShowForm(true); }}
           style={{ background: "var(--navy)", color: "#fff", border: "none", borderRadius: 8, padding: "10px 18px", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "var(--font-outfit)", display: "flex", alignItems: "center", gap: 6 }}
         >
           <span style={{ fontSize: 18, lineHeight: 1 }}>+</span> Nouveau trade
@@ -202,7 +224,7 @@ export default function TradesPage() {
       {/* Form */}
       {showForm && (
         <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "24px 28px", marginBottom: 20 }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 18 }}>Nouveau trade</div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 18 }}>{editingId ? "Modifier le trade" : "Nouveau trade"}</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 12 }}>
             <div>
               <label style={{ fontSize: 11, fontWeight: 600, color: "var(--ink3)", display: "block", marginBottom: 5 }}>Date</label>
@@ -270,13 +292,13 @@ export default function TradesPage() {
             </div>
           </div>
           <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
-            <button onClick={() => setShowForm(false)}
+            <button onClick={() => { setShowForm(false); setEditingId(null); }}
               style={{ padding: "10px 20px", borderRadius: 7, border: "1px solid var(--border)", background: "var(--bg2)", color: "var(--ink2)", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "var(--font-outfit)" }}>
               Annuler
             </button>
             <button onClick={saveTrade} disabled={saving || !form.pnl}
               style={{ padding: "10px 24px", borderRadius: 7, border: "none", background: "var(--navy)", color: "#fff", fontSize: 13, fontWeight: 700, cursor: saving || !form.pnl ? "not-allowed" : "pointer", fontFamily: "var(--font-outfit)", opacity: saving || !form.pnl ? 0.6 : 1 }}>
-              {saving ? "Sauvegarde..." : "Enregistrer"}
+              {saving ? "Sauvegarde..." : editingId ? "Modifier" : "Enregistrer"}
             </button>
           </div>
         </div>
@@ -384,12 +406,22 @@ export default function TradesPage() {
                           </button>
                         </div>
                       ) : (
-                        <button onClick={() => deleteTrade(t.id)}
-                          style={{ background: "none", border: "none", cursor: "pointer", color: "var(--ink3)", fontSize: 15, padding: "2px 6px", borderRadius: 4, opacity: 0.5 }}
-                          onMouseOver={e => (e.currentTarget as HTMLElement).style.opacity = "1"}
-                          onMouseOut={e => (e.currentTarget as HTMLElement).style.opacity = "0.5"}>
-                          ×
-                        </button>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 2 }}>
+                          <button onClick={() => startEdit(t)}
+                            title="Modifier"
+                            style={{ background: "none", border: "none", cursor: "pointer", color: "var(--ink3)", fontSize: 13, padding: "2px 6px", borderRadius: 4, opacity: 0.5 }}
+                            onMouseOver={e => (e.currentTarget as HTMLElement).style.opacity = "1"}
+                            onMouseOut={e => (e.currentTarget as HTMLElement).style.opacity = "0.5"}>
+                            ✎
+                          </button>
+                          <button onClick={() => deleteTrade(t.id)}
+                            title="Supprimer"
+                            style={{ background: "none", border: "none", cursor: "pointer", color: "var(--ink3)", fontSize: 15, padding: "2px 6px", borderRadius: 4, opacity: 0.5 }}
+                            onMouseOver={e => (e.currentTarget as HTMLElement).style.opacity = "1"}
+                            onMouseOut={e => (e.currentTarget as HTMLElement).style.opacity = "0.5"}>
+                            ×
+                          </button>
+                        </div>
                       )}
                     </td>
                   </tr>
