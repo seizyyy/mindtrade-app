@@ -65,7 +65,7 @@ function UpgradeWall({ plan, userId, email }: { plan: string; userId: string; em
             <span style={{ fontSize: 14, color: "var(--ink3)", textDecoration: "line-through" }}>597€</span>
             <span style={{ fontFamily: "var(--font-fraunces)", fontSize: 32, fontWeight: 700, color: "#fbbf24" }}>{upgradePrice}€</span>
           </div>
-          <div style={{ fontSize: 12, color: "var(--g)", fontWeight: 600 }}>{isAnnual ? "290€ + 197€ = 387€ au total · 100€ de rabais vs Lifetime" : `Tu économises ${savings}€ · Accès à vie`}</div>
+          <div style={{ fontSize: 12, color: "var(--g)", fontWeight: 600 }}>{isAnnual ? "290€ + 197€ = 487€ au total · 110€ de rabais vs Lifetime" : `Tu économises ${savings}€ · Accès à vie`}</div>
         </div>
 
         <button
