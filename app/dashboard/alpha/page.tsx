@@ -136,8 +136,8 @@ export default function AlphaPage() {
 
   const isLifetime = userPlan === "lifetime";
 
-  const hasTrades = trades.length >= 3;
-  const hasCheckins = checkins.length >= 5;
+  const hasTrades = trades.length >= 2;
+  const hasCheckins = checkins.length >= 3;
 
   // ── 1. Corrélation score mental / P&L ───────────────────────────────────────
   const scoreMap: Record<string, number> = {};
@@ -353,7 +353,7 @@ export default function AlphaPage() {
         <div style={{ ...card, textAlign: "center", padding: "40px 24px", color: "var(--ink3)" }}>
           <div style={{ fontSize: 32, marginBottom: 12 }}>📊</div>
           <div style={{ fontSize: 15, fontWeight: 600, color: "var(--ink)", marginBottom: 8 }}>Tes analyses arrivent bientôt</div>
-          <div style={{ fontSize: 13, lineHeight: 1.6 }}>Tu as l'accès complet Alpha. Continue à logger tes trades et check-ins — dès 5 check-ins et 3 trades, tes analyses comportementales personnalisées se débloquent automatiquement.</div>
+          <div style={{ fontSize: 13, lineHeight: 1.6 }}>Tu as l'accès complet Alpha. Continue à logger tes trades et check-ins — dès 3 check-ins et 2 trades, tes analyses comportementales personnalisées se débloquent automatiquement.</div>
         </div>
       )}
 
