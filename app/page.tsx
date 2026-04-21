@@ -12,6 +12,7 @@ import Problem from "@/components/landing/Problem";
 import Features from "@/components/landing/Features";
 import ProductTour from "@/components/landing/ProductTour";
 import SocialProof from "@/components/landing/SocialProof";
+import Alpha from "@/components/landing/Alpha";
 import Pricing from "@/components/landing/Pricing";
 import FAQ from "@/components/landing/FAQ";
 import CTAFinal from "@/components/landing/CTAFinal";
@@ -43,6 +44,7 @@ export default function LandingPage() {
         <Features />
         <ProductTour />
         <SocialProof />
+        <Alpha />
         <Pricing />
         <FAQ />
         <CTAFinal />
