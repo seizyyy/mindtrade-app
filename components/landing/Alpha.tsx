@@ -16,7 +16,7 @@ function DashboardPreview() {
   };
 
   return (
-    <div style={{ background: C.bg, padding: "14px", display: "flex", flexDirection: "column", gap: 8 }}>
+    <div style={{ background: C.bg, padding: "14px", display: "flex", flexDirection: "column", gap: 8, filter: "blur(0.3px)", WebkitFilter: "blur(0.3px)" }}>
 
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 2 }}>
@@ -211,18 +211,32 @@ export default function Alpha() {
           </div>
         </div>
 
-        {/* Stats */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1, marginTop: 0, background: "rgba(255,255,255,.05)", borderRadius: "0 0 12px 12px", overflow: "hidden" }}>
-          {[
-            { n: "2.4×", label: "plus performant quand score ≥ 75" },
-            { n: "6", label: "analyses comportementales exclusives" },
-            { n: "0", label: "configuration — tout est automatique" },
-          ].map(({ n, label }) => (
-            <div key={n} style={{ background: "#080d1a", padding: "20px 24px", textAlign: "center" }}>
-              <div style={{ fontFamily: "var(--font-fraunces)", fontSize: 30, fontWeight: 700, color: C.gold, marginBottom: 5 }}>{n}</div>
-              <div style={{ fontSize: 11, color: "rgba(255,255,255,.3)", lineHeight: 1.5 }}>{label}</div>
-            </div>
-          ))}
+        {/* 6 analyses Alpha */}
+        <div style={{ marginTop: 32 }}>
+          <div style={{ textAlign: "center", marginBottom: 20 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,.25)", textTransform: "uppercase", letterSpacing: ".12em" }}>Ce qu&apos;Alpha analyse pour toi</span>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+            {[
+              { icon: "🧠", title: "État mental → P&L", desc: "Corrèle ton score mental quotidien avec tes résultats réels." },
+              { icon: "📅", title: "Performance par jour", desc: "Identifie tes meilleures et pires sessions selon le jour de la semaine." },
+              { icon: "😤", title: "Impact émotionnel", desc: "Chiffre exactement ce que chaque émotion te coûte par trade." },
+              { icon: "📉", title: "Patterns de drawdown", desc: "Détecte dans quel état tu prends tes pires séries de pertes." },
+              { icon: "⏰", title: "Meilleures sessions", desc: "Trouve les créneaux où tu es systématiquement le plus performant." },
+              { icon: "💡", title: "Insights auto-générés", desc: "Recommendations personnalisées sur tes vrais patterns comportementaux." },
+            ].map(({ icon, title, desc }) => (
+              <div key={title} style={{
+                background: "rgba(255,255,255,.03)",
+                border: "1px solid rgba(255,255,255,.07)",
+                borderRadius: 12, padding: "18px 20px",
+                transition: "border-color .15s",
+              }}>
+                <div style={{ fontSize: 22, marginBottom: 10 }}>{icon}</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#fff", marginBottom: 6 }}>{title}</div>
+                <div style={{ fontSize: 12, color: "rgba(255,255,255,.35)", lineHeight: 1.6 }}>{desc}</div>
+              </div>
+            ))}
+          </div>
         </div>
 
       </div>
