@@ -50,6 +50,24 @@ function RegisterForm() {
   useEffect(() => {
     if (localStorage.getItem("mt-dark") === "1") setDark(true);
     if (plan) localStorage.setItem("mt-pending-plan", plan);
+
+    // Already logged in + plan selected → go straight to Stripe
+    if (plan) {
+      supabase.auth.getUser().then(async ({ data: { user } }) => {
+        if (!user) return;
+        const { data: profile } = await supabase.from("profiles").select("plan_active").eq("id", user.id).single();
+        if (profile?.plan_active) { window.location.href = "/dashboard"; return; }
+        setLoading(true);
+        const res = await fetch("/api/stripe/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ plan, email: user.email, userId: user.id }),
+        });
+        const data = await res.json();
+        if (data.url) window.location.href = data.url;
+        else setLoading(false);
+      });
+    }
   }, [plan]);
 
   async function handleSubmit(e: React.FormEvent) {
