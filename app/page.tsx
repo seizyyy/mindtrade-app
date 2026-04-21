@@ -25,8 +25,10 @@ export default function LandingPage() {
 
   useEffect(() => {
     if (window.location.search.includes("preview=1")) return;
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) router.replace("/dashboard");
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user) return;
+      const { data: profile } = await supabase.from("profiles").select("plan_active").eq("id", user.id).single();
+      if (profile?.plan_active) router.replace("/dashboard");
     });
   }, []);
 
