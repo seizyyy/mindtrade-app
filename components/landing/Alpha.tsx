@@ -42,10 +42,10 @@ const C = {
 
 function MockupAlpha() {
   const card: React.CSSProperties = {
-    background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: "16px 18px",
+    background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: "12px 14px",
   };
   const label: React.CSSProperties = {
-    fontSize: 10, fontWeight: 700, color: C.ink3, textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 12,
+    fontSize: 9, fontWeight: 700, color: C.ink3, textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10,
   };
 
   return (
@@ -55,7 +55,7 @@ function MockupAlpha() {
         <span style={{ fontSize: 11, fontWeight: 700, color: "#fff", letterSpacing: ".06em" }}>ALPHA</span>
       </div>
 
-      <div style={{ background: C.bg, border: "1px solid rgba(184,134,11,.2)", borderRadius: 16, padding: 14, userSelect: "none", boxShadow: "0 32px 80px rgba(0,0,0,.6)" }}>
+      <div style={{ background: C.bg, border: "1px solid rgba(184,134,11,.2)", borderRadius: 16, padding: "14px 16px", userSelect: "none", boxShadow: "0 32px 80px rgba(0,0,0,.6)" }}>
 
         {/* Header */}
         <div style={{ marginBottom: 12, paddingBottom: 10, borderBottom: `1px solid ${C.border}` }}>
@@ -67,7 +67,7 @@ function MockupAlpha() {
         </div>
 
         {/* Corrélation */}
-        <div style={{ ...card, marginBottom: 10 }}>
+        <div style={{ ...card, marginBottom: 8 }}>
           <div style={label}>Corrélation état mental → performance</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
             {[
@@ -85,7 +85,7 @@ function MockupAlpha() {
         </div>
 
         {/* Jours + Émotions */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 8 }}>
           <div style={card}>
             <div style={label}>Par jour de semaine</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
@@ -126,10 +126,9 @@ function MockupAlpha() {
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {[
               { type: "pos", text: "Le Lundi est ton meilleur jour — +539$ moy. sur 8 trades (82% win)." },
-              { type: "neg", text: "Évite le Vendredi — tu perds en moyenne −284$ (38% win sur 6 trades)." },
               { type: "neg", text: "\"FOMO\" te coûte −512$ par trade — identifie le déclencheur." },
             ].map(({ type, text }, i) => (
-              <div key={i} style={{ display: "flex", gap: 8, padding: "8px 10px", borderRadius: 8, background: type === "pos" ? "rgba(34,197,94,.07)" : "rgba(239,68,68,.07)", border: `1px solid ${type === "pos" ? "rgba(34,197,94,.15)" : "rgba(239,68,68,.15)"}` }}>
+              <div key={i} style={{ display: "flex", gap: 8, padding: "7px 10px", borderRadius: 7, background: type === "pos" ? "rgba(34,197,94,.07)" : "rgba(239,68,68,.07)", border: `1px solid ${type === "pos" ? "rgba(34,197,94,.15)" : "rgba(239,68,68,.15)"}` }}>
                 <span style={{ fontSize: 10, flexShrink: 0, marginTop: 1 }}>{type === "pos" ? "↑" : "⚠"}</span>
                 <span style={{ fontSize: 10, color: C.ink2, lineHeight: 1.5 }}>{text}</span>
               </div>
@@ -151,7 +150,7 @@ export default function Alpha() {
       <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}>
 
         {/* Header left + mockup right */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 460px", gap: 56, alignItems: "center", marginBottom: 72 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 600px", gap: 48, alignItems: "center", marginBottom: 72 }}>
           <div>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,134,11,.1)", border: "1px solid rgba(184,134,11,.28)", borderRadius: 20, padding: "5px 16px", marginBottom: 24 }}>
               <span style={{ fontSize: 11, color: "#fbbf24" }}>★</span>
