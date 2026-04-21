@@ -36,67 +36,95 @@ const features = [
 function MockupAlpha() {
   return (
     <div style={{ position: "relative", width: "100%" }}>
-      {/* Lifetime badge */}
       <div style={{ position: "absolute", top: -12, right: 16, zIndex: 3, display: "flex", alignItems: "center", gap: 6, background: "linear-gradient(135deg,#f59e0b,#d97706)", borderRadius: 20, padding: "5px 14px", boxShadow: "0 4px 16px rgba(184,134,11,.4)" }}>
         <span style={{ fontSize: 10, color: "#fff" }}>★</span>
         <span style={{ fontSize: 11, fontWeight: 700, color: "#fff", letterSpacing: ".06em" }}>ALPHA</span>
       </div>
 
-      <div style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(184,134,11,.2)", borderRadius: 16, padding: 18, userSelect: "none", boxShadow: "0 24px 64px rgba(0,0,0,.5), 0 0 0 1px rgba(184,134,11,.1)" }}>
+      <div style={{ background: "#0f1729", border: "1px solid rgba(184,134,11,.25)", borderRadius: 16, padding: 18, userSelect: "none", boxShadow: "0 32px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(184,134,11,.08)" }}>
 
-        {/* Signal */}
-        <div style={{ background: "rgba(34,197,94,.08)", border: "1px solid rgba(34,197,94,.18)", borderRadius: 10, padding: "12px 16px", marginBottom: 12 }}>
-          <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,.3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 5 }}>Signal de session</div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: "#22c55e", marginBottom: 3 }}>● État mental optimal</div>
-          <div style={{ fontSize: 11, color: "rgba(255,255,255,.3)" }}>Bonne condition pour opérer aujourd&apos;hui</div>
-        </div>
-
-        {/* KPIs */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 12 }}>
-          {[["Score", "84", "#22c55e"], ["Win Rate", "71%", "#fff"], ["P&L", "+1 847$", "#22c55e"], ["Streak", "🔥 6j", "#f59e0b"]].map(([l, v, c]) => (
-            <div key={l} style={{ background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.06)", borderRadius: 8, padding: "10px 10px" }}>
-              <div style={{ fontSize: 9, color: "rgba(255,255,255,.3)", marginBottom: 4 }}>{l}</div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: c }}>{v}</div>
+        {/* Profil trader */}
+        <div style={{ background: "linear-gradient(135deg, rgba(184,134,11,.1), rgba(184,134,11,.04))", border: "1px solid rgba(184,134,11,.2)", borderRadius: 10, padding: "14px 16px", marginBottom: 12 }}>
+          <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(251,191,36,.5)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8 }}>Profil trader</div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: "#fbbf24", marginBottom: 3 }}>Swing discipliné</div>
+              <div style={{ fontSize: 11, color: "rgba(255,255,255,.35)" }}>Biais dominant : sur-trading le vendredi</div>
             </div>
-          ))}
+            <div style={{ textAlign: "right" }}>
+              <div style={{ fontSize: 9, color: "rgba(255,255,255,.3)", marginBottom: 2 }}>Score comportemental</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: "#fbbf24", lineHeight: 1 }}>78</div>
+              <div style={{ fontSize: 9, color: "rgba(251,191,36,.5)" }}>/100</div>
+            </div>
+          </div>
         </div>
 
-        {/* Chart + Impact side by side */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
-          <div style={{ background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.06)", borderRadius: 8, padding: "12px" }}>
-            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,.3)", marginBottom: 10 }}>Score mental 7j</div>
-            <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: 48 }}>
-              {[55, 68, 72, 60, 84, 78, 84].map((h, i) => (
-                <div key={i} style={{ flex: 1, height: `${(h / 100) * 48}px`, borderRadius: 3, background: h >= 75 ? "rgba(34,197,94,.55)" : h >= 60 ? "rgba(245,158,11,.55)" : "rgba(239,68,68,.45)" }} />
+        {/* Corrélation mental → performance */}
+        <div style={{ background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.06)", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+          <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,.3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10 }}>Corrélation état mental → P&L</div>
+          <div style={{ display: "flex", alignItems: "flex-end", gap: 6, height: 52, marginBottom: 6 }}>
+            {[
+              { score: "< 60", pnl: -38, color: "rgba(239,68,68,.6)" },
+              { score: "60–74", pnl: 12, color: "rgba(245,158,11,.6)" },
+              { score: "75–84", pnl: 58, color: "rgba(34,197,94,.55)" },
+              { score: "85+", pnl: 100, color: "rgba(34,197,94,.8)" },
+            ].map(({ score, pnl, color }) => (
+              <div key={score} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                <div style={{ width: "100%", background: pnl < 0 ? "rgba(239,68,68,.15)" : "rgba(255,255,255,.04)", borderRadius: 4, display: "flex", alignItems: "flex-end", justifyContent: "center", height: 40 }}>
+                  <div style={{ width: "60%", height: `${Math.abs(pnl) * 0.4}px`, background: color, borderRadius: "3px 3px 0 0" }} />
+                </div>
+                <span style={{ fontSize: 8, color: "rgba(255,255,255,.25)", whiteSpace: "nowrap" }}>{score}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{ fontSize: 10, color: "rgba(34,197,94,.7)", fontStyle: "italic" }}>+2.4× plus performant quand score ≥ 75</div>
+        </div>
+
+        {/* Coût des erreurs */}
+        <div style={{ background: "rgba(239,68,68,.05)", border: "1px solid rgba(239,68,68,.15)", borderRadius: 10, padding: "12px 14px", marginBottom: 12 }}>
+          <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(239,68,68,.6)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 10 }}>Coût de tes mauvaises habitudes</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {[
+              { label: "Trades FOMO ce mois", value: "−847$", bar: 72 },
+              { label: "Journées hors règles", value: "−391$", bar: 42 },
+              { label: "Trades le vendredi", value: "−214$", bar: 28 },
+            ].map(({ label, value, bar }) => (
+              <div key={label}>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                  <span style={{ fontSize: 10, color: "rgba(255,255,255,.4)" }}>{label}</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#ef4444" }}>{value}</span>
+                </div>
+                <div style={{ height: 3, background: "rgba(255,255,255,.06)", borderRadius: 2 }}>
+                  <div style={{ height: "100%", width: `${bar}%`, background: "rgba(239,68,68,.5)", borderRadius: 2 }} />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 10, paddingTop: 8, borderTop: "1px solid rgba(239,68,68,.12)", display: "flex", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 10, fontWeight: 600, color: "rgba(255,255,255,.4)" }}>Total perdu sur des erreurs évitables</span>
+            <span style={{ fontSize: 12, fontWeight: 800, color: "#ef4444" }}>−1 452$</span>
+          </div>
+        </div>
+
+        {/* Meilleur jour */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+          <div style={{ background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.06)", borderRadius: 8, padding: "10px 12px" }}>
+            <div style={{ fontSize: 9, color: "rgba(255,255,255,.3)", marginBottom: 8 }}>P&L par jour</div>
+            <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: 32 }}>
+              {[["L", 65, true], ["M", 45, true], ["Me", 80, true], ["J", 30, true], ["V", -20, false]].map(([d, h, pos]) => (
+                <div key={d as string} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+                  <div style={{ width: "100%", height: `${Math.abs(h as number) * 0.32}px`, borderRadius: 2, background: pos ? "rgba(34,197,94,.55)" : "rgba(239,68,68,.5)" }} />
+                  <span style={{ fontSize: 7, color: "rgba(255,255,255,.25)" }}>{d}</span>
+                </div>
               ))}
             </div>
           </div>
-          <div style={{ background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.06)", borderRadius: 8, padding: "12px" }}>
-            <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,.3)", marginBottom: 10 }}>Impact émotions</div>
-            {[["Calme", "+1 240$", "#22c55e"], ["FOMO", "−520$", "#ef4444"], ["Anxieux", "−187$", "#f59e0b"]].map(([e, p, c]) => (
-              <div key={e} style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                <span style={{ fontSize: 10, color: "rgba(255,255,255,.35)" }}>{e}</span>
-                <span style={{ fontSize: 10, fontWeight: 700, color: c }}>{p}</span>
-              </div>
-            ))}
+          <div style={{ background: "rgba(34,197,94,.06)", border: "1px solid rgba(34,197,94,.15)", borderRadius: 8, padding: "10px 12px" }}>
+            <div style={{ fontSize: 9, color: "rgba(255,255,255,.3)", marginBottom: 4 }}>Recommandation</div>
+            <div style={{ fontSize: 11, fontWeight: 600, color: "#22c55e", lineHeight: 1.4 }}>Évite de trader le vendredi — tu perds en moyenne 214$ ce jour.</div>
           </div>
         </div>
 
-        {/* Performance par paire */}
-        <div style={{ background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.06)", borderRadius: 8, padding: "12px" }}>
-          <div style={{ fontSize: 9, fontWeight: 600, color: "rgba(255,255,255,.3)", marginBottom: 10 }}>Performance par paire</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-            {[["EUR/USD", 78, "+842$"], ["NAS100", 65, "+391$"], ["GBP/USD", 38, "−214$"]].map(([pair, pct, pnl]) => (
-              <div key={pair as string} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 10, color: "rgba(255,255,255,.5)", width: 52, flexShrink: 0 }}>{pair}</span>
-                <div style={{ flex: 1, height: 5, background: "rgba(255,255,255,.06)", borderRadius: 3 }}>
-                  <div style={{ height: "100%", width: `${pct}%`, borderRadius: 3, background: (pct as number) >= 60 ? "rgba(34,197,94,.6)" : "rgba(239,68,68,.5)" }} />
-                </div>
-                <span style={{ fontSize: 10, fontWeight: 700, color: (pct as number) >= 60 ? "#22c55e" : "#ef4444", width: 42, textAlign: "right", flexShrink: 0 }}>{pnl}</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
