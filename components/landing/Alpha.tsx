@@ -218,12 +218,12 @@ export default function Alpha() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
             {[
-              { icon: "🧠", title: "État mental → P&L", desc: "Corrèle ton score mental quotidien avec tes résultats réels." },
-              { icon: "📅", title: "Performance par jour", desc: "Identifie tes meilleures et pires sessions selon le jour de la semaine." },
-              { icon: "😤", title: "Impact émotionnel", desc: "Chiffre exactement ce que chaque émotion te coûte par trade." },
-              { icon: "📉", title: "Patterns de drawdown", desc: "Détecte dans quel état tu prends tes pires séries de pertes." },
-              { icon: "⏰", title: "Meilleures sessions", desc: "Trouve les créneaux où tu es systématiquement le plus performant." },
-              { icon: "💡", title: "Insights auto-générés", desc: "Recommendations personnalisées sur tes vrais patterns comportementaux." },
+              { icon: "🧠", title: "Corrélation mental → P&L", desc: "Score < 60, 60–74, ≥ 75 : vois exactement ce que ton état prédit sur tes trades." },
+              { icon: "📅", title: "Performance par jour", desc: "Lundi vs Vendredi — identifie tes meilleurs et pires jours selon tes données réelles." },
+              { icon: "😤", title: "Émotions en chiffres", desc: "Calme, FOMO, Confiant… chaque état a un P&L moyen chiffré sur ton historique." },
+              { icon: "🎯", title: "Impact discipline", desc: "Ce que respecter tes règles te rapporte concrètement par trade — à l'euro près." },
+              { icon: "📈", title: "Performance par paire", desc: "Tes meilleures et pires paires selon ton historique réel. Exclure la mauvaise change tout." },
+              { icon: "💡", title: "Insights auto-générés", desc: "Recommandations personnalisées détectées depuis tes patterns comportementaux réels." },
             ].map(({ icon, title, desc }) => (
               <div key={title} style={{
                 background: "rgba(255,255,255,.03)",
