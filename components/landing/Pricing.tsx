@@ -88,7 +88,7 @@ export default function Pricing() {
             <em style={{ fontStyle: "italic", color: "rgba(255,255,255,.5)" }}>L{"'"}outil est déjà remboursé.</em>
           </h2>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,.4)", maxWidth: 480, margin: "0 auto" }}>
-            Le trader moyen perd 300€ sur un seul trade émotionnel. MindTrade coûte moins que ça par an.
+            Ton prochain trade revenge va te coûter plus cher que MindTrade.
           </p>
         </div>
 
