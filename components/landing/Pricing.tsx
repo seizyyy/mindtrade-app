@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase";
 
 const planFeatures = {
   monthly: [
@@ -41,6 +43,39 @@ function FeatureItem({ text, dark }: { text: string; dark: boolean }) {
 
 
 export default function Pricing() {
+  const [loggedInUserId, setLoggedInUserId] = useState<string | null>(null);
+  const [loggedInEmail, setLoggedInEmail] = useState<string | null>(null);
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user) return;
+      const { data: profile } = await supabase.from("profiles").select("plan_active").eq("id", user.id).single();
+      if (!profile?.plan_active) {
+        setLoggedInUserId(user.id);
+        setLoggedInEmail(user.email ?? null);
+      }
+    });
+  }, []);
+
+  async function handlePlanClick(e: React.MouseEvent<HTMLAnchorElement>, plan: string) {
+    if (!loggedInUserId) return; // not logged in → normal link behavior
+    e.preventDefault();
+    setLoadingPlan(plan);
+    try {
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan, email: loggedInEmail, userId: loggedInUserId }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } finally {
+      setLoadingPlan(null);
+    }
+  }
+
   return (
     <section id="acces" style={{ padding: "96px 5%", background: "var(--ink)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
@@ -71,8 +106,8 @@ export default function Pricing() {
             <div style={{ display: "flex", flexDirection: "column", gap: 11, marginBottom: 36, flex: 1 }}>
               {planFeatures.monthly.map(f => <FeatureItem key={f} text={f} dark={true} />)}
             </div>
-            <a href="/register?plan=monthly" style={{ display: "block", textAlign: "center", padding: "12px", borderRadius: 8, fontSize: 13, fontWeight: 600, textDecoration: "none", fontFamily: "var(--font-outfit)", background: "transparent", border: "1px solid rgba(255,255,255,.15)", color: "rgba(255,255,255,.55)" }}>
-              Choisir le mensuel →
+            <a href="/register?plan=monthly" onClick={e => handlePlanClick(e, "monthly")} style={{ display: "block", textAlign: "center", padding: "12px", borderRadius: 8, fontSize: 13, fontWeight: 600, textDecoration: "none", fontFamily: "var(--font-outfit)", background: "transparent", border: "1px solid rgba(255,255,255,.15)", color: "rgba(255,255,255,.55)" }}>
+              {loadingPlan === "monthly" ? "Redirection..." : "Choisir le mensuel →"}
             </a>
           </div>
 
@@ -93,8 +128,8 @@ export default function Pricing() {
             <div style={{ display: "flex", flexDirection: "column", gap: 11, marginBottom: 36, flex: 1 }}>
               {planFeatures.annual.map(f => <FeatureItem key={f} text={f} dark={false} />)}
             </div>
-            <a href="/register?plan=annual" style={{ display: "block", textAlign: "center", padding: "15px", borderRadius: 8, fontSize: 15, fontWeight: 700, textDecoration: "none", fontFamily: "var(--font-outfit)", background: "var(--ink)", color: "#fff" }}>
-              Démarrer maintenant →
+            <a href="/register?plan=annual" onClick={e => handlePlanClick(e, "annual")} style={{ display: "block", textAlign: "center", padding: "15px", borderRadius: 8, fontSize: 15, fontWeight: 700, textDecoration: "none", fontFamily: "var(--font-outfit)", background: "var(--ink)", color: "#fff" }}>
+              {loadingPlan === "annual" ? "Redirection..." : "Démarrer maintenant →"}
             </a>
             <div style={{ textAlign: "center", fontSize: 12, color: "var(--ink3)", marginTop: 10 }}>soit 24€/mois · Remboursé 14j</div>
           </div>
@@ -147,8 +182,8 @@ export default function Pricing() {
               ))}
             </div>
 
-            <a href="/register?plan=lifetime" style={{ display: "block", textAlign: "center", padding: "13px", borderRadius: 8, fontSize: 14, fontWeight: 700, textDecoration: "none", fontFamily: "var(--font-outfit)", background: "linear-gradient(135deg, var(--gold), var(--gold2))", color: "#fff", boxShadow: "0 4px 20px rgba(184,134,11,.3)" }}>
-              Accès à vie →
+            <a href="/register?plan=lifetime" onClick={e => handlePlanClick(e, "lifetime")} style={{ display: "block", textAlign: "center", padding: "13px", borderRadius: 8, fontSize: 14, fontWeight: 700, textDecoration: "none", fontFamily: "var(--font-outfit)", background: "linear-gradient(135deg, var(--gold), var(--gold2))", color: "#fff", boxShadow: "0 4px 20px rgba(184,134,11,.3)" }}>
+              {loadingPlan === "lifetime" ? "Redirection..." : "Accès à vie →"}
             </a>
           </div>
         </div>
