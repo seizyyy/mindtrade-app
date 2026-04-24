@@ -28,7 +28,7 @@ function DashboardPreview() {
           <div style={{ fontSize: 10, color: C.ink3, marginTop: 2 }}>Patterns comportementaux sur tes données réelles.</div>
         </div>
         <div style={{ display: "flex", gap: 6 }}>
-          {[{ v: "+2 847€", l: "Ce mois", c: C.g }, { v: "73%", l: "Win rate", c: C.g }, { v: "4.2", l: "Score moy.", c: C.a }].map(s => (
+          {[{ v: "+2 847€", l: "Ce mois", c: C.g }, { v: "73 %", l: "Win rate", c: C.g }, { v: "4.2", l: "Score moy.", c: C.a }].map(s => (
             <div key={s.l} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: "6px 10px", textAlign: "center" }}>
               <div style={{ fontSize: 13, fontWeight: 700, color: s.c, fontFamily: "Georgia, serif" }}>{s.v}</div>
               <div style={{ fontSize: 8, color: C.ink3 }}>{s.l}</div>
@@ -42,9 +42,9 @@ function DashboardPreview() {
         <div style={label}>Corrélation état mental → performance</div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
           {[
-            { c: C.r, l: "État dégradé", sub: "Score < 60", v: "−347$", wr: "28% win", bg: "rgba(239,68,68,.07)" },
-            { c: C.a, l: "Attention", sub: "Score 60–74", v: "+82$", wr: "54% win", bg: "rgba(245,158,11,.07)" },
-            { c: C.g, l: "État optimal", sub: "Score ≥ 75", v: "+612$", wr: "79% win", bg: "rgba(34,197,94,.07)" },
+            { c: C.r, l: "État dégradé", sub: "Score < 60", v: "−347€", wr: "28 % win", bg: "rgba(239,68,68,.07)" },
+            { c: C.a, l: "Attention", sub: "Score 60–74", v: "+82€", wr: "54 % win", bg: "rgba(245,158,11,.07)" },
+            { c: C.g, l: "État optimal", sub: "Score ≥ 75", v: "+612€", wr: "79 % win", bg: "rgba(34,197,94,.07)" },
           ].map(b => (
             <div key={b.l} style={{ background: b.bg, borderRadius: 8, padding: "10px 12px", borderLeft: `3px solid ${b.c}` }}>
               <div style={{ fontSize: 8, fontWeight: 700, color: b.c, textTransform: "uppercase", letterSpacing: ".06em", marginBottom: 1 }}>{b.l}</div>
@@ -62,10 +62,10 @@ function DashboardPreview() {
           <div style={label}>Par jour de semaine</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {[
-              { d: "Lundi", v: "+539$", c: C.g, w: 85 },
-              { d: "Mercredi", v: "+391$", c: C.g, w: 62 },
-              { d: "Jeudi", v: "+184$", c: C.g, w: 38 },
-              { d: "Vendredi", v: "−284$", c: C.r, w: 45 },
+              { d: "Lundi", v: "+539€", c: C.g, w: 85 },
+              { d: "Mercredi", v: "+391€", c: C.g, w: 62 },
+              { d: "Jeudi", v: "+184€", c: C.g, w: 38 },
+              { d: "Vendredi", v: "−284€", c: C.r, w: 45 },
             ].map(({ d, v, c, w }) => (
               <div key={d}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
@@ -84,10 +84,10 @@ function DashboardPreview() {
           <div style={label}>Émotions en chiffres</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             {[
-              { e: "Calme", v: "+748$", c: C.g, w: 82 },
-              { e: "Confiant", v: "+183$", c: C.g, w: 60 },
-              { e: "Anxieux", v: "−291$", c: C.r, w: 38 },
-              { e: "FOMO", v: "−512$", c: C.r, w: 22 },
+              { e: "Calme", v: "+748€", c: C.g, w: 82 },
+              { e: "Confiant", v: "+183€", c: C.g, w: 60 },
+              { e: "Anxieux", v: "−291€", c: C.r, w: 38 },
+              { e: "FOMO", v: "−512€", c: C.r, w: 22 },
             ].map(({ e, v, c, w }) => (
               <div key={e}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>

@@ -126,7 +126,7 @@ export default function Hero() {
                   {[
                     { label: 'Score mental', val: '80', sub: 'État optimal', color: '#22c55e' },
                     { label: 'Win rate',     val: '80%', sub: '4W · 1L · 7 jours', color: '#22c55e' },
-                    { label: 'P&L net',      val: '+2916$', sub: 'Cette semaine · 80% win', color: '#22c55e' },
+                    { label: 'P&L net',      val: '+2 916€', sub: 'Cette semaine · 80% win', color: '#22c55e' },
                     { label: 'Profit factor',val: '9.38', sub: 'Stratégie rentable', color: '#22c55e' },
                   ].map(m => (
                     <div key={m.label} style={{ background: '#1e293b', border: '1px solid rgba(255,255,255,.06)', borderRadius: 7, padding: '8px 10px' }}>
