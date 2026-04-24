@@ -99,7 +99,10 @@ function LoginForm() {
               />
             </div>
             <div style={{ marginBottom: 20 }}>
-              <label style={{ fontSize: 12, fontWeight: 600, color: "var(--ink2)", display: "block", marginBottom: 6 }}>Mot de passe</label>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                <label style={{ fontSize: 12, fontWeight: 600, color: "var(--ink2)" }}>Mot de passe</label>
+                <a href="/reset-password" style={{ fontSize: 11, color: "var(--navy)", textDecoration: "none" }}>Mot de passe oublié ?</a>
+              </div>
               <input
                 type="password" required autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
