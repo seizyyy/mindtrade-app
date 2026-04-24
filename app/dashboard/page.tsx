@@ -235,6 +235,24 @@ export default function DashboardPage() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
+      {/* ── Onboarding — nouveau membre ── */}
+      {checkins.length === 0 && trades.length === 0 && (
+        <div style={{ background: "linear-gradient(135deg, rgba(59,130,246,.08), rgba(59,130,246,.03))", border: "1px solid rgba(59,130,246,.2)", borderRadius: 14, padding: "20px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(59,130,246,.12)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>👋</div>
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Bienvenue sur MindTrade !</div>
+              <div style={{ fontSize: 13, color: "var(--ink3)", lineHeight: 1.6 }}>
+                Commence par le <strong style={{ color: "var(--ink2)" }}>Guide</strong> — il t'explique comment renseigner ton track record et tirer le maximum de l'outil.
+              </div>
+            </div>
+          </div>
+          <a href="/dashboard/guide" style={{ flexShrink: 0, background: "var(--navy)", color: "#fff", padding: "10px 20px", borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: "none", fontFamily: "var(--font-outfit)", whiteSpace: "nowrap" }}>
+            Voir le Guide →
+          </a>
+        </div>
+      )}
+
       {/* ── Alerte perte journalière — EN PREMIER ── */}
       {dailyLossReached && (
         <div style={{ background: "var(--tint-r-bg)", border: "2px solid var(--tint-r-border)", borderRadius: 14, padding: "18px 22px", display: "flex", alignItems: "center", gap: 16 }}>
