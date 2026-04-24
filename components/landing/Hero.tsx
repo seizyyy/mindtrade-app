@@ -73,6 +73,7 @@ export default function Hero() {
 
           <div className="animate-float" style={{ position: 'relative', zIndex: 1, background: '#0f172a', border: '1px solid rgba(255,255,255,.1)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 0 0 1px rgba(255,255,255,.04), 0 40px 100px rgba(0,0,0,.6)' }}>
 
+
             {/* Chrome bar */}
             <div style={{ height: 36, background: '#1e293b', borderBottom: '1px solid rgba(255,255,255,.07)', display: 'flex', alignItems: 'center', padding: '0 14px', gap: 6 }}>
               {['#ff5f56','#ffbd2e','#27c93f'].map(c => <div key={c} style={{ width: 9, height: 9, borderRadius: '50%', background: c, opacity: .8 }} />)}
@@ -162,6 +163,11 @@ export default function Hero() {
 
               </div>
             </div>
+          </div>
+          <div style={{ textAlign: 'center', marginTop: 14 }}>
+            <a href="#produit" style={{ fontSize: 12, color: 'rgba(15,39,68,.45)', textDecoration: 'none', fontWeight: 500, letterSpacing: '.01em' }}>
+              Voir le produit en détail →
+            </a>
           </div>
         </div>
       </div>
