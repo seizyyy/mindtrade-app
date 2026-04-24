@@ -39,8 +39,6 @@ export default function SettingsPage() {
         setMaxRisk(data.max_risk_per_trade != null ? String(data.max_risk_per_trade) : "");
         setMaxDailyLoss(data.max_daily_loss != null ? String(data.max_daily_loss) : "");
         setMonthlyGoal(data.monthly_goal != null ? String(data.monthly_goal) : "");
-        setSessionStart(data.session_start ?? "");
-        setSessionEnd(data.session_end ?? "");
         setBiases(data.trading_biases ?? []);
         setPlan(data.plan ?? null);
       }
