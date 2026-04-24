@@ -169,7 +169,7 @@ export default function Hero() {
               display: 'inline-flex', alignItems: 'center',
               fontSize: 13, fontWeight: 600, color: 'var(--navy)',
               textDecoration: 'none', padding: '10px 24px', borderRadius: 8,
-              border: '1.5px solid rgba(59,130,246,.3)', background: 'rgba(59,130,246,.07)',
+              border: '1.5px solid rgba(59,130,246,.25)', background: 'transparent',
               fontFamily: 'var(--font-outfit)',
             }}>
               Voir le produit en détail
