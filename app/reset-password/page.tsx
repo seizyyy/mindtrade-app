@@ -2,7 +2,6 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { createClient } from "@/lib/supabase";
-import { useSearchParams } from "next/navigation";
 
 const darkVars = {
   "--bg":     "#0f172a",
@@ -23,7 +22,6 @@ const darkVars = {
 
 function ResetForm() {
   const supabase = createClient();
-  const searchParams = useSearchParams();
   const [dark, setDark] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,12 +29,19 @@ function ResetForm() {
   const [sent, setSent] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
-
-  // Supabase redirects back with #access_token in the URL for password update
-  const isUpdate = searchParams.get("type") === "recovery";
+  const [isRecovery, setIsRecovery] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("mt-dark") === "1") setDark(true);
+
+    // Supabase envoie le token dans le hash — détecter l'event PASSWORD_RECOVERY
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        setIsRecovery(true);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   async function handleRequest(e: React.FormEvent) {
@@ -44,7 +49,7 @@ function ResetForm() {
     setError("");
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password?type=recovery`,
+      redirectTo: `${window.location.origin}/reset-password`,
     });
     setLoading(false);
     if (error) { setError("Erreur. Vérifie l'adresse email."); return; }
@@ -75,7 +80,7 @@ function ResetForm() {
             <span style={{ fontFamily: "var(--font-montserrat)", fontSize: 20, fontWeight: 900, color: "var(--ink)", letterSpacing: "-.4px" }}>MindTrade</span>
           </a>
           <div style={{ fontSize: 13, color: "var(--ink3)", marginTop: 6 }}>
-            {isUpdate ? "Choisis un nouveau mot de passe" : "Réinitialiser le mot de passe"}
+            {isRecovery ? "Choisis un nouveau mot de passe" : "Réinitialiser le mot de passe"}
           </div>
         </div>
 
@@ -96,7 +101,7 @@ function ResetForm() {
                 Vérifie ta boîte mail et clique sur le lien pour réinitialiser ton mot de passe.
               </div>
             </div>
-          ) : isUpdate ? (
+          ) : isRecovery ? (
             <form onSubmit={handleUpdate}>
               <div style={{ marginBottom: 20 }}>
                 <label style={{ fontSize: 12, fontWeight: 600, color: "var(--ink2)", display: "block", marginBottom: 6 }}>Nouveau mot de passe</label>
