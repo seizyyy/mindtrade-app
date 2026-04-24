@@ -88,7 +88,7 @@ export default function ProductTour() {
                 {[
                   { label:"Score mental", val:"80", sub:"État optimal", subColor:"#22c55e", valColor:"#22c55e", extra:"🔥 7j de streak" },
                   { label:"Win rate", val:"80%", sub:"4W · 1L · 7 jours", subColor:"rgba(255,255,255,.3)", valColor:"#22c55e" },
-                  { label:"P&L net", val:"+2 916€", sub:"Cette semaine · 80% win", subColor:"rgba(255,255,255,.3)", valColor:"#22c55e", badge:"+5.83%" },
+                  { label:"P&L net", val:"+2 916$", sub:"Cette semaine · 80% win", subColor:"rgba(255,255,255,.3)", valColor:"#22c55e", badge:"+5.83%" },
                   { label:"Profit factor", val:"9.38", sub:"Stratégie rentable", subColor:"rgba(255,255,255,.3)", valColor:"#22c55e" },
                 ].map(m => (
                   <div key={m.label} style={{ background:"#1e293b", border:"1px solid rgba(255,255,255,.07)", borderRadius:10, padding:"14px 14px" }}>
@@ -146,11 +146,11 @@ export default function ProductTour() {
                 <div style={{ background:"#1e293b", border:"1px solid rgba(255,255,255,.07)", borderRadius:10, padding:"14px 16px" }}>
                   <div style={{ fontSize:10, fontWeight:700, color:"rgba(255,255,255,.3)", textTransform:"uppercase", letterSpacing:".1em", marginBottom:12 }}>Derniers trades</div>
                   {[
-                    { pair:"NAS100",  emotion:"Confiant", pnl:"+896€",  color:"#22c55e" },
-                    { pair:"GBP/USD", emotion:"Calme",    pnl:"+544€",  color:"#22c55e" },
-                    { pair:"US30",    emotion:"Anxieux",  pnl:"-348€",  color:"#ef4444" },
-                    { pair:"EUR/USD", emotion:"Calme",    pnl:"+704€",  color:"#22c55e" },
-                    { pair:"XAU/USD", emotion:"Confiant", pnl:"+1120€", color:"#22c55e" },
+                    { pair:"NAS100",  emotion:"Confiant", pnl:"+896$",  color:"#22c55e" },
+                    { pair:"GBP/USD", emotion:"Calme",    pnl:"+544$",  color:"#22c55e" },
+                    { pair:"US30",    emotion:"Anxieux",  pnl:"-348$",  color:"#ef4444" },
+                    { pair:"EUR/USD", emotion:"Calme",    pnl:"+704$",  color:"#22c55e" },
+                    { pair:"XAU/USD", emotion:"Confiant", pnl:"+1120$", color:"#22c55e" },
                   ].map(t => (
                     <div key={t.pair} style={{ display:"flex", alignItems:"center", gap:8, paddingBottom:8, marginBottom:8, borderBottom:"1px solid rgba(255,255,255,.05)" }}>
                       <div style={{ width:6, height:6, borderRadius:"50%", background:t.color, flexShrink:0 }} />
