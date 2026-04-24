@@ -16,8 +16,6 @@ export default function SettingsPage() {
   const [maxRisk,      setMaxRisk]      = useState("");
   const [maxDailyLoss, setMaxDailyLoss] = useState("");
   const [monthlyGoal,  setMonthlyGoal]  = useState("");
-  const [sessionStart, setSessionStart] = useState("");
-  const [sessionEnd,   setSessionEnd]   = useState("");
   const [biases,       setBiases]       = useState<string[]>([]);
   const [plan,         setPlan]         = useState<string | null>(null);
   const [saving,       setSaving]       = useState(false);
@@ -63,8 +61,6 @@ export default function SettingsPage() {
       max_risk_per_trade: maxRisk     ? parseFloat(maxRisk)      : null,
       max_daily_loss:    maxDailyLoss ? parseFloat(maxDailyLoss) : null,
       monthly_goal:      monthlyGoal  ? parseFloat(monthlyGoal)  : null,
-      session_start:     sessionStart || null,
-      session_end:       sessionEnd   || null,
       trading_biases:    biases.length ? biases : null,
     }).eq("id", user.id);
     setSaving(false);
@@ -185,21 +181,6 @@ export default function SettingsPage() {
               {cap && monthlyGoal && <div style={hint}>= <strong style={{ color: "var(--ink)" }}>{((cap * parseFloat(monthlyGoal)) / 100).toFixed(0)} {currency}</strong> à atteindre</div>}
             </div>
 
-            {/* Session */}
-            <div style={{ borderLeft: "1px solid var(--border)", paddingLeft: 32 }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)", marginBottom: 4 }}>Session de trading</div>
-              <div style={{ fontSize: 12, color: "var(--ink3)", marginBottom: 14, lineHeight: 1.5 }}>Tes horaires habituels de trading.</div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                <div>
-                  <label style={label}>De</label>
-                  <input type="time" value={sessionStart} onChange={e => setSessionStart(e.target.value)} style={field} />
-                </div>
-                <div>
-                  <label style={label}>À</label>
-                  <input type="time" value={sessionEnd} onChange={e => setSessionEnd(e.target.value)} style={field} />
-                </div>
-              </div>
-            </div>
 
           </div>
         </div>
