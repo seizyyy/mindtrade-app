@@ -218,22 +218,21 @@ export default function Alpha() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
             {[
-              { icon: "🧠", title: "Corrélation mental → P&L", desc: "Score < 60, 60–74, ≥ 75 : vois exactement ce que ton état prédit sur tes trades." },
-              { icon: "📅", title: "Performance par jour", desc: "Lundi vs Vendredi — identifie tes meilleurs et pires jours selon tes données réelles." },
-              { icon: "😤", title: "Émotions en chiffres", desc: "Calme, FOMO, Confiant… chaque état a un P&L moyen chiffré sur ton historique." },
-              { icon: "🎯", title: "Impact discipline", desc: "Ce que respecter tes règles te rapporte concrètement par trade — à l'euro près." },
-              { icon: "📈", title: "Performance par paire", desc: "Tes meilleures et pires paires selon ton historique réel. Exclure la mauvaise change tout." },
-              { icon: "💡", title: "Insights auto-générés", desc: "Recommandations personnalisées détectées depuis tes patterns comportementaux réels." },
-            ].map(({ icon, title, desc }) => (
+              { n: "01", title: "Corrélation mental → P&L", desc: "Score < 60, 60–74, ≥ 75 : vois exactement ce que ton état prédit sur tes trades." },
+              { n: "02", title: "Performance par jour", desc: "Lundi vs Vendredi — identifie tes meilleurs et pires jours selon tes données réelles." },
+              { n: "03", title: "Émotions en chiffres", desc: "Calme, FOMO, Confiant… chaque état a un P&L moyen chiffré sur ton historique." },
+              { n: "04", title: "Impact discipline", desc: "Ce que respecter tes règles te rapporte concrètement par trade — au dollar près." },
+              { n: "05", title: "Performance par paire", desc: "Tes meilleures et pires paires selon ton historique réel. Exclure la mauvaise change tout." },
+              { n: "06", title: "Insights auto-générés", desc: "Recommandations personnalisées détectées depuis tes patterns comportementaux réels." },
+            ].map(({ n, title, desc }) => (
               <div key={title} style={{
-                background: "rgba(255,255,255,.03)",
-                border: "1px solid rgba(255,255,255,.07)",
-                borderRadius: 12, padding: "18px 20px",
-                transition: "border-color .15s",
+                background: "rgba(255,255,255,.02)",
+                border: "1px solid rgba(255,255,255,.06)",
+                borderRadius: 10, padding: "22px 24px",
               }}>
-                <div style={{ fontSize: 22, marginBottom: 10 }}>{icon}</div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#fff", marginBottom: 6 }}>{title}</div>
-                <div style={{ fontSize: 12, color: "rgba(255,255,255,.35)", lineHeight: 1.6 }}>{desc}</div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(251,191,36,.5)", letterSpacing: ".08em", marginBottom: 12 }}>{n}</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{title}</div>
+                <div style={{ fontSize: 12, color: "rgba(255,255,255,.3)", lineHeight: 1.65 }}>{desc}</div>
               </div>
             ))}
           </div>
