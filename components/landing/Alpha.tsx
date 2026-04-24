@@ -16,7 +16,7 @@ function DashboardPreview() {
   };
 
   return (
-    <div style={{ background: C.bg, padding: "14px", display: "flex", flexDirection: "column", gap: 8, filter: "contrast(0.85) brightness(0.97)" }}>
+    <div style={{ background: C.bg, padding: "14px", display: "flex", flexDirection: "column", gap: 8 }}>
 
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 2 }}>
@@ -124,7 +124,7 @@ function DashboardPreview() {
 
 function BrowserMockup() {
   return (
-    <div style={{ borderRadius: 12, overflow: "hidden", boxShadow: "0 32px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.06)" }}>
+    <div style={{ borderRadius: 12, overflow: "hidden", boxShadow: "0 32px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.06)", filter: "contrast(0.78) saturate(0.8) brightness(0.96)" }}>
       {/* Chrome */}
       <div style={{ background: "#161f33", borderBottom: `1px solid ${C.border}`, padding: "9px 14px", display: "flex", alignItems: "center", gap: 10 }}>
         <div style={{ display: "flex", gap: 5 }}>
