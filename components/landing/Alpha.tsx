@@ -16,7 +16,7 @@ function DashboardPreview() {
   };
 
   return (
-    <div style={{ background: C.bg, padding: "14px", display: "flex", flexDirection: "column", gap: 8, filter: "blur(0.3px)", WebkitFilter: "blur(0.3px)" }}>
+    <div style={{ background: C.bg, padding: "14px", display: "flex", flexDirection: "column", gap: 8 }}>
 
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 2 }}>
