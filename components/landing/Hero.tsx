@@ -166,16 +166,13 @@ export default function Hero() {
           </div>
           <div style={{ textAlign: 'center', marginTop: 16 }}>
             <a href="#produit" style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              fontSize: 13, fontWeight: 600, color: 'var(--ink2)',
-              textDecoration: 'none', padding: '10px 22px', borderRadius: 8,
-              border: '1px solid var(--border)', background: 'rgba(15,39,68,.04)',
+              display: 'inline-flex', alignItems: 'center',
+              fontSize: 13, fontWeight: 600, color: 'var(--navy)',
+              textDecoration: 'none', padding: '10px 24px', borderRadius: 8,
+              border: '1.5px solid rgba(59,130,246,.3)', background: 'rgba(59,130,246,.07)',
               fontFamily: 'var(--font-outfit)',
-            }}
-              onMouseOver={e => (e.currentTarget.style.background = 'rgba(15,39,68,.09)')}
-              onMouseOut={e => (e.currentTarget.style.background = 'rgba(15,39,68,.04)')}
-            >
-              <span style={{ fontSize: 15 }}>▶</span> Voir le produit en détail
+            }}>
+              Voir le produit en détail
             </a>
           </div>
         </div>
