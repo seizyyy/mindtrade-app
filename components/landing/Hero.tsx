@@ -82,7 +82,7 @@ export default function Hero() {
             </div>
 
             {/* App layout */}
-            <div style={{ display: 'flex', height: 460 }}>
+            <div style={{ display: 'flex', height: 460, filter: 'blur(0.5px)' }}>
 
               {/* Sidebar */}
               <div style={{ width: 130, background: '#1e293b', borderRight: '1px solid rgba(255,255,255,.07)', padding: '10px 6px', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
