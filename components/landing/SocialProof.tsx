@@ -90,9 +90,9 @@ export default function SocialProof() {
         </div>
 
         {/* Grid 6 avis */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+        <div className="landing-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
           {reviews.map((r, i) => (
-            <div key={i} style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "22px 24px", display: "flex", flexDirection: "column" }}>
+            <div key={i} className={i >= 3 ? "review-hide-mobile" : ""} style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "22px 24px", display: "flex", flexDirection: "column" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
                 <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--navy)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: "#fff", flexShrink: 0 }}>{r.initials}</div>
                 <div>

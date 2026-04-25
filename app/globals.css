@@ -208,4 +208,10 @@ section {
   /* Announcement bar + nav sur mobile */
   .announcement-bar-text { display: none !important; }
   nav.main-nav { top: 44px !important; }
+
+  /* Reviews — cacher les 3 derniers sur mobile */
+  .review-hide-mobile { display: none !important; }
+
+  /* Footer */
+  .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
 }
