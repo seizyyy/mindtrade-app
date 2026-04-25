@@ -36,7 +36,7 @@ export default function Problem() {
         <p style={{ fontSize: 17, color: "rgba(255,255,255,.6)", lineHeight: 1.7, maxWidth: 560 }}>
           Ton journal te dit que tu as perdu vendredi. Tes stats te montrent que tu fais du FOMO. Toi tu le savais déjà. Le problème c{"'"}est que personne ne t{"'"}arrête <em style={{ color: "rgba(255,255,255,.6)" }}>avant</em> d{"'"}entrer.
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 2, marginTop: 56 }}>
+        <div className="landing-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 2, marginTop: 56 }}>
           {cards.map((c, i) => (
             <div key={i} style={{
               background: "rgba(255,255,255,.04)", padding: 32,

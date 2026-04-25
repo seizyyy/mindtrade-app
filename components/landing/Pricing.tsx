@@ -93,7 +93,7 @@ export default function Pricing() {
         </div>
 
         {/* Plans */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.08fr 1fr", gap: 16, alignItems: "stretch" }}>
+        <div className="pricing-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1.08fr 1fr", gap: 16, alignItems: "stretch" }}>
 
           {/* Mensuel */}
           <div style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.08)", borderRadius: 16, padding: "36px 32px", display: "flex", flexDirection: "column" }}>

@@ -165,3 +165,30 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
+
+/* ── Mobile responsive ── */
+@media (max-width: 768px) {
+  .nav-desktop { display: none !important; }
+  .nav-hamburger { display: flex !important; }
+
+  .hero-right-hide { display: none !important; }
+  .hero-grid { grid-template-columns: 1fr !important; }
+
+  .landing-grid-3 { grid-template-columns: 1fr !important; }
+  .landing-grid-2 { grid-template-columns: 1fr !important; }
+
+  .pricing-grid {
+    grid-template-columns: 1fr !important;
+    max-width: 440px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .quiz-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .alpha-analysis-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

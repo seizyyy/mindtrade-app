@@ -216,7 +216,7 @@ export default function Alpha() {
           <div style={{ textAlign: "center", marginBottom: 20 }}>
             <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,.25)", textTransform: "uppercase", letterSpacing: ".12em" }}>Ce qu&apos;Alpha analyse pour toi</span>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+          <div className="alpha-analysis-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
             {[
               { n: "01", title: "Corrélation mental → P&L", desc: "Score < 60, 60–74, ≥ 75 : vois exactement ce que ton état prédit sur tes trades." },
               { n: "02", title: "Performance par jour", desc: "Lundi vs Vendredi — identifie tes meilleurs et pires jours selon tes données réelles." },
