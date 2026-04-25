@@ -202,4 +202,10 @@ section {
 
   /* ProductTour mockup */
   .producttour-mockup { display: none !important; }
+
+  /* ProductTour mobile CTA — visible sur mobile */
+  .producttour-mobile-cta { display: block !important; }
 }
+
+/* ProductTour mobile CTA — caché sur desktop */
+.producttour-mobile-cta { display: none; }

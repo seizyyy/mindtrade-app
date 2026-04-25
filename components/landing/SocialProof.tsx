@@ -93,15 +93,15 @@ export default function SocialProof() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
           {reviews.map((r, i) => (
             <div key={i} style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "22px 24px", display: "flex", flexDirection: "column" }}>
-              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 14 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--navy)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: "#fff", flexShrink: 0 }}>{r.initials}</div>
-                  <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--navy)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: "#fff", flexShrink: 0 }}>{r.initials}</div>
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
                     <div style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)" }}>{r.name}</div>
-                    <div style={{ fontSize: 11, color: "var(--ink3)" }}>{r.role}</div>
+                    <div style={{ fontSize: 11, color: "var(--ink3)" }}>{r.date}</div>
                   </div>
+                  <div style={{ fontSize: 11, color: "var(--ink3)" }}>{r.role}</div>
                 </div>
-                <div style={{ fontSize: 11, color: "var(--ink3)", flexShrink: 0 }}>{r.date}</div>
               </div>
               <Stars count={r.stars} />
               <p style={{ fontSize: 13, color: "var(--ink2)", lineHeight: 1.7, fontStyle: "italic", margin: "12px 0", flex: 1 }}>
