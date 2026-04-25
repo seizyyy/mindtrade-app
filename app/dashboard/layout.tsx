@@ -4,6 +4,54 @@ import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 
+function MobileDesktopModal() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    const dismissed = localStorage.getItem("mt-desktop-notice");
+    if (isMobile && !dismissed) setVisible(true);
+  }, []);
+
+  function dismiss() {
+    localStorage.setItem("mt-desktop-notice", "1");
+    setVisible(false);
+  }
+
+  if (!visible) return null;
+
+  return (
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 1000,
+      background: "rgba(0,0,0,.7)", backdropFilter: "blur(4px)",
+      display: "flex", alignItems: "center", justifyContent: "center", padding: 24,
+    }}>
+      <div style={{
+        background: "#1e293b", border: "1px solid rgba(255,255,255,.1)",
+        borderRadius: 16, padding: "32px 24px", maxWidth: 360, width: "100%", textAlign: "center",
+      }}>
+        <div style={{ fontSize: 48, marginBottom: 20 }}>🖥️</div>
+        <div style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", marginBottom: 12 }}>
+          MindTrade est fait pour le desktop
+        </div>
+        <div style={{ fontSize: 14, color: "#94a3b8", lineHeight: 1.7, marginBottom: 28 }}>
+          Le dashboard complet, les graphiques et toutes les fonctionnalités sont optimisés pour ordinateur. Connecte-toi sur desktop pour une expérience complète.
+        </div>
+        <button onClick={dismiss} style={{
+          width: "100%", padding: "13px", borderRadius: 8, border: "none",
+          background: "#3b82f6", color: "#fff", fontSize: 14, fontWeight: 700,
+          cursor: "pointer", fontFamily: "var(--font-outfit)", marginBottom: 12,
+        }}>
+          J'ai compris →
+        </button>
+        <div style={{ fontSize: 12, color: "#475569" }}>
+          mindtrade.co — accessible depuis ton navigateur desktop
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const navItems: { id: string; href: string; label: string; icon: React.ReactNode; gold?: boolean }[] = [
   { id: "dashboard",    href: "/dashboard",             label: "Vue d'ensemble", icon: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> },
   { id: "checkin",      href: "/dashboard/checkin",     label: "Check-in",       icon: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg> },
@@ -148,11 +196,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div style={{ ...darkVars, display: "flex", flexDirection: "column", height: "100vh", background: "var(--bg)", fontFamily: "var(--font-outfit)" }}>
-      {/* Mobile notice */}
-      <div className="dashboard-mobile-notice" style={{ display: "none", alignItems: "center", gap: 10, background: "rgba(59,130,246,.12)", border: "1px solid rgba(59,130,246,.25)", borderRadius: 0, padding: "10px 16px", fontSize: 12, color: "#93c5fd" }}>
-        <span>🖥️</span>
-        <span>MindTrade est conçu pour desktop — certaines fonctionnalités sont limitées sur mobile.</span>
-      </div>
+      {/* Mobile modal */}
+      <MobileDesktopModal />
       {/* Topbar */}
       <div style={{ height: 56, background: "var(--card)", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", padding: "0 20px", justifyContent: "space-between", flexShrink: 0, zIndex: 50 }}>
         <span style={{ fontFamily: "var(--font-montserrat)", fontSize: 14, fontWeight: 900, color: "var(--ink)", letterSpacing: "-.4px" }}>MindTrade</span>
