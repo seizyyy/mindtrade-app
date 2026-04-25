@@ -20,7 +20,7 @@ export default function ProductTour() {
         </div>
 
         {/* Dashboard mockup */}
-        <div style={{ borderRadius:16, overflow:"hidden", border:"1px solid rgba(255,255,255,.1)", boxShadow:"0 48px 140px rgba(0,0,0,.8)", background:"#0f172a", fontSize:13 }}>
+        <div className="producttour-mockup" style={{ borderRadius:16, overflow:"hidden", border:"1px solid rgba(255,255,255,.1)", boxShadow:"0 48px 140px rgba(0,0,0,.8)", background:"#0f172a", fontSize:13 }}>
 
           {/* Chrome bar */}
           <div style={{ height:34, background:"rgba(255,255,255,.03)", borderBottom:"1px solid rgba(255,255,255,.07)", display:"flex", alignItems:"center", padding:"0 14px", gap:9 }}>

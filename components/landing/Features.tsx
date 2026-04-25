@@ -39,7 +39,7 @@ export default function Features() {
         <h2 style={{ fontFamily: "var(--font-fraunces)", fontSize: "clamp(32px,4vw,52px)", fontWeight: 700, lineHeight: 1.1, letterSpacing: "-.02em", marginBottom: 56 }}>
           Chaque feature a une raison<br />d{"'"}exister pour ta performance
         </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
+        <div className="landing-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
           {features.map((f, i) => (
             <div key={i} style={{
               background: f.exclusive ? "linear-gradient(135deg,var(--card),rgba(184,134,11,.03))" : "var(--card)",

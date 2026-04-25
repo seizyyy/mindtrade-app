@@ -48,23 +48,23 @@ export default function Nav() {
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <a href="#diagnostic" style={{ fontSize: 13, fontWeight: 600, color: "var(--navy)", textDecoration: "none", padding: "8px 16px", borderRadius: 6, border: "1.5px solid rgba(15,39,68,.15)", background: "rgba(15,39,68,.04)" }}>
+          <a href="#diagnostic" className="nav-btn-hide" style={{ fontSize: 13, fontWeight: 600, color: "var(--navy)", textDecoration: "none", padding: "8px 16px", borderRadius: 6, border: "1.5px solid rgba(15,39,68,.15)", background: "rgba(15,39,68,.04)" }}>
             Diagnostic gratuit
           </a>
           {authState === "active" ? (
-            <a href="/dashboard" style={{ fontSize: 13, fontWeight: 600, color: "var(--navy)", textDecoration: "none" }}
+            <a href="/dashboard" className="nav-btn-hide" style={{ fontSize: 13, fontWeight: 600, color: "var(--navy)", textDecoration: "none" }}
               onMouseOver={e => (e.currentTarget.style.color = "var(--ink)")}
               onMouseOut={e => (e.currentTarget.style.color = "var(--navy)")}>
               Mon dashboard →
             </a>
           ) : authState === "guest" ? (
-            <a href="/login" style={{ fontSize: 13, fontWeight: 500, color: "var(--ink2)", textDecoration: "none" }}
+            <a href="/login" className="nav-btn-hide" style={{ fontSize: 13, fontWeight: 500, color: "var(--ink2)", textDecoration: "none" }}
               onMouseOver={e => (e.currentTarget.style.color = "var(--ink)")}
               onMouseOut={e => (e.currentTarget.style.color = "var(--ink2)")}>
               Espace membre
             </a>
           ) : null}
-          <a href="#acces" style={{
+          <a href="#acces" className="nav-btn-hide" style={{
             background: "var(--ink)", color: "#fff", padding: "9px 22px", borderRadius: 6,
             fontSize: 13, fontWeight: 600, textDecoration: "none", fontFamily: "var(--font-outfit)",
           }}>
