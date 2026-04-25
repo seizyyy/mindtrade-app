@@ -14,7 +14,7 @@ export default function AnnouncementBar() {
       gap: 10,
     }}>
       <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ade80", flexShrink: 0, animation: "pulse-dot 2s infinite" }} />
-      <span style={{ fontSize: 13, color: "rgba(255,255,255,.85)", fontWeight: 500 }}>
+      <span className="announcement-bar-text" style={{ fontSize: 13, color: "rgba(255,255,255,.85)", fontWeight: 500 }}>
         Quel type de trader es-tu vraiment ?
       </span>
       <a href="#diagnostic" style={{

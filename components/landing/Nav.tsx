@@ -25,7 +25,7 @@ export default function Nav() {
 
   return (
     <>
-      <nav style={{
+      <nav className="main-nav" style={{
         position: "fixed", top: 37, left: 0, right: 0, zIndex: 100,
         padding: "0 5%", height: 64, display: "flex", alignItems: "center",
         justifyContent: "space-between",

@@ -200,12 +200,12 @@ section {
     margin-right: auto !important;
   }
 
-  /* ProductTour mockup */
-  .producttour-mockup { display: none !important; }
+  /* ProductTour — sidebar cachée, hauteur réduite */
+  .producttour-mockup { display: block !important; }
+  .producttour-sidebar { display: none !important; }
+  .producttour-app-layout { height: 480px !important; }
 
-  /* ProductTour mobile CTA — visible sur mobile */
-  .producttour-mobile-cta { display: block !important; }
+  /* Announcement bar + nav sur mobile */
+  .announcement-bar-text { display: none !important; }
+  nav.main-nav { top: 44px !important; }
 }
-
-/* ProductTour mobile CTA — caché sur desktop */
-.producttour-mobile-cta { display: none; }

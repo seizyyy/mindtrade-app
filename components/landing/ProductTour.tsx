@@ -19,19 +19,6 @@ export default function ProductTour() {
           </p>
         </div>
 
-        {/* Mobile CTA — visible uniquement sur mobile */}
-        <div className="producttour-mobile-cta" style={{ textAlign: "center", padding: "0 0 8px" }}>
-          <a href="#acces" style={{
-            display: "inline-flex", alignItems: "center", gap: 8,
-            background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.15)",
-            color: "#fff", padding: "14px 32px", borderRadius: 8,
-            fontSize: 15, fontWeight: 700, textDecoration: "none", fontFamily: "var(--font-outfit)",
-          }}>
-            Voir les tarifs →
-          </a>
-          <div style={{ fontSize: 12, color: "rgba(255,255,255,.3)", marginTop: 12 }}>Remboursé 14j si pas convaincu</div>
-        </div>
-
         {/* Dashboard mockup */}
         <div className="producttour-mockup" style={{ borderRadius:16, overflow:"hidden", border:"1px solid rgba(255,255,255,.1)", boxShadow:"0 48px 140px rgba(0,0,0,.8)", background:"#0f172a", fontSize:13 }}>
 
@@ -46,10 +33,10 @@ export default function ProductTour() {
           </div>
 
           {/* App layout */}
-          <div style={{ display:"flex", height:680 }}>
+          <div className="producttour-app-layout" style={{ display:"flex", height:680 }}>
 
             {/* Sidebar */}
-            <div style={{ width:200, background:"#1e293b", borderRight:"1px solid rgba(255,255,255,.07)", padding:"12px 8px", display:"flex", flexDirection:"column", flexShrink:0 }}>
+            <div className="producttour-sidebar" style={{ width:200, background:"#1e293b", borderRight:"1px solid rgba(255,255,255,.07)", padding:"12px 8px", display:"flex", flexDirection:"column", flexShrink:0 }}>
               <div style={{ fontSize:12, fontWeight:900, color:"#f1f5f9", letterSpacing:"-.4px", padding:"4px 8px", marginBottom:12 }}>MindTrade</div>
               <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
                 {[
