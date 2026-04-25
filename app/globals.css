@@ -208,6 +208,15 @@ section {
   /* Announcement bar + nav sur mobile */
   .announcement-bar-text { display: none !important; }
   nav.main-nav { top: 44px !important; }
+  .nav-mobile-menu { top: 108px !important; }
+
+  /* Hamburger — 3 lignes verticales */
+  .nav-hamburger {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 4px !important;
+  }
 
   /* Reviews — cacher les 3 derniers sur mobile */
   .review-hide-mobile { display: none !important; }

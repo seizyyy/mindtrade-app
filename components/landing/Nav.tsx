@@ -81,7 +81,7 @@ export default function Nav() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div style={{
+        <div className="nav-mobile-menu" style={{
           position: "fixed", top: 64, left: 0, right: 0, zIndex: 99,
           background: "rgba(250,250,248,.98)", backdropFilter: "blur(12px)",
           borderBottom: "1px solid var(--border)", padding: "16px 5% 24px",
