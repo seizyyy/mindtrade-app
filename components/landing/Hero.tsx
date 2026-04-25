@@ -50,6 +50,13 @@ export default function Hero() {
             </a>
           </div>
 
+          <div className="mobile-desktop-notice" style={{ marginTop: 20, display: 'none', alignItems: 'center', gap: 8, background: 'rgba(15,39,68,.06)', border: '1px solid rgba(15,39,68,.12)', borderRadius: 8, padding: '10px 14px' }}>
+            <span style={{ fontSize: 16 }}>🖥️</span>
+            <span style={{ fontSize: 12, color: 'var(--ink2)', lineHeight: 1.5 }}>
+              MindTrade s'utilise sur desktop. Tu peux acheter ici, puis te connecter sur ordinateur pour profiter pleinement du dashboard.
+            </span>
+          </div>
+
           <div className="animate-fade-up-4" style={{ marginTop: 40, display: 'flex', alignItems: 'center', gap: 16 }}>
             <div style={{ display: 'flex' }}>
               {['TM','JL','AR','PK','+'].map((init, i) => (

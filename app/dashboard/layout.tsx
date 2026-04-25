@@ -148,6 +148,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div style={{ ...darkVars, display: "flex", flexDirection: "column", height: "100vh", background: "var(--bg)", fontFamily: "var(--font-outfit)" }}>
+      {/* Mobile notice */}
+      <div className="dashboard-mobile-notice" style={{ display: "none", alignItems: "center", gap: 10, background: "rgba(59,130,246,.12)", border: "1px solid rgba(59,130,246,.25)", borderRadius: 0, padding: "10px 16px", fontSize: 12, color: "#93c5fd" }}>
+        <span>🖥️</span>
+        <span>MindTrade est conçu pour desktop — certaines fonctionnalités sont limitées sur mobile.</span>
+      </div>
       {/* Topbar */}
       <div style={{ height: 56, background: "var(--card)", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", padding: "0 20px", justifyContent: "space-between", flexShrink: 0, zIndex: 50 }}>
         <span style={{ fontFamily: "var(--font-montserrat)", fontSize: 14, fontWeight: 900, color: "var(--ink)", letterSpacing: "-.4px" }}>MindTrade</span>
