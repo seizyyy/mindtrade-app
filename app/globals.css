@@ -232,4 +232,10 @@ section {
   .dashboard-sidebar { display: none !important; }
   .dashboard-bottom-nav { display: flex !important; }
   .dashboard-main { padding: 16px 14px 80px !important; }
+  .db-topbar-date { display: none !important; }
+  .db-metrics-grid { grid-template-columns: 1fr 1fr !important; }
+  .db-chart-grid { grid-template-columns: 1fr !important; }
+  .db-trades-grid { grid-template-columns: 1fr !important; }
+  .db-checkin-result-grid { grid-template-columns: 1fr !important; }
+  .db-checkin-card { padding: 20px 16px !important; }
 }

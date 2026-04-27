@@ -201,7 +201,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Topbar */}
       <div style={{ height: 56, background: "var(--card)", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", padding: "0 20px", justifyContent: "space-between", flexShrink: 0, zIndex: 50 }}>
         <span style={{ fontFamily: "var(--font-montserrat)", fontSize: 14, fontWeight: 900, color: "var(--ink)", letterSpacing: "-.4px" }}>MindTrade</span>
-        <div style={{ fontSize: 12, color: "var(--ink3)" }}>{new Date().toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}</div>
+        <div className="db-topbar-date" style={{ fontSize: 12, color: "var(--ink3)" }}>{new Date().toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })}</div>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6, background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: 20, padding: "4px 12px" }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", background: scoreColor, flexShrink: 0 }} />

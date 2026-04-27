@@ -369,7 +369,7 @@ export default function DashboardPage() {
       )}
 
       {/* ── 4 métriques rapides ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 }}>
+      <div className="db-metrics-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 }}>
         {/* Score mental */}
         <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "16px 18px" }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: "var(--ink3)", textTransform: "uppercase", letterSpacing: ".1em", marginBottom: 8 }}>Score mental</div>
@@ -443,7 +443,7 @@ export default function DashboardPage() {
       </div>
 
       {/* ── Graphique 7j + Facteur limitant & Objectif ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 12 }}>
+      <div className="db-chart-grid" style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 12 }}>
 
         {/* Graphique score 7j — élargi */}
         <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "18px 20px" }}>
@@ -538,7 +538,7 @@ export default function DashboardPage() {
       </div>
 
       {/* ── Derniers trades + Score de discipline ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+      <div className="db-trades-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
 
         {/* Derniers trades */}
         <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "18px 20px" }}>

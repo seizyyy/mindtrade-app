@@ -200,13 +200,13 @@ export default function CheckinPage() {
         {displayName ? <>Bonjour <strong style={{ color: "var(--ink)", fontWeight: 800 }}>{displayName}</strong> — réponds honnêtement, tes réponses restent privées.</> : "Réponds honnêtement — tes réponses restent privées."}
       </div>
 
-      <div style={step === 5
+      <div className={step === 5 ? "db-checkin-result-grid" : ""} style={step === 5
         ? { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, alignItems: "start" }
         : {}
       }>
 
         {/* Colonne gauche : card principale */}
-        <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 14, padding: "28px 32px" }}>
+        <div className="db-checkin-card" style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 14, padding: "28px 32px" }}>
 
         {step === 5 ? (
           <div>
