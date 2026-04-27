@@ -217,7 +217,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
         {/* Sidebar */}
-        <div style={{ width: 200, background: "var(--card)", borderRight: "1px solid var(--border)", padding: "12px 8px", display: "flex", flexDirection: "column", flexShrink: 0, overflowY: "auto" }}>
+        <div className="dashboard-sidebar" style={{ width: 200, background: "var(--card)", borderRight: "1px solid var(--border)", padding: "12px 8px", display: "flex", flexDirection: "column", flexShrink: 0, overflowY: "auto" }}>
           <nav style={{ display: "flex", flexDirection: "column", gap: 2, flex: 1 }}>
             {navItems.map(item => {
               const active = activeId === item.id;
@@ -290,9 +290,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
 
         {/* Main content */}
-        <main style={{ flex: 1, overflowY: "auto", padding: "24px 28px", position: "relative" }}>
+        <main className="dashboard-main" style={{ flex: 1, overflowY: "auto", padding: "24px 28px", position: "relative" }}>
           {children}
         </main>
+      </div>
+
+      {/* Bottom nav mobile */}
+      <div className="dashboard-bottom-nav" style={{ display: "none", position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100, background: "var(--card)", borderTop: "1px solid var(--border)", padding: "8px 0 12px" }}>
+        {[
+          { href: "/dashboard", label: "Accueil", icon: <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> },
+          { href: "/dashboard/checkin", label: "Check-in", icon: <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg> },
+          { href: "/dashboard/trades", label: "Trades", icon: <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> },
+          { href: "/dashboard/rapport", label: "Rapport", icon: <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> },
+          { href: "/dashboard/alpha", label: "Alpha", icon: <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fbbf24" strokeWidth="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> },
+        ].map(item => {
+          const active = pathname === item.href;
+          return (
+            <a key={item.href} href={item.href} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, textDecoration: "none", color: active ? "var(--navy)" : "var(--ink3)", padding: "4px 0" }}>
+              <span style={{ opacity: active ? 1 : 0.6 }}>{item.icon}</span>
+              <span style={{ fontSize: 9, fontWeight: active ? 700 : 500 }}>{item.label}</span>
+            </a>
+          );
+        })}
       </div>
     </div>
   );
